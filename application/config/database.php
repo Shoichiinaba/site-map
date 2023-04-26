@@ -83,7 +83,7 @@ $db['default'] = array(
 	// 'password' => '',
 
 	// Online Production
-	'username' => 'kina3126_kinderton',
+	'username' => 'kina3126_site_map',
 	'password' => 'kanpa2020',
 
 	'database' => 'kina3126_site_map',
