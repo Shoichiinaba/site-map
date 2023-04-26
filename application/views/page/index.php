@@ -4532,9 +4532,9 @@
                 <p><i class="btn btn-success fa fa-arrow-down"></i></p>
             </div>
             <div class="controls-zoom">
-                <p><i class="btn btn-success fa fa-refresh"></i></p>
-                <p><i class="btn btn-success fa fa-plus"></i></p>
-                <p><i class="btn btn-success fa fa-minus"></i></p>
+                <p><i class="btn btn-warning fa fa-refresh"></i></p>
+                <p><i class="btn btn-danger fa fa-plus"></i></p>
+                <p><i class="btn btn-danger fa fa-minus"></i></p>
             </div>
         </div>
 
@@ -4546,9 +4546,9 @@
                 style="border-collapse: collapse;" cellspacing="0">
                 <thead>
                     <tr>
-                        <th>Code</th>
-                        <th>Type</th>
-                        <th>Color</th>
+                        <th>Kode Kapling</th>
+                        <th>Status</th>
+                        <!-- <th>Color</th> -->
                         <th>Description</th>
                         <th></th>
                     </tr>
@@ -4557,9 +4557,9 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <th>Code</th>
-                        <th>Type</th>
-                        <th>Color</th>
+                        <th>Kode Kapling</th>
+                        <th>Status</th>
+                        <!-- <th>Color</th> -->
                         <th>Description</th>
                         <th></th>
                     </tr>
@@ -4578,15 +4578,16 @@
                 <div class="modal-body">
                     <form action="" id="form-edit-denah">
                         <div class="mb-3">
-                            <label for="code" class="form-label">Kode</label>
+                            <label for="code" class="form-label">Kode Kapling</label>
                             <input type="text" class="form-control" id="code" name="code" readonly>
                         </div>
                         <div class="mb-3">
-                            <label for="type" class="form-label">Tipe</label>
+                            <label for="type" class="form-label">Status</label>
                             <select class="form-select" id="type" name="type">
+                                <option value="Dipesan">Dipesan</option>
                                 <option value="Sudah DP">Sudah DP</option>
-                                <option value="Laku Terjual">Laku Terjual</option>
-                                <option value="default">Default</option>
+                                <option value="Dipesan 2 Org">Tambahan</option>
+                                <option value="Kosong">Kosongkan</option>
                             </select>
                         </div>
                         <div class="mb-3">
@@ -4648,10 +4649,10 @@
                 data: 'type',
                 name: 'type'
             },
-            {
-                data: 'color',
-                name: 'color'
-            },
+            // {
+            //     data: 'color',
+            //     name: 'color'
+            // },
             {
                 data: 'description',
                 name: 'description'

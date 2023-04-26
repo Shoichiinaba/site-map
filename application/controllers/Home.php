@@ -22,7 +22,7 @@ class Home extends CI_Controller {
 		$ids = $this->input->post('id');
 		$defaultColor = "#e6e7e8";
 		if(is_array($ids)){
-			foreach($ids as $id){                
+			foreach($ids as $id){
 				$denah = new Denah_model;
 				$denah->code = $id;
 				$denah->description = '';
@@ -51,10 +51,12 @@ class Home extends CI_Controller {
         $desc = $this->input->post('desc');
 
         $color = '#e6e7e8';
-        if($type == 'Sudah DP'){
+        if($type == 'Dipesan'){
             $color = 'yellow';
-        }elseif ($type == 'Laku Terjual'){
+        }elseif ($type == 'Sudah DP'){
             $color = 'green';
+        }elseif ($type == 'Dipesan 2 Org'){
+            $color = 'red';
         }
 
         $denah = Denah_model::where('code', $code)
@@ -103,7 +105,7 @@ class Home extends CI_Controller {
                 }
             }
         }
-        
+
         $resuls = $model->select('denahs.*')->get();
 
         $data_arr = [];
@@ -112,8 +114,8 @@ class Home extends CI_Controller {
             $data_arr[] = [
                 'code' => $result->code,
                 'description' => $result->description,
-                'type' => $result->type,
-                'color' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->color,
+                'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
+                // 'color' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->color,
 				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>',
             ];
         }
