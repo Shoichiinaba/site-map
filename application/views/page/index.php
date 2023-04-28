@@ -60,7 +60,7 @@
     <script type="text/javascript"
         src="https://rawgit.com/DanielHoffmann/jquery-svg-pan-zoom/master/compiled/jquery.svg.pan.zoom.js"></script>
 
-    <!--script type="text/javascript" src="/home/daniel/dev/jquery-svg-pan-zoom/compiled/jquery.svg.pan.zoom.js"></script-->
+    <!--script type="text/javascript" src="/home/daniel/dev/jquery-svg-pan-zoom/compiled/jquery.svg.pan.zoom.js"></script -->
 
     <script>
     var example1, example2; //globals so we can manipulate them in the debugger
@@ -4548,22 +4548,22 @@
                     <tr>
                         <th>Kode Kapling</th>
                         <th>Status</th>
-                        <!-- <th>Color</th> -->
                         <th>Description</th>
-                        <th></th>
+                        <th>Progress</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>
                 </tbody>
-                <tfoot>
+                <!-- <tfoot>
                     <tr>
                         <th>Kode Kapling</th>
                         <th>Status</th>
-                        <!-- <th>Color</th> -->
+                        <th>Color</th>
                         <th>Description</th>
                         <th></th>
                     </tr>
-                </tfoot>
+                </tfoot> -->
             </table>
         </center>
     </div>
@@ -4649,13 +4649,13 @@
                 data: 'type',
                 name: 'type'
             },
-            // {
-            //     data: 'color',
-            //     name: 'color'
-            // },
             {
                 data: 'description',
                 name: 'description'
+            },
+            {
+                data: 'color',
+                name: 'color'
             },
             {
                 data: 'action',

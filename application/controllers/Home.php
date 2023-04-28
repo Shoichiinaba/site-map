@@ -7,6 +7,7 @@ use Illuminate\Container\Container;
 
 class Home extends CI_Controller {
 
+    var $template = 'templates/index';
 	public function __construct()
     {
         parent::__construct();
@@ -15,7 +16,9 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('page/index');
+		// $this->load->view('page/index');
+        $data['content']        = 'page/index';
+        $this->load->view($this->template, $data);
 	}
 
 	public function inputDenah(){
@@ -115,8 +118,8 @@ class Home extends CI_Controller {
                 'code' => $result->code,
                 'description' => $result->description,
                 'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
-                // 'color' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->color,
-				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>',
+                'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
+				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>&nbsp;' . '&nbsp;&nbsp;<button onclick="openDataRow()" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-paperclip"></i> Dokument</button>',
             ];
         }
 
