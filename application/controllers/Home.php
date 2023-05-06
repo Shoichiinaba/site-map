@@ -16,9 +16,9 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-		// $this->load->view('page/index');
         $data['content']        = 'page/index';
         $this->load->view($this->template, $data);
+        // $this->load->view('page/test');
 	}
 
 	public function inputDenah(){
@@ -57,9 +57,11 @@ class Home extends CI_Controller {
         if($type == 'Dipesan'){
             $color = 'yellow';
         }elseif ($type == 'Sudah DP'){
-            $color = 'green';
+            $color = '#60d728';
         }elseif ($type == 'Dipesan 2 Org'){
             $color = 'red';
+        }elseif ($type == 'Sedang Dibangun') {
+            $color = '#00b4ff';
         }
 
         $denah = Denah_model::where('code', $code)
@@ -119,16 +121,10 @@ class Home extends CI_Controller {
                 'description' => $result->description,
                 'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
                 'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
-				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>&nbsp;' . '&nbsp;&nbsp;<button onclick="openDataRow()" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-paperclip"></i> Dokument</button>',
+				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;'.
+                '&nbsp;&nbsp;<button class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalupload"><i class="fa fa-paperclip"></i> Document</button>'
             ];
         }
-
-        // return [
-        //     'draw'            => $draw,
-        //     'recordsTotal'    => $totalRows,
-        //     'recordsFiltered' => $filteredRows,
-        //     'data'            => $data_arr,
-        // ];
 
 		return $this->output
 			->set_content_type('application/json')
