@@ -1,7 +1,6 @@
 <div class="container">
     <div id="svg-container">
-        <h1 class="text-center">Denah Map Selatan</h1>
-        <br>
+        <h4 class="text-center">Denah Map Selatan</h4>
     </div>
 
     <div class="card-body p-3">

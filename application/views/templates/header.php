@@ -27,13 +27,15 @@
         padding-bottom: 30px;
     } */
 
-    /* svg {
-        border: 1px solid purple;
+    svg {
+        /* border: 1px solid purple; */
         display: block;
         margin-left: auto;
         margin-right: auto;
+        height: auto;
+        width: 700px;
 
-    } */
+    }
 
     div.controls {
         text-align: center;
@@ -75,13 +77,30 @@
         padding: 0px 20px 0px 20px;
     }
 
-    /* .pup {
+    .pup {
         height: 12px;
         width: 12px;
         display: inline-flex;
         padding-right: 12px;
         border: 1px solid gray;
-    } */
+    }
+
+    @media screen and (max-width: 700px) {
+        svg {
+            /* border: 1px solid purple; */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            width: 350px;
+        }
+
+        h4 {
+            font-weight: 500px;
+            ;
+        }
+
+    }
     </style>
     <script type="text/javascript"
         src="https://rawgit.com/DanielHoffmann/jquery-svg-pan-zoom/master/compiled/jquery.svg.pan.zoom.js"></script>

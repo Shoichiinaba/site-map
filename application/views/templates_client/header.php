@@ -86,23 +86,17 @@
         border: 1px solid gray;
     }
 
-    /* @media (max-width: 767) {
+    @media screen and (max-width: 700px) {
         svg {
-            border: 1px solid gray;
+            /* border: 1px solid purple; */
             display: block;
-            height: 60px;
-            width: 50;
+            margin-left: -18px;
+            /* margin-right: auto; */
+            height: 230px;
+            width: 300px;
+
         }
-    } */
-
-    /* @media (max-width: 767px) {
-            svg {
-
-                margin-left: 0px;
-                margin-right: 399px;
-                height: 100px;
-                width: auto;
-            } */
+    }
     </style>
 
     <script>

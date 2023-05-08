@@ -5,7 +5,7 @@
                 <div class="copyright text-center text-sm text-muted text-lg-start">
                     © <script>
                     document.write(new Date().getFullYear())
-                    </script>,
+                    </script>
                     made with <i class="fa fa-heart"></i> by
                     <a href="https://www.kanpa.co.id" class="font-weight-bold" target="_blank"> Kanpa.co.id</a>
                     Site Plan Map (Beta Vers).

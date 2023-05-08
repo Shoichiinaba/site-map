@@ -456,7 +456,8 @@ button,
 
   @if $enable-button-pointers {
     &:not(:disabled) {
-      cursor: pointer; // 3
+      cursor: pointer;
+      border: none; // 3
     }
   }
 }
