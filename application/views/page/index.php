@@ -4431,7 +4431,6 @@
                         <line class="cls-12" x1="367.14" y1="94.88" x2="373.69" y2="95.88" />
                         <polyline class="cls-12" points="484.16 218.88 507.43 314.46 516.4 363.12" />
                     </svg>
-
                 </div>
             </div>
             <!-- Panel Control -->
@@ -4466,24 +4465,24 @@
 </div>
 <div class="panel-table">
     <div class="container-fluid py-4">
-        <!-- <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0"> -->
-        <table id="list-datatable" class="table align-items-center mb-0">
-            <thead>
-                <tr>
-                    <th>Kode Kapling</th>
-                    <th>Status</th>
-                    <th>Description</th>
-                    <th>Progress</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-            <tfoot>
-            </tfoot>
-        </table>
-        <!-- </div>
-        </div> -->
+        <div class="card-body px-0 pt-0 pb-2">
+            <div class="table-responsive p-0">
+                <table id="list-datatable" class="table align-items-center mb-0">
+                    <thead>
+                        <tr>
+                            <th>Kode Kapling</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Progress</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
