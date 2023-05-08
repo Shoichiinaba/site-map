@@ -2,7 +2,6 @@
     <div id="svg-container">
         <h4 class="text-center">Denah Map Selatan</h4>
     </div>
-
     <div class="card-body p-3">
         <div class="row">
             <div class="col-xl-9 col-md-6 mb-xl-0 mb-4">
@@ -4458,10 +4457,12 @@
                     </div>
                 </div>
             </div>
+            <!-- akhir panel control -->
         </div>
     </div>
-
 </div>
+<!-- akhir Tampilan map -->
+<!-- Table data -->
 <div class="panel-table">
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">

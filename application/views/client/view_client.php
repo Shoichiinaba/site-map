@@ -1,8 +1,8 @@
 <main class="main-content  mt-0">
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4"
-            style="background-image: url('<?= base_url(); ?>assets_adm/img/curved-images/curved0.jpg'); background-position-y: 50%;">
-            <span class="mask bg-gradient-primary opacity-6"></span>
+            style="background-image: url('<?= base_url(); ?>assets_adm/img/caruban.jpg'); background-position-y: 50%;">
+            <span class="mask bg-gradient-primary opacity-43"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
             <div class="row gx-4">
@@ -4729,17 +4729,15 @@
 
                 <div id="example2" class="controls">
                     <div class="controls-pan">
-                        <p><i class="btn btn-success fa fa-arrow-up"></i></p>
-                        <p>
-                            <i class="btn btn-success fa fa-arrow-left"></i>
-                            <i class="btn btn-success fa fa-arrow-right"></i>
-                        </p>
-                        <p><i class="btn btn-success fa fa-arrow-down"></i></p>
+                        <i class="btn btn-success fa fa-arrow-up"></i>
+                        <i class="btn btn-success fa fa-arrow-down"></i>
+                        <i class="btn btn-success fa fa-arrow-left"></i>
+                        <i class="btn btn-success fa fa-arrow-right"></i>
                     </div>
                     <div class="controls-zoom">
-                        <p><i class="btn btn-warning fa fa-refresh"></i></p>
-                        <p><i class="btn btn-danger fa fa-plus"></i></p>
-                        <p><i class="btn btn-danger fa fa-minus"></i></p>
+                        <i class="btn btn-warning fa fa-refresh"></i>
+                        <i class="btn btn-danger fa fa-plus"></i>
+                        <i class="btn btn-danger fa fa-minus"></i>
                     </div>
                 </div>
             </div>

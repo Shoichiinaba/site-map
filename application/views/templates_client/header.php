@@ -49,17 +49,29 @@
         margin: 3px;
     }
 
-    div.controls p {
+    /* div.controls p {
         margin: 3px;
-    }
+    } */
 
     div.controls-zoom,
     div.controls-pan {
         display: inline-block;
     }
 
+    div.controls-zoom i {
+        margin-left: 10px;
+        margin-right: 10px;
+
+    }
+
     div.controls-zoom {
-        margin-left: 20px;
+        margin-left: 40px;
+    }
+
+    div.controls-pan i {
+        margin-left: 10px;
+        margin-right: 10px;
+
     }
 
     div.keterangan {
@@ -95,6 +107,17 @@
             height: 230px;
             width: 300px;
 
+        }
+
+        div.controls-pan i {
+            margin-left: 10px;
+            margin-right: 12px;
+        }
+
+        div.controls-zoom i {
+            margin-left: 1px;
+            margin-right: 18px;
+            margin-top: 8px
         }
     }
     </style>
