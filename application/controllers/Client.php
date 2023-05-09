@@ -17,6 +17,7 @@ class Client extends CI_Controller {
 	public function index()
 	{
         $data['content']        = 'client/view_client';
+        // $data['content']        = 'client/tes';
         $this->load->view($this->template, $data);
 	}
 

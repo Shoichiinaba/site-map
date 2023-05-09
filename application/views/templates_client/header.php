@@ -100,10 +100,10 @@
         svg {
             /* border: 1px solid purple; */
             display: block;
-            margin-left: -18px;
+            margin-left: -15px;
             /* margin-right: auto; */
-            height: 230px;
-            width: 300px;
+            height: 370px;
+            width: 290px;
 
         }
 
@@ -116,6 +116,12 @@
             margin-left: 1px;
             margin-right: 18px;
             margin-top: 8px
+        }
+
+        div.keterangan {
+            text-align: center;
+            margin-top: 1px;
+            margin-bottom: -20px;
         }
     }
     </style>
