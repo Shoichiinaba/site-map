@@ -18,7 +18,7 @@ class Home extends CI_Controller {
 	{
         $data['content']        = 'page/index';
         $this->load->view($this->template, $data);
-        // $this->load->view('page/test');
+        // $this->load->view('page/tes');
 	}
 
 	public function inputDenah(){
@@ -122,7 +122,7 @@ class Home extends CI_Controller {
                 'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
                 'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
 				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;'.
-                '&nbsp;&nbsp;<button class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalupload"><i class="fa fa-paperclip"></i> Document</button>'
+                '&nbsp;&nbsp;<button type="button" class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip"></i> Document</button>'
             ];
         }
 
