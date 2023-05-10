@@ -1,3 +1,4 @@
+<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/soft-ui-dashboard.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>
@@ -12,7 +13,6 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 }
 </script>
 <script async defer src="https://buttons.github.io/buttons.js"></script>
-<script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 </body>
 
 </html>
