@@ -5,7 +5,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 
-class Home extends CI_Controller {
+class Utara extends CI_Controller {
 
     var $template = 'templates/index';
 	public function __construct()
@@ -16,7 +16,7 @@ class Home extends CI_Controller {
 
 	public function index()
 	{
-        $data['content']        = 'page/index';
+        $data['content']        = 'page/utara';
         $this->load->view($this->template, $data);
 	}
 

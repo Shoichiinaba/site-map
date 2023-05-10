@@ -48,7 +48,7 @@
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-whatsapp"></i></a>
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-instagram"></i></a>
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-facebook"></i></a>
-                    <a href="" class="icon-info-kontak"><i class="fa-regular fa fa-envelope"></i></a>
+                    <a href="" class="icon-info-kontak"><i class="fa-regular fab fa-tiktok"></i></a>
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-youtube"></i></a>
                 </div>
             </div>

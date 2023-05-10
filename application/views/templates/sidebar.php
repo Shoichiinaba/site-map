@@ -43,11 +43,14 @@
                         <span class="nav-link-text ms-1">Dashboard</span>
                     </a>
                 </li>
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Maps</h6>
+                </li>
                 <li class="nav-item">
-                    <a <?=$this->uri->segment(1) =='Home' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
-                        class="nav-link" href="<?php echo site_url('index.php/Home'); ?>">
+                    <a data-bs-toggle="collapse" class="nav-link active" aria-controls="dashboardsExamples"
+                        role="button" aria-expanded="false">
                         <div
-                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
                             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
                                 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                                 <title>office</title>
@@ -68,9 +71,24 @@
                                 </g>
                             </svg>
                         </div>
-                        <span class="nav-link-text ms-1">Kelola Map</span>
+                        <span class="nav-link-text ms-1">Site Map Caruban</span>
                     </a>
+                    <div class="collapse show" id="dashboardsExamples">
+                        <ul class="nav ms-4 ps-3">
+                            <li class="nav-item active">
+                                <a class="nav-link active" href="<?php echo site_url('index.php/Home'); ?>">
+                                    <span class="sidenav-normal"> Selatan </span>
+                                </a>
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link " href="<?php echo site_url('index.php/Utara'); ?>">
+                                    <span class="sidenav-normal"> Utara </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
+
             </ul>
         </div>
     </aside>
