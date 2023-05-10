@@ -17,7 +17,7 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a <?=$this->uri->segment(1) =='Dashboard' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
-                        class="nav-link" href="<?php echo site_url('index.php/Dashboard'); ?> ">
+                        class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                             <svg width="12px" height="12px" viewBox="0 0 45 40" version="1.1"
@@ -76,12 +76,12 @@
                     <div class="collapse show" id="dashboardsExamples">
                         <ul class="nav ms-4 ps-3">
                             <li class="nav-item active">
-                                <a class="nav-link active" href="<?php echo site_url('index.php/Home'); ?>">
+                                <a class="nav-link active" href="<?php echo site_url('Home'); ?>">
                                     <span class="sidenav-normal"> Selatan </span>
                                 </a>
                             </li>
                             <li class="nav-item ">
-                                <a class="nav-link " href="<?php echo site_url('index.php/Utara'); ?>">
+                                <a class="nav-link " href="<?php echo site_url('Utara'); ?>">
                                     <span class="sidenav-normal"> Utara </span>
                                 </a>
                             </li>
