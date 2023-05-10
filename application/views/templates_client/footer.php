@@ -43,7 +43,7 @@
                 <h6 class="text-h6"><i class="fa-solid fa fa-phone"></i> (024) 7590 1139</h6>
                 <h6 class="text-h6"><i class="fa-brands fab fa-whatsapp"></i> 0823-3350-7931</h6>
                 <h6 class="text-h6"><i class="fa-regular fa fa-envelope"></i> Kanzugroupindonesia@gamail.com</h6>
-                <hr style="color: white;">
+                <hr class="horizontal light">
                 <div class="mb-2" style="text-align-last: justify;">
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-whatsapp"></i></a>
                     <a href="" class="icon-info-kontak"><i class="fa-brands fab fa-instagram"></i></a>
