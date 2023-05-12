@@ -33,7 +33,7 @@
                                 </p>
                                 <h5 class="font-weight-bolder mb-0">
                                     25
-                                    <span class="text-primary text-sm font-weight-bolder">Unit</span>
+                                    <span class="text-danger text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sudah Di Bangun</p>
                                 <h5 class="font-weight-bolder mb-0">
                                     20
-                                    <span class="text-danger text-sm font-weight-bolder">Unit</span>
+                                    <span class="text-info text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
                         </div>

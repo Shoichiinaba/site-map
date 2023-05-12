@@ -89,12 +89,17 @@ class Utara extends CI_Controller {
         $totalRows = $model->count();
         $filteredRows = $totalRows;
 
+        $model = $model->where('id_perum', 1)
+        ->where('map', 'utara');
+
         if ($search) {
 			$search = $search['value'];
-            $model = $model->where('code', 'LIKE', '%'.$search.'%')
-            ->orWhere('description', 'LIKE', '%'.$search.'%')
-            ->orWhere('type', 'LIKE', '%'.$search.'%')
-            ->orWhere('color', 'LIKE', '%'.$search.'%');
+            $model = $model->where(function($query) use($search){
+                $query->Where('code', 'LIKE', '%'.$search.'%')
+                      ->orWhere('description', 'LIKE', '%'.$search.'%')
+                      ->orWhere('type', 'LIKE', '%'.$search.'%')
+                      ->orWhere('color', 'LIKE', '%'.$search.'%');
+            });
             $filteredRows = $model->count();
         }
 
@@ -111,6 +116,11 @@ class Utara extends CI_Controller {
         }
 
         $resuls = $model->select('denahs.*')->get();
+
+        // $resuls = $model->select('denahs.*')
+        //                  ->where('id_perum', 1)
+        //                  ->where('map', 'utara')
+        //                  ->get();
 
         $data_arr = [];
 

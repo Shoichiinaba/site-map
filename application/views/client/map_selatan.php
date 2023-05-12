@@ -1,7 +1,7 @@
 <main class="main-content  mt-0">
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4"
-            style="background-image: url('<?= base_url(); ?>assets_adm/img/caruban.jpg'); background-position-y: 50%;">
+            style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/caruban.jpg'); background-position-y: 50%;">
             <span class="mask bg-gradient-primary opacity-3"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
@@ -17,7 +17,7 @@
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 " data-bs-toggle="tab" href="#utara" role="tab"
+                                <a class="nav-link mb-0 px-0 py-1 " href="<?php echo site_url('client/utara'); ?>"
                                     aria-selected="false">
                                     <i class="fa fa-street-view" aria-hidden="true"></i>
                                     <span class="ms-1">Site Plant Utara</span>
@@ -45,7 +45,7 @@
                                                     Map
                                                     Selatan</i></p>
                                         </div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="800" height="400"
+                                        <svg id="site_maps" xmlns="http://www.w3.org/2000/svg" width="800" height="400"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1"
                                             viewBox="0 0 841.89 1190.55">
                                             <defs>
@@ -4731,41 +4731,30 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="tab-pane fade position-relative height-400 border-radius-lg mask bg-gradient-primary opacity-3"
-                                    id="utara" role="tabpanel" aria-labelledby="cam2"
-                                    style="background-image: url('<?= base_url(); ?>assets_adm/img/utara.jpg'); background-size:cover;">
-                                    <div class="position-absolute d-flex top-0 w-100">
-                                        <p class="p-3 mb-0 fa fa-map-marker text-danger"><b class="text-black"> Site
-                                                Map
-                                                Utara</b></p>
-                                        <div class="ms-auto p-3">
-                                            <span class="badge badge-secondary">
-                                                <i class="fas fa-dot-circle text-danger"></i>
-                                                PROGRES....</span>
-                                        </div>
-                                    </div>
-                                </div>
+
+
                             </div>
-                            <!-- akhir tes menu tab -->
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div id="example2" class="controls">
-                    <div class="controls-pan">
-                        <i class="btn btn-success fa fa-arrow-up"></i>
-                        <i class="btn btn-success fa fa-arrow-down"></i>
-                        <i class="btn btn-success fa fa-arrow-left"></i>
-                        <i class="btn btn-success fa fa-arrow-right"></i>
-                    </div>
-                    <div class="controls-zoom">
-                        <i class="btn btn-warning fa fa-refresh"></i>
-                        <i class="btn btn-danger fa fa-plus"></i>
-                        <i class="btn btn-danger fa fa-minus"></i>
+                        <!-- akhir tes menu tab -->
                     </div>
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div id="example2" class="controls">
+                <div class="controls-pan">
+                    <i class="btn btn-success fa fa-arrow-up"></i>
+                    <i class="btn btn-success fa fa-arrow-down"></i>
+                    <i class="btn btn-success fa fa-arrow-left"></i>
+                    <i class="btn btn-success fa fa-arrow-right"></i>
+                </div>
+                <div class="controls-zoom">
+                    <i class="btn btn-warning fa fa-refresh"></i>
+                    <i class="btn btn-danger fa fa-plus"></i>
+                    <i class="btn btn-danger fa fa-minus"></i>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </main>

@@ -16,7 +16,13 @@ class Client extends CI_Controller {
 
 	public function index()
 	{
-        $data['content']        = 'client/view_client';
+        $data['content']        = 'client/map_selatan';
+        // $data['content']        = 'client/tes';
+        $this->load->view($this->template, $data);
+	}
+    public function utara()
+	{
+        $data['content']        = 'client/map_utara';
         // $data['content']        = 'client/tes';
         $this->load->view($this->template, $data);
 	}

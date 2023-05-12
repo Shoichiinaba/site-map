@@ -85,7 +85,7 @@ $('#save-change-denah').click(function() {
     description = $('#form-edit-denah #description').val();
     type = $('#form-edit-denah #type').val();
     $.ajax({
-        url: "<?php echo base_url('index.php/Home/change_denah') ?>",
+        url: "<?php echo base_url('Home/change_denah') ?>",
         data: {
             code: code,
             type: type,
@@ -109,7 +109,38 @@ window.crud = $('#list-datatable').DataTable({
     "responsive": true,
     processing: true,
     serverSide: true,
-    ajax: "<?php echo base_url('/index.php/Home/search') ?>",
+    ajax: "<?php echo base_url('/Home/search') ?>",
+    columns: [{
+            data: 'code',
+            name: 'code'
+        },
+        {
+            data: 'type',
+            name: 'type'
+        },
+        {
+            data: 'description',
+            name: 'description'
+        },
+        {
+            data: 'color',
+            name: 'color'
+        },
+        {
+            data: 'action',
+            name: 'action'
+        }
+    ],
+});
+
+window.crud = $('#list-utara').DataTable({
+    "paging": true,
+    "ordering": true,
+    "autoWidth": true,
+    "responsive": true,
+    processing: true,
+    serverSide: true,
+    ajax: "<?php echo base_url('/Utara/search') ?>",
     columns: [{
             data: 'code',
             name: 'code'
