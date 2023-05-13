@@ -5,7 +5,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 
-class Dashboard extends CI_Controller {
+class Dashboard extends AUTH_Controller{
     var $template = 'templates/index';
 
 	public function __construct()

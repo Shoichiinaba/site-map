@@ -1,7 +1,7 @@
 <main class="main-content  mt-0">
     <div class="container-fluid">
         <div class="page-header min-height-300 border-radius-xl mt-4"
-            style="background-image: url('<?= base_url(); ?>assets_adm/img/caruban.jpg'); background-position-y: 50%;">
+            style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/caruban.jpg'); background-position-y: 50%;">
             <span class="mask bg-gradient-primary opacity-3"></span>
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">

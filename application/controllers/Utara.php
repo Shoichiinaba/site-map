@@ -5,7 +5,7 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 
-class Utara extends CI_Controller {
+class Utara extends AUTH_Controller {
 
     var $template = 'templates/index';
 	public function __construct()

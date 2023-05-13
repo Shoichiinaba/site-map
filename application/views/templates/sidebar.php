@@ -47,8 +47,9 @@
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Maps</h6>
                 </li>
                 <li class="nav-item">
-                    <a data-bs-toggle="collapse" class="nav-link active" aria-controls="dashboardsExamples"
-                        role="button" aria-expanded="false">
+                    <a <?=$this->uri->segment(1) == 'Home' || $this->uri->segment(1) == 'Utara' ? 'class="nav-link active"' : 'class="nav-link"'?>
+                        data-bs-toggle="collapse" aria-controls="dashboardsExamples" role="button"
+                        aria-expanded="false">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
                             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
@@ -75,15 +76,19 @@
                     </a>
                     <div class="collapse show" id="dashboardsExamples">
                         <ul class="nav ms-4 ps-3">
-                            <li class="nav-item active">
-                                <a class="nav-link active" href="<?php echo site_url('Home'); ?>">
+                            <li <?= $this->uri->segment(1) == 'Home' ? 'class="nav-item active"' : 'class="nav-item"'?>>
+                                <a class="nav-link" href="<?php echo site_url('Home'); ?>">
                                     <span class="sidenav-normal"> Selatan </span>
                                 </a>
+                                </i>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link " href="<?php echo site_url('Utara'); ?>">
-                                    <span class="sidenav-normal"> Utara </span>
-                                </a>
+                            <li
+                                <?= $this->uri->segment(1) == 'Utara' ? 'class="nav-item active"' : 'class="nav-item"'?>>
+                                <i>
+                                    <a class="nav-link" href="<?php echo site_url('Utara'); ?>">
+                                        <span class="sidenav-normal"> Utara </span>
+                                    </a>
+                                </i>
                             </li>
                         </ul>
                     </div>
