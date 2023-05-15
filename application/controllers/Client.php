@@ -18,11 +18,11 @@ class Client extends CI_Controller {
          // Cek apakah data sudah ada dalam sesi
     if (!$this->session->userdata('form_data')) {
         // Data belum ada, tampilkan formulir
-        $this->load->view('Client/formulir');
+        $this->load->view('client/formulir');
     } else {
         // Data sudah ada, tampilkan pesan menggunakan flashdata
         $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
-        redirect('Client/selatan'); // Redirect kembali ke halaman formulir
+        redirect('client/selatan'); // Redirect kembali ke halaman formulir
     }
 
 	}
