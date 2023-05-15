@@ -11,13 +11,13 @@
                         <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link mb-0 px-0 py-1" aria-controls="selatan"
-                                    href="<?php echo site_url('Client'); ?>" aria-selected="true">
+                                    href="<?php echo site_url('Client/selatan'); ?>" aria-selected="true">
                                     <i class="fa fa-street-view" aria-hidden="true"></i>
                                     <span class="ms-1">Site Plan Selatan</span>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link mb-0 px-0 py-1 active" href="<?php echo site_url('client/utara'); ?>"
+                                <a class="nav-link mb-0 px-0 py-1 active" href="<?php echo site_url('Client/utara'); ?>"
                                     aria-selected="false">
                                     <i class="fa fa-street-view" aria-hidden="true"></i>
                                     <span class="ms-1">Site Plant Utara</span>

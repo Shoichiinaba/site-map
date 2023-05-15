@@ -11,7 +11,7 @@
                         <ul class="nav nav-pills nav-fill p-1 bg-transparent" role="tablist">
                             <li class="nav-item">
                                 <a class="nav-link mb-0 px-0 py-1 active " data-bs-toggle="tab" aria-controls="selatan"
-                                    href="#selatan" role="tab" aria-selected="true">
+                                    href="<?php echo site_url('client/selatan'); ?>" role="tab" aria-selected="true">
                                     <i class="fa fa-street-view" aria-hidden="true"></i>
                                     <span class="ms-1">Site Plan Selatan</span>
                                 </a>
@@ -45,7 +45,7 @@
                                                     Map
                                                     Selatan</i></p>
                                         </div>
-                                        <svg id="site_maps" xmlns="http://www.w3.org/2000/svg" width="800" height="400"
+                                        <svg id="svg" xmlns="http://www.w3.org/2000/svg" width="800" height="400"
                                             xmlns:xlink="http://www.w3.org/1999/xlink" id="Layer_1" data-name="Layer 1"
                                             viewBox="0 0 841.89 1190.55">
                                             <defs>
@@ -4731,8 +4731,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-
                             </div>
                         </div>
                         <!-- akhir tes menu tab -->

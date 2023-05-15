@@ -5,7 +5,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 
-class Home extends AUTH_Controller {
+// class Home extends AUTH_Controller
+class Home extends CI_Controller{
 
     var $template = 'templates/index';
 	public function __construct()
