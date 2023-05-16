@@ -1,7 +1,7 @@
 <body class="g-sidenav-show  bg-gray-100">
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NKDMSK6" height="0" width="0"
             style="display:none;visibility:hidden"></iframe></noscript>
-    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 "
+    <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-1 fixed-start ms-2 "
         id="sidenav-main">
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none"
@@ -13,7 +13,7 @@
             </a>
         </div>
         <hr class="horizontal dark mt-0">
-        <div class="collapse navbar-collapse  w-auto " id="sidenav-collapse-main">
+        <div class="collapse navbar-collapse  w-auto h-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a <?=$this->uri->segment(1) =='Dashboard' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
@@ -93,7 +93,31 @@
                         </ul>
                     </div>
                 </li>
-
+                <li class="nav-item mt-3">
+                    <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Data</h6>
+                </li>
+                <li class="nav-item">
+                    <a <?=$this->uri->segment(1) =='Customer' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
+                        class="nav-link" href="<?php echo site_url('Customer'); ?> ">
+                        <div
+                            class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                            <svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 512 512">
+                                <defs>
+                                    <style>
+                                    .cls-1 {
+                                        fill: #141f38;
+                                    }
+                                    </style>
+                                </defs>
+                                <title>courier-glyph</title>
+                                <path class="cls-1"
+                                    d="M460.8,480a32,32,0,0,1-32,32H384V467.2a32,32,0,0,0-32-32H313.6a32,32,0,0,0-32,32V512H83.2a32,32,0,0,1-32-32,172.85,172.85,0,0,1,128-166.9v25.52L256,384l76.8-45.38V313.1A172.85,172.85,0,0,1,460.8,480Zm-256-156L256,354.26,307.2,324V283.69A127.94,127.94,0,0,0,384,166.4V153.6c-26.37-1.22-44.42-20.35-62.4-29.38C289,108,256.51,108,256.51,108H256s-32.51,0-65.09,16.26c-18.11,9.09-36.29,28.42-62.91,29.38v12.8a127.94,127.94,0,0,0,76.8,117.29V324ZM115.2,128a12.8,12.8,0,1,0,0,25.6H128V128Zm281.6,25.6a12.8,12.8,0,1,0,0-25.6H384v25.6ZM179.52,101.38c37.5-18.75,74.88-19,76.48-19h.51c1.6,0,39,.26,76.54,19A173.19,173.19,0,0,1,352.19,113c11.14,7.36,20.93,14,31.81,15v-.13a128,128,0,0,0-256,.06V128c11.14-.83,21-7.49,32.32-15A168.32,168.32,0,0,1,179.52,101.38ZM352,460.8H313.6a6.41,6.41,0,0,0-6.4,6.4V512h51.2V467.2A6.41,6.41,0,0,0,352,460.8Z" />
+                            </svg>
+                        </div>
+                        <span class="nav-link-text ms-1">Data Formulir Customer</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </aside>

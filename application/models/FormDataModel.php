@@ -4,17 +4,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class FormDataModel extends CI_Model {
 
-    // public function simpanData($id_customer,$nama, $email, $telepon)
-    // {
-
-    // $data = array(
-    //     'id_customer' =>$id_customer,
-    //     'nama' => $nama,
-    //     'email' => $email,
-    //     'telepon' => $telepon
-    // );
-    // $this->db->insert('customer', $data);
-    // }
 
      public function simpanData($id_customer,$nama, $email, $telepon)
         {
@@ -44,7 +33,4 @@ class FormDataModel extends CI_Model {
                 return false; // Mengembalikan false karena data sudah ada
             }
         }
-
-
-
 }

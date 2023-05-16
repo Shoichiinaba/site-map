@@ -22,21 +22,15 @@
                             <ul class="navbar-nav mx-auto ms-xl-auto me-xl-7">
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center me-2 active" aria-current="page"
-                                        href="">
+                                        href="https://kanpa.co.id/">
                                         <i class="fa fa-home opacity-6 text-dark me-1"></i>
-                                        Griya Kanzu Caruban
+                                        Home Kanpa
                                     </a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link d-flex align-items-center me-2 active" href="">
-                                        <i class="fa fa-hospital opacity-7 text-dark me-1"></i>
-                                        Griya Kanzu Sukoharjo
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link me-2" href="">
-                                        <i class="fas fa-user-circle opacity-6 text-dark me-1"></i>
-                                        Sign Up
+                                        <!-- <i class="fa fa-hospital opacity-7 text-dark me-1"></i>
+                                        Griya Kanzu Sukoharjo -->
                                     </a>
                                 </li>
                                 <li class="nav-item">

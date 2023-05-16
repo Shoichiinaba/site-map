@@ -16,8 +16,9 @@ class Dashboard extends AUTH_Controller{
 
 	public function index()
 	{
-        // $data['bread']          = 'Dashboard';
+        $data['bread']          = 'Dashboard';
         $data['content']        = 'page/Dashboard_v';
+        $data['jscustom']       = 'page/customer/customer_js';
         $this->load->view($this->template, $data);
 	}
 

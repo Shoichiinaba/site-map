@@ -17,6 +17,7 @@ class Home extends CI_Controller{
 
 	public function index()
 	{
+        $data['bread']          = 'Map Plan Selatan';
         $data['content']        = 'page/index';
         $this->load->view($this->template, $data);
 	}
@@ -133,6 +134,7 @@ class Home extends CI_Controller{
 				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;'.
                 '&nbsp;&nbsp;<button type="button" disabled class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip"></i> Document</button>'
             ];
+
         }
 
 		return $this->output

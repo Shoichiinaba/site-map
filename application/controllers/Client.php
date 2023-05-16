@@ -15,7 +15,7 @@ class Client extends CI_Controller {
 
 	public function index()
 	{
-         // Cek apakah data sudah ada dalam sesi
+         // Cek apakah data sudah ada dalam sesion
     if (!$this->session->userdata('form_data')) {
         // Data belum ada, tampilkan formulir
         $this->load->view('client/formulir');
@@ -35,7 +35,7 @@ class Client extends CI_Controller {
     $email = $this->input->post('email');
     $telepon = $this->input->post('telepon');
 
-    // Simpan data ke dalam sesi
+    // Simpan data ke dalam sesion
     $data = array(
         'id_customer' => $id_customer,
         'nama' => $nama,
@@ -60,24 +60,36 @@ class Client extends CI_Controller {
 
     public function utara()
 	{
-        $data['content']        = 'client/map_utara';
-        $this->load->view($this->template, $data);
+        {
+            // Cek apakah data sudah ada dalam sesion
+       if (!$this->session->userdata('form_data')) {
+           // Data belum ada, tampilkan formulir
+           $this->load->view('client/formulir');
+       } else {
+           // Data sudah ada, tampilkan pesan menggunakan flashdata
+           $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
+           $data['content']        = 'client/map_utara';
+           $this->load->view($this->template, $data);
+       }
+
+       }
 	}
 
     public function selatan()
 	{
+         // Cek apakah data sudah ada dalam sesion
+    if (!$this->session->userdata('form_data')) {
+        // Data belum ada, tampilkan formulir
+        $this->load->view('client/formulir');
+    } else {
+        // Data sudah ada, tampilkan pesan menggunakan flashdata
+        $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
+
         $data['content']        = 'client/map_selatan';
         $this->load->view($this->template, $data);
-	}
-    public function allDenahColor(){
-		$ids = Denah_model::all();
-		return $this->output
-			->set_content_type('application/json')
-			->set_status_header(200)
-			->set_output(json_encode([
-				'message' => '',
-				'results' => $ids->toArray(),
-			]));
+
+    }
+
 	}
 
 }

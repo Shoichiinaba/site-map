@@ -16,6 +16,7 @@ class Utara extends AUTH_Controller {
 
 	public function index()
 	{
+        $data['bread']          = 'Map Plan Utara';
         $data['content']        = 'page/utara';
         $this->load->view($this->template, $data);
 	}
