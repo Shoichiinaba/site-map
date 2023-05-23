@@ -41,7 +41,7 @@
         margin-left: auto;
         margin-right: auto;
         height: auto;
-        width: 700px;
+        width: -webkit-fill-available;
 
     }
 
@@ -117,7 +117,7 @@
     var example1, example2;
     $(function() {
         // "use strict";
-        var examples = $("#site-map").svgPanZoom();
+        var examples = $("#svg").svgPanZoom();
 
         var callback = function(example) {
             return function(event) {
