@@ -42,7 +42,7 @@
                 ?>
 
                     <li class="nav-item">
-                        <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p>
+                        <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p> -->
 
                         <a class="nav-link active" data-bs-toggle="collapse" aria-controls="dashboardsExamples" role="button" aria-expanded="false">
                             <div class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
@@ -62,17 +62,18 @@
                                     </g>
                                 </svg>
                             </div>
-                            <span class="nav-link-text ms-1">Site Map <?= $data->nama; ?></span>
+                            <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
                         </a>
                         <div class="collapse show" id="dashboardsExamples">
                             <ul class="nav ms-4 ps-3">
                                 <?php
                                 foreach ($area_siteplan as $area) :
                                     if ($area->id_perum_siteplan == $id_perum) {
-
+                                        $nama = $data->nama;
+                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
                                 ?>
-                                        <li <?= $this->uri->segment(1) == 'Home' ? 'class="nav-item active"' : 'class="nav-item"' ?>>
-                                            <a class="nav-link" href="<?php echo site_url('Home'); ?>/visit/<?= $data->nama; ?>/<?= $area->area; ?>">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="<?php echo site_url('Home'); ?>/visit/<?= $tittle; ?>/<?= $area->area; ?>">
                                                 <span class="sidenav-normal"> <?= $area->area; ?> </span>
                                             </a>
                                             </i>

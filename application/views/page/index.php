@@ -162,7 +162,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <input type="text" id="id-denahs-edit" value="">
+                <!-- <input type="text" id="id-denahs-edit" value=""> -->
                 <form action="" id="form-edit-denah">
                     <div class="mb-3">
                         <label for="code" class="form-label">Kode Kapling</label>
@@ -172,7 +172,7 @@
                         <label for="type" class="form-label">Status</label>
                         <select class="form-select" id="type" name="type">
                             <option value="Dipesan">Dipesan</option>
-                            <option value="Dipesan 2 Org">Menunggu Konfirmasi</option>
+                            <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
                             <option value="UTJ">UTJ</option>
                             <option value="Sudah DP">Sudah DP</option>
                             <option value="Sedang Dibangun">Sedang Dibangun</option>
@@ -239,9 +239,8 @@
                 <center>
                     <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> Mohon lampirkan Blanko jika unit kapling subsidi!</span>
                 </center>
-                <input type="text" id="id-upload" value="">
-                <input type="text" id="flied" value="">
-                <input type="text" id="file-doc" value="">
+                <input type="text" id="flied" value="" hidden>
+                <input type="text" id="file-doc" value="" hidden>
                 <div id="preview-pdf" class="row" hidden>
                     <div class="col-12">
                         <hr style="border-top: solid #00000040 !important;">
@@ -396,15 +395,37 @@
         $(this).addClass('active');
     });
     $('#btn-close-preview').click(function() {
-        $("#link-down-pdf").attr("href", "");
-        $("#link-down-pdf").attr("download", "");
-        $("#preview-pdf").attr("hidden", true);
-    })
+        close_preview_pdf();
+    });
     $('#btn-delete-doc').click(function() {
-        // alert($(this).data('id-upload') + $(this).data('flied') + $(this).data('file-doc'));
-        $('#id-upload').val($(this).data('id-upload'));
-        $('#flied').val($(this).data('flied'));
-        $('#file-doc').val($(this).data('file-doc'));
+        // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
+        var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
+
+        if (confirmalert == true) {
+
+            let formData = new FormData();
+            formData.append('id-upload', $('#id-upload').val());
+            formData.append('flied', $('#flied').val());
+            formData.append('file-doc', $('#file-doc').val());
+            formData.append('select-pembayaran', $('#select-pembayaran').val());
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo site_url('Home/delete_document') ?>",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    alert('Documen berhasil di hapus..');
+                    load_data_document();
+                    $('#progres-' + $('#id-denahs').val()).html(data);
+                    close_preview_pdf();
+                },
+                error: function() {
+                    alert("Data Gagal Diupload");
+                }
+            });
+        }
     });
 
     function add_document() {
@@ -420,6 +441,14 @@
         $('#file-document').val('');
         $('#select-document').val('0');
 
+    }
+
+    function close_preview_pdf() {
+        $("#link-down-pdf").attr("href", "");
+        $("#link-down-pdf").attr("download", "");
+        $("#preview-pdf").attr("hidden", true);
+        $("#flied").val('');
+        $("#file-doc").val('');
     }
 
     function upload_document() {
