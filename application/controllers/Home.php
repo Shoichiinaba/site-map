@@ -123,17 +123,24 @@ class Home extends CI_Controller{
         //                  ->where('map', 'selatan')
         //                  ->get();
 
-        $data_arr = [];
+            $data_arr = [];
 
-        foreach($resuls as $result){
-            $data_arr[] = [
-                'code' => $result->code,
-                'description' => $result->description,
-                'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
-                'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
-				'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;'.
-                '&nbsp;&nbsp;<button type="button" disabled class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip"></i> Document</button>'
-            ];
+            foreach ($resuls as $result) {
+                $data = [
+                    'code' => $result->code,
+                    'description' => $result->description,
+                    'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
+                    'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
+                ];
+
+                if ($result->type == "Sudah DP") {
+                    $data['action'] =   '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;&nbsp;'.
+                                        '<button type="button" disabled class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip"></i> Document</button>';
+                } else {
+                    $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>';
+                }
+
+                $data_arr[] = $data;
 
         }
 

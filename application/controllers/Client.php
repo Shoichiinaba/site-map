@@ -84,7 +84,6 @@ class Client extends CI_Controller {
     } else {
         // Data sudah ada, tampilkan pesan menggunakan flashdata
         $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
-
         $data['content']        = 'client/map_selatan';
         $this->load->view($this->template, $data);
 
