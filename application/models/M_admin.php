@@ -60,11 +60,12 @@ class M_admin extends CI_Model
 		$query = $this->db->get();
 		return $query->result();
 	}
-	function m_siteplan($area)
+	function m_siteplan($perum, $area)
 	{
 		$this->db->select('*');
 		$this->db->from('site_plan');
-		// $this->db->Join('site_plan', 'site_plan.id_perum_siteplan = perumahan.id_perum');
+		$this->db->Join('perumahan', ' perumahan.id_perum = site_plan.id_perum_siteplan');
+		$this->db->where('nama', $perum); 
 		$this->db->where('area', $area);
 		$query = $this->db->get();
 		return $query->result();
@@ -97,6 +98,13 @@ class M_admin extends CI_Model
 			->where('id_denahs', $id_doc_kapling)
 			->update('denahs');
 		return $update;
+	}
+
+	function m_delete_all_document($id_upload)
+	{
+		$delete = $this->db->where('id_upload', $id_upload)
+			->delete('upload');
+		return $delete;
 	}
 }
 
