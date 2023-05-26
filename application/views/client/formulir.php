@@ -19,8 +19,7 @@
 <body class="">
     <main class="main-content  mt-0">
         <section class="min-vh-100 mb-8">
-            <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
-                style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/header_login.png');">
+            <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg" style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/header_login.png');">
                 <span class="mask bg-gradient-info opacity-5"></span>
                 <div class="container">
                     <div class="row justify-content-center">
@@ -43,30 +42,30 @@
                                     <form action="<?php echo site_url('Client/submit'); ?>" method="post">
                                         <!-- Alert -->
                                         <!-- Menampilkan alert saat data berhasil disimpan -->
-                                        <?php if ($this->session->flashdata('success_message')): ?>
-                                        <div class="alert alert-success">
-                                            <?php echo $this->session->flashdata('success_message'); ?></div>
+                                        <?php if ($this->session->flashdata('success_message')) : ?>
+                                            <div class="alert alert-success">
+                                                <?php echo $this->session->flashdata('success_message'); ?></div>
                                         <?php endif; ?>
 
                                         <!-- Menampilkan alert saat data sudah ada -->
-                                        <?php if ($this->session->flashdata('error_message')): ?>
-                                        <div class="alert alert-danger">
-                                            <?php echo $this->session->flashdata('error_message'); ?></div>
+                                        <?php if ($this->session->flashdata('error_message')) : ?>
+                                            <div class="alert alert-danger">
+                                                <?php echo $this->session->flashdata('error_message'); ?></div>
                                         <?php endif; ?>
 
                                         <!-- akhir alert -->
 
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="nama" required=""
-                                                autocomplete="off" placeholder="Ketikan Nama Anda...">
+                                            <input type="text" class="form-control" name="nama" required="" autocomplete="off" placeholder="Ketikan Nama Anda...">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="email" class="form-control" autocomplete="off" required=""
-                                                placeholder="Email" name="email" aria-describedby="email-addon">
+                                            <input type="email" class="form-control" autocomplete="off" required="" placeholder="Email" name="email" aria-describedby="email-addon">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="number" class="form-control" autocomplete="off" required=""
-                                                placeholder="No. telp 62" name="telepon" aria-describedby="email-addon">
+                                            <input type="number" class="form-control" autocomplete="off" required="" placeholder="No. telp 62" name="telepon" aria-describedby="email-addon">
+                                        </div>
+                                        <div class="input-group mb-3">
+                                            <input type="text" class="form-control" name="perum" required="" autocomplete="off" value="<?= $perum = $this->uri->segment(3); ?>">
                                         </div>
                                         <div class="row">
                                             <!-- /.col -->
@@ -86,27 +85,27 @@
 
         <!-- awal footer -->
         <style>
-        .title-h4 {
-            color: orange;
-            font-family: ui-serif;
-            font-weight: bold;
-        }
+            .title-h4 {
+                color: orange;
+                font-family: ui-serif;
+                font-weight: bold;
+            }
 
-        .text-h6 {
-            color: white;
-            font-family: sans-serif;
-        }
+            .text-h6 {
+                color: white;
+                font-family: sans-serif;
+            }
 
-        .icon-info-kontak {
-            display: inline-flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 5px;
-            font-size: 28px;
-            color: white;
-            border: 2px solid white;
-            border-radius: 10px;
-        }
+            .icon-info-kontak {
+                display: inline-flex;
+                flex-direction: column;
+                align-items: center;
+                padding: 5px;
+                font-size: 28px;
+                color: white;
+                border: 2px solid white;
+                border-radius: 10px;
+            }
         </style>
         <footer class="footer py-5 mt-1" style="background: #033b6c;">
             <div class="container">
@@ -146,7 +145,7 @@
                     <div class="col-8 mx-auto text-center mt-0">
                         <p class="mb-0 text-white">
                             &copy; <script>
-                            document.write(new Date().getFullYear())
+                                document.write(new Date().getFullYear())
                             </script> PT KANPA
                         </p>
                     </div>
