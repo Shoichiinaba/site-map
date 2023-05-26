@@ -6,6 +6,69 @@
     .required {
         border: 2px solid #ff000030 !important;
     }
+
+    #Iframe-Master-CC-and-Rs {
+        max-width: 812px;
+        max-height: 100%;
+        overflow: hidden;
+    }
+
+    /* inner wrapper: make responsive */
+    .responsive-wrapper {
+        position: relative;
+        height: 0;
+    }
+
+    .responsive-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
+
+    /* padding-bottom = h/w as % -- sets aspect ratio */
+    /* YouTube video aspect ratio */
+    .responsive-wrapper-wxh-572x612 {
+        padding-bottom: 107%;
+    }
+
+    /* general styles */
+    /* ============== */
+    .set-border {
+        border: 5px inset #ddd;
+    }
+
+    .set-box-shadow {
+        -webkit-box-shadow: 4px 4px 14px #4f4f4f;
+        -moz-box-shadow: 4px 4px 14px #4f4f4f;
+        box-shadow: 4px 4px 14px #4f4f4f;
+    }
+
+    .set-padding {
+        padding: 10px;
+    }
+
+    .set-margin {
+        margin: 30px;
+    }
+
+    .center-block-horiz {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
+
+    sup {
+        top: -0.5em;
+        color: red;
+    }
+
+    [readonly] {
+        background: #a9a9a936;
+    }
 </style>
 <div class="container">
     <div id="svg-container">
@@ -29,6 +92,7 @@
                 <div class="card h-100 card-plain border">
                     <div id="example2" class="controls">
                         <div class="controls-pan">
+
                             <p><i class="btn btn-success fa fa-arrow-up"></i></p>
                             <p>
                                 <i class="btn btn-success fa fa-arrow-left"></i>
@@ -43,7 +107,7 @@
                         </div>
                         <div class="controls-keterangan">
                             <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
-                            <p><span class="badge bg-gradient-danger">Dipesan lebih 1 orang</span></P>
+                            <p><span class="badge bg-gradient-danger">Menunggu Konfirmasi</span></P>
                             <p><span class="badge bg-gradient-success">Sudah DP</span></P>
                             <p><span class="badge bg-gradient-info">Dalam Pembangunan</span></P>
                         </div>
@@ -79,7 +143,16 @@
         </div>
     </div>
 </div>
-
+<!-- <div class="progress-wrapper">
+    <div class="progress-info">
+        <div class="progress-percentage">
+            <span class="text-sm font-weight-bold">1%</span>
+        </div>
+    </div>
+    <div class="">
+        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%;"></div>
+    </div>
+</div> -->
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -89,6 +162,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="text" id="id-denahs-edit" value="">
                 <form action="" id="form-edit-denah">
                     <div class="mb-3">
                         <label for="code" class="form-label">Kode Kapling</label>
@@ -98,8 +172,9 @@
                         <label for="type" class="form-label">Status</label>
                         <select class="form-select" id="type" name="type">
                             <option value="Dipesan">Dipesan</option>
+                            <option value="Dipesan 2 Org">Menunggu Konfirmasi</option>
+                            <option value="UTJ">UTJ</option>
                             <option value="Sudah DP">Sudah DP</option>
-                            <option value="Dipesan 2 Org">Tambahan</option>
                             <option value="Sedang Dibangun">Sedang Dibangun</option>
                             <option value="Kosong">Kosongkan</option>
                         </select>
@@ -125,10 +200,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+                <input type="text" id="id-denahs" value="" hidden>
                 <div class="row mb-2">
                     <div class="col">
                         <select id="select-pembayaran" class="form-control form-control-sm">
-                            <option>Pilih Status Pembayaran</option>
+                            <option value="">Pilih Status Pembayaran</option>
                             <option value="cash">CASH</option>
                             <option value="kpr">KPR</option>
                         </select>
@@ -152,69 +228,189 @@
                 </div>
                 <div id="action-upload" class="row" hidden>
                     <div class="col-6">
-                        <bu<a href="javascript:;" id="btn-cencel-document" class="btn btn-danger btn-lg btn-sm" role="button" aria-pressed="true">Cencel</a>
+                        <a href="javascript:;" id="btn-cencel-document" class="btn btn-danger btn-lg btn-sm" role="button" aria-pressed="true">Cencel</a>
                     </div>
                     <div class="col-6 ">
                         <a href="javascript:;" id="btn-save-document" class="btn btn-success btn-lg btn-sm" role="button" aria-pressed="true" style="float: right;">Save document</a>
                     </div>
                 </div>
                 <hr class="mt-0" style="border-top: solid #00000040 !important;">
-                <div id="data-document" class="row">
-                    <li>
-                        <span>KTP</span>
-                    </li>
-                    <li>
-                        <span>KK</span>
-                    </li>
-                    <li>
-                        <span>NPWP</span>
-                    </li>
-                    <li>
-                        <span>BUKU NIKAH</span>
-                    </li>
-                    <li>
-                        <span>SURAT KETERANGAN KERJA</span>
-                    </li>
-                    <li>
-                        <span>SLIP GAJI 3 BULAN TERAKHIR</span>
-                    </li>
-                    <li>
-                        <span>REKENING KORAN 3 BULAN TERAKHIR</span>
-                    </li>
+                <div id="data-document" class="row"></div>
+                <center>
+                    <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> Mohon lampirkan Blanko jika unit kapling subsidi!</span>
+                </center>
+                <input type="text" id="id-upload" value="">
+                <input type="text" id="flied" value="">
+                <input type="text" id="file-doc" value="">
+                <div id="preview-pdf" class="row" hidden>
+                    <div class="col-12">
+                        <hr style="border-top: solid #00000040 !important;">
+                        <button type="button" id="btn-close-preview" class="btn-sm btn btn-default" style="float: right;">Close</button>
+                        <button type="button" id="btn-delete-doc" class="btn-sm btn btn-danger mr-3" style="float: right;margin-right: 25px;">DELETE</button>
+                        <a id="link-down-pdf" href="" download="">
+                            <button type="button" class="btn-sm btn btn-info mr-3" style="float: right;margin-right: 25px;">Download</button>
+                        </a>
+                    </div>
+                    <div id="Iframe-Master-CC-and-Rs" class="set-padding set-border set-box-shadow center-block-horiz">
+                        <div class="responsive-wrapper responsive-wrapper-wxh-572x612" style="-webkit-overflow-scrolling: touch; overflow: auto;">
+
+                            <iframe id="view-pdf" src="">
+                                <!-- <iframe id="view-pdf" src="https://docs.google.com/viewer?url=https://kanpa.co.id/Berkas.pdf&embedded=true"> -->
+                            </iframe>
+
+                        </div>
+                    </div>
+                    <!-- <a href="http://localhost/site_map/upload/doc/0bd7e22accbba7ee18d43d64c56a111a.pdf" download="0bd7e22accbba7ee18d43d64c56a111a.pdf"> download</a> -->
+                    <!-- <a id="link-down-pdf" href="" download=""> download</a> -->
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save
-                    changes</button>
+                <!-- <button type="button" class="btn btn-primary">Save
+                    changes</button> -->
             </div>
         </div>
     </div>
 </div>
-
 <script>
+    // $(document).ready(function() {
+
+    //     $(".pdf").click(function(e) {
+    //         // alert("'.base_url('upload').'/doc/" + $(this).data("pdf") + "&embedded=true")
+    //         // alert($(this).data("pdf") + "&embedded=true")
+    //         $("#view-pdf").attr("src", "https://docs.google.com/viewer?url='.base_url('upload').'/doc/" + $(this).data("pdf") + "&embedded=true")
+    //         $("#link-down-pdf").attr("href", "'.base_url('upload').'/doc/" + $(this).data("pdf"));
+    //         $("#link-down-pdf").attr("download", $(this).data("pdf"));
+    //     });
+    // });
+</script>
+<script>
+    var html_cash = '<option value="0">Pilih Document</option>' +
+        '<option value="ktp">KTP</option>' +
+        '<option value="kk">kk</option>' +
+        '<option value="npwp">NPWP</option>' +
+        '<option value="buku_nikah">Buku Nikah</option>' +
+        '<option value="blanko">Blanko</option>';
+    var html_kpr = '<option value="0">Pilih Document</option>' +
+        '<option value="ktp">KTP</option>' +
+        '<option value="kk">kk</option>' +
+        '<option value="npwp">NPWP</option>' +
+        '<option value="buku_nikah">Buku Nikah</option>' +
+        '<option value="skk">Surat keterangan kerja</option>' +
+        '<option value="slip_g">Slip gaji 3 bulan terakhir</option>' +
+        '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
+        '<option value="blanko">Blanko</option>';
+    load_data_kapling();
+
+    $(document).ready(function() {
+        $('.btn-modal-document').click(function() {
+            cencel_upload_document();
+            var id_denahs = $('#id-denahs').val($(this).data('id-denahs'));
+            var val_pembayaran = $(this).val();
+            $("#select-pembayaran").val(val_pembayaran);
+            $("#select-pembayaran").removeAttr("readonly", true)
+            load_data_document();
+            // $('#select-pembayaran').trigger('change');
+            if (val_pembayaran == 'cash') {
+                $('#select-document').html(html_cash);
+                // $('#btn-document-' + id_denahs).val('cash'); 
+            } else if (val_pembayaran == 'kpr') {
+                $('#select-document').html(html_kpr);
+                // $('#btn-document-' + id_denahs).val('kpr');
+            }
+
+            // previewPDF();
+
+            // alert('ya')
+        });
+        $('#select-pembayaran').click(function(e) {
+            var id_upload = $('#id-upload').val();
+            if (id_upload == '') {} else {
+                alert('Silahkan kosongkan data unit kapling, jika ingin merubahnya!!')
+            }
+
+        });
+        $('#select-pembayaran').change(function(e) {
+            // alert($(this).val())
+            var id_denahs = $('#id-denahs').val();
+            if ($(this).val() == 'cash') {
+                $('#select-document').html(html_cash);
+                $('#btn-document-' + id_denahs).val('cash');
+            } else if ($(this).val() == 'kpr') {
+                $('#select-document').html(html_kpr);
+                $('#btn-document-' + id_denahs).val('kpr');
+            } else {
+                $('#btn-document-' + id_denahs).val('');
+
+            }
+            let formData = new FormData();
+            formData.append('id-denahs', $('#id-denahs').val());
+            formData.append('status-pembayaran', $('#select-pembayaran').val());
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo site_url('Home/update_status_pembayaran'); ?>",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    load_data_document();
+
+                },
+                error: function() {
+                    alert("Data Gagal Diupload");
+                }
+            });
+        });
+
+    });
     $('#btn-add-document').click(function() {
         add_document();
     });
     $('#btn-save-document').click(function() {
         // cencel_upload_document();
-        if ($('#select-document').val() == '0') {
-            $('#select-document').addClass('required')
-        }else if($('#select-document').val() == '0'){
-
-        }
         $(this).addClass('active');
+
+        if ($('#file-document').val() == '' || $('#select-document').val() == '0') {
+            if ($('#select-document').val() == '0') {
+                $('#select-document').addClass('required');
+                $(this).removeClass('active');
+            } else {
+                $('#select-document').removeClass('required');
+            }
+
+            if ($('#file-document').val() == '') {
+                $('#file-document').addClass('required');
+                $(this).removeClass('active');
+            } else {
+                $('#file-document').removeClass('required');
+            }
+
+        } else {
+            upload_document();
+        }
 
     });
     $('#btn-cencel-document').click(function() {
         cencel_upload_document();
         $(this).addClass('active');
-        $('#select-document').val('0');
+    });
+    $('#btn-close-preview').click(function() {
+        $("#link-down-pdf").attr("href", "");
+        $("#link-down-pdf").attr("download", "");
+        $("#preview-pdf").attr("hidden", true);
+    })
+    $('#btn-delete-doc').click(function() {
+        // alert($(this).data('id-upload') + $(this).data('flied') + $(this).data('file-doc'));
+        $('#id-upload').val($(this).data('id-upload'));
+        $('#flied').val($(this).data('flied'));
+        $('#file-doc').val($(this).data('file-doc'));
     });
 
     function add_document() {
         $('#form-document, #action-upload').removeAttr('hidden', true);
         $('#add-document').attr('hidden', true);
+        $('#file-document').val('');
 
     }
 
@@ -222,32 +418,64 @@
         $('#form-document, #action-upload').attr('hidden', true);
         $('#add-document').removeAttr('hidden', true);
         $('#file-document').val('');
+        $('#select-document').val('0');
 
     }
-    var html_cash = '<option value="0">Pilih Document</option>' +
-        '<option value="ktp">KTP</option>' +
-        '<option value="KK">kk</option>' +
-        '<option value="npwp"">NPWP</option>' +
-        '<option value="buku-nikah"">Buku Nikah</option>' +
-        '<option value="blanko"">Blanko</option>';
-    var html_kpr = '<option value="0">Pilih Document</option>' +
-        '<option value="ktp">KTP</option>' +
-        '<option value="KK">kk</option>' +
-        '<option value="npwp"">NPWP</option>' +
-        '<option value="buku-nikah"">Buku Nikah</option>' +
-        '<option value="Skk"">Surat keterangan kerja</option>' +
-        '<option value="slip-gaji">Slip gaji 3 bulan terakhir</option>' +
-        '<option value="rekening-koran">Rekening koran 3 bulan terakhir</option>' +
-        '<option value="blanko"">Blanko</option>';
-    $('#select-pembayaran').change(function(e) {
-        // alert($(this).val())
-        if ($(this).val() == 'cash') {
-            $('#select-document').html(html_cash)
-        } else if ($(this).val() == 'kpr') {
 
-            $('#select-document').html(html_kpr)
+    function upload_document() {
+        var confirmalert = confirm("Apakah anda yakin untuk upload document ini ?");
+        if (confirmalert == true) {
+            const file_document = $('#file-document').prop('files')[0];
+
+            let formData = new FormData();
+            formData.append('id-doc-kapling', $('#id-denahs').val());
+            formData.append('select-pembayaran', $('#select-pembayaran').val());
+            formData.append('select-document', $('#select-document').val());
+            formData.append('file-document', file_document);
+            $.ajax({
+                type: 'POST',
+                url: "<?php echo site_url('Home/upload_document') ?>",
+                data: formData,
+                cache: false,
+                processData: false,
+                contentType: false,
+                success: function(data) {
+                    alert('Documen berhasil di upload...');
+                    load_data_document();
+                    $('#file-document').val('');
+                    $('#select-document').val('0');
+                    $('#progres-' + $('#id-denahs').val()).html(data);
+                    // alert(data)
+
+
+                },
+                error: function() {
+                    alert("Data Gagal Diupload");
+                }
+            });
         }
-    });
+    };
+
+    function load_data_document() {
+        let formData = new FormData();
+        formData.append('status-pembayaran', $('#select-pembayaran').val());
+        formData.append('id-doc-kapling', $('#id-denahs').val());
+        $.ajax({
+            type: 'POST',
+            url: "<?php echo site_url('Home/select_data_document'); ?>",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                $('#data-document').html(data);
+
+            },
+            error: function() {
+                alert("Data Gagal Diupload");
+            }
+        });
+    }
     $('#save-change-denah').click(function() {
         $(this).html('Loading...');
         $(this).attr('disabled', true);
@@ -273,36 +501,41 @@
             }
         });
     });
-    window.crud = $('#list-selatan').DataTable({
-        "paging": true,
-        "ordering": true,
-        "autoWidth": false,
-        "responsive": true,
-        processing: true,
-        serverSide: true,
-        ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
-        columns: [{
-                data: 'code',
-                name: 'code'
-            },
-            {
-                data: 'type',
-                name: 'type'
-            },
-            {
-                data: 'description',
-                name: 'description'
-            },
-            {
-                data: 'color',
-                name: 'color'
-            },
-            {
-                data: 'action',
-                name: 'action'
-            }
-        ],
-    });
+
+    function load_data_kapling() {
+
+        window.crud = $('#list-selatan').DataTable({
+            "paging": true,
+            "ordering": true,
+            "autoWidth": false,
+            "responsive": true,
+            processing: true,
+            serverSide: true,
+            ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
+            columns: [{
+                    data: 'code',
+                    name: 'code'
+                },
+                {
+                    data: 'type',
+                    name: 'type'
+                },
+                {
+                    data: 'description',
+                    name: 'description'
+                },
+                {
+                    data: 'color',
+                    name: 'color'
+                },
+                {
+                    data: 'action',
+                    name: 'action'
+                }
+            ],
+        });
+
+    }
 
     function openDataRow(code, type, desc) {
         $('#form-edit-denah #code').val(code).change();

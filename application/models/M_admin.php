@@ -40,7 +40,6 @@ class M_admin extends CI_Model
 			$this->db->from('perumahan');
 			$query = $this->db->get();
 			return $query->result();
-
 		} else if ($role == 'Marketing') {
 
 			$this->db->select('*');
@@ -69,6 +68,35 @@ class M_admin extends CI_Model
 		$this->db->where('area', $area);
 		$query = $this->db->get();
 		return $query->result();
+	}
+
+	function m_update_status_pembayaran($id_denahs, $status_pembayaran)
+	{
+		$update = $this->db->set('status_pembayaran', $status_pembayaran)
+			->where('id_denahs', $id_denahs)
+			->update('denahs');
+		return $update;
+	}
+
+	function m_upload_document($data)
+	{
+		$result = $this->db->insert('upload', $data);
+		return $result;
+	}
+
+	function m_update_document($id_doc_kapling, $select_document, $file_document)
+	{
+		$update = $this->db->set($select_document, $file_document)
+			->where('id_doc_kapling', $id_doc_kapling)
+			->update('upload');
+		return $update;
+	}
+	function m_update_progres($id_doc_kapling, $progres)
+	{
+		$update = $this->db->set('progres_berkas', $progres)
+			->where('id_denahs', $id_doc_kapling)
+			->update('denahs');
+		return $update;
 	}
 }
 
