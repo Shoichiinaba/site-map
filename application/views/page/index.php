@@ -315,7 +315,6 @@ load_data_kapling();
 $(document).ready(function() {
     $('.btn-modal-document').click(function() {
         cencel_upload_document();
-<<<<<<< HEAD
         var id_denahs = $('#id-denahs').val($(this).data('id-denahs'));
         var val_pembayaran = $(this).val();
         $("#select-pembayaran").val(val_pembayaran);
@@ -328,98 +327,6 @@ $(document).ready(function() {
         } else if (val_pembayaran == 'kpr') {
             $('#select-document').html(html_kpr);
             // $('#btn-document-' + id_denahs).val('kpr');
-=======
-        $(this).addClass('active');
-    });
-    $('#btn-close-preview').click(function() {
-        close_preview_pdf();
-    });
-    $('#btn-delete-doc').click(function() {
-        // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
-        var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
-
-        if (confirmalert == true) {
-
-            let formData = new FormData();
-            formData.append('id-upload', $('#id-upload').val());
-            formData.append('flied', $('#flied').val());
-            formData.append('file-doc', $('#file-doc').val());
-            formData.append('select-pembayaran', $('#select-pembayaran').val());
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Home/delete_document') ?>",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    alert('Documen berhasil di hapus..');
-                    load_data_document();
-                    $('#progres-' + $('#id-denahs').val()).html(data);
-                    close_preview_pdf();
-                },
-                error: function() {
-                    alert("Data Gagal Diupload");
-                }
-            });
-        }
-    });
-
-    function add_document() {
-        $('#form-document, #action-upload').removeAttr('hidden', true);
-        $('#add-document').attr('hidden', true);
-        $('#file-document').val('');
-
-    }
-
-    function cencel_upload_document() {
-        $('#form-document, #action-upload').attr('hidden', true);
-        $('#add-document').removeAttr('hidden', true);
-        $('#file-document').val('');
-        $('#select-document').val('0');
-
-    }
-
-    function close_preview_pdf() {
-        $("#link-down-pdf").attr("href", "");
-        $("#link-down-pdf").attr("download", "");
-        $("#preview-pdf").attr("hidden", true);
-        $("#flied").val('');
-        $("#file-doc").val('');
-    }
-
-    function upload_document() {
-        var confirmalert = confirm("Apakah anda yakin untuk upload document ini ?");
-        if (confirmalert == true) {
-            const file_document = $('#file-document').prop('files')[0];
-
-            let formData = new FormData();
-            formData.append('id-doc-kapling', $('#id-denahs').val());
-            formData.append('select-pembayaran', $('#select-pembayaran').val());
-            formData.append('select-document', $('#select-document').val());
-            formData.append('file-document', file_document);
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Home/upload_document') ?>",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    alert('Documen berhasil di upload...');
-                    load_data_document();
-                    $('#file-document').val('');
-                    $('#select-document').val('0');
-                    $('#progres-' + $('#id-denahs').val()).html(data);
-                    // alert(data)
-
-
-                },
-                error: function() {
-                    alert("Data Gagal Diupload");
-                }
-            });
->>>>>>> b3184c941ec1540d4b8d52ee274505ebf062b1ee
         }
 
         // previewPDF();
@@ -499,15 +406,37 @@ $('#btn-cencel-document').click(function() {
     $(this).addClass('active');
 });
 $('#btn-close-preview').click(function() {
-    $("#link-down-pdf").attr("href", "");
-    $("#link-down-pdf").attr("download", "");
-    $("#preview-pdf").attr("hidden", true);
-})
+    close_preview_pdf();
+});
 $('#btn-delete-doc').click(function() {
-    // alert($(this).data('id-upload') + $(this).data('flied') + $(this).data('file-doc'));
-    $('#id-upload').val($(this).data('id-upload'));
-    $('#flied').val($(this).data('flied'));
-    $('#file-doc').val($(this).data('file-doc'));
+    // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
+    var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
+
+    if (confirmalert == true) {
+
+        let formData = new FormData();
+        formData.append('id-upload', $('#id-upload').val());
+        formData.append('flied', $('#flied').val());
+        formData.append('file-doc', $('#file-doc').val());
+        formData.append('select-pembayaran', $('#select-pembayaran').val());
+        $.ajax({
+            type: 'POST',
+            url: "<?php echo site_url('Home/delete_document') ?>",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                alert('Documen berhasil di hapus..');
+                load_data_document();
+                $('#progres-' + $('#id-denahs').val()).html(data);
+                close_preview_pdf();
+            },
+            error: function() {
+                alert("Data Gagal Diupload");
+            }
+        });
+    }
 });
 
 function add_document() {
@@ -523,6 +452,14 @@ function cencel_upload_document() {
     $('#file-document').val('');
     $('#select-document').val('0');
 
+}
+
+function close_preview_pdf() {
+    $("#link-down-pdf").attr("href", "");
+    $("#link-down-pdf").attr("download", "");
+    $("#preview-pdf").attr("hidden", true);
+    $("#flied").val('');
+    $("#file-doc").val('');
 }
 
 function upload_document() {

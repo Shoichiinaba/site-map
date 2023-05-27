@@ -185,25 +185,29 @@ class Home extends CI_Controller
         }
 
         $resuls = $model->select('denahs.*')->get();
+        // $resuls = $model->select('denahs.*')
+        //                  ->where('id_perum', 1)
+        //                  ->where('map', 'selatan')
+        //                  ->get();
 
-            $data_arr = [];
-
-            foreach ($resuls as $result) {
-                $data = [
-                    'code' => $result->code,
-                    'description' => $result->description,
-                    'type' => '<span class="pup" style="background-color:'.$result->color.'"></span> '.$result->type,
-                    'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: '.$result->color.'">',
-                ];
-
-                if ($result->type == "Sudah DP") {
-                    $data['action'] =   '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>&nbsp;&nbsp;'.
-                                        '<button type="button" disabled class="btn bg-gradient-primary" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip"></i> Document</button>';
-                } else {
-                    $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit"></i> Edit</button>';
-                }
-
-                $data_arr[] = $data;
+        $data_arr = [];
+        foreach ($resuls as $result) {
+            $data = [
+                'code' => $result->code,
+                'description' => $result->description,
+                'type' => '<span class="pup" style="background-color:' . $result->color . '"></span> ' . $result->type,
+                // 'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: ' . $result->color . '">',
+                'color' => '<div id="progres-' . $result->id_denahs . '" class="progress-wrapper">
+                                <div class="progress-info">
+                                    <div class="progress-percentage">
+                                        <span class="text-sm font-weight-bold">' . $result->progres_berkas . '%</span>
+                                    </div>
+                                </div>
+                                <div >
+                                    <div class="progress-bar bg-success" role="progressbar" aria-valuenow="' . $result->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $result->progres_berkas . '%;"></div>
+                                </div>
+                            </div>',
+            ];
 
             if ($result->type == "Dipesan") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
@@ -372,7 +376,6 @@ class Home extends CI_Controller
                 // });
             </script>';
     }
-
     function upload_document()
     {
         $config['upload_path'] = "./upload/doc/";
@@ -469,6 +472,62 @@ class Home extends CI_Controller
             };
             $this->M_admin->m_upload_document($data);
             // echo json_encode($insert);
+        }
+    }
+
+    function delete_document()
+    {
+        $id_upload = $this->input->post('id-upload');
+        $file_doc = $this->input->post('file-doc');
+        $flied = $this->input->post('flied');
+        $select_pembayaran = $this->input->post('select-pembayaran');
+
+        unlink('./upload/doc/' . $file_doc);
+        if ($select_pembayaran == 'cash') {
+            $nilai = [
+                'ktp' => '45',
+                'kk' => '45',
+                'npwp' => '0',
+                'buku_nikah' => '0',
+                'blanko' => '10',
+
+            ];
+        } else if ($select_pembayaran == 'kpr') {
+            $nilai = [
+                'ktp' => '10',
+                'kk' => '10',
+                'npwp' => '10',
+                'buku_nikah' => '10',
+                'skk' => '10',
+                'slip_g' => '20',
+                'rek_koran' => '20',
+                'blanko' => '10',
+            ];
+        }
+        $sql = "SELECT *FROM denahs, upload WHERE upload.id_doc_kapling = denahs.id_denahs AND upload.id_upload = $id_upload";
+
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                // if ($row->$flied == '') {
+                $id_doc_kapling = $row->id_denahs;
+                $progres = $row->progres_berkas - $nilai[$flied];
+                echo '<div class="progress-info">
+                                <div class="progress-percentage">
+                                <span class="text-sm font-weight-bold">' . $progres . '%</span>
+                                </div>
+                        </div>
+                        <div >
+                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="' . $progres . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progres . '%;"></div>
+                        </div>';
+                // echo '<div class="progress-bar bg-success" role="progressbar" aria-valuenow="' . $progres . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $progres . '%;"></div>';
+                $select_document = $flied;
+                $file_document = '';
+                $this->M_admin->m_update_progres($id_doc_kapling, $progres);
+                $this->M_admin->m_update_document($id_doc_kapling, $select_document, $file_document);
+
+                // }
+            }
         }
     }
 }

@@ -51,13 +51,8 @@
                     $id_perum = $data->id_perum;
                 ?>
 
-<<<<<<< HEAD
                 <li class="nav-item">
                     <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p> -->
-=======
-                    <li class="nav-item">
-                        <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p> -->
->>>>>>> b3184c941ec1540d4b8d52ee274505ebf062b1ee
 
                     <a class="nav-link active" data-bs-toggle="collapse" aria-controls="dashboardsExamples"
                         role="button" aria-expanded="false">
@@ -80,7 +75,6 @@
                                             </g>
                                         </g>
                                     </g>
-<<<<<<< HEAD
                                 </g>
                             </svg>
                         </div>
@@ -91,40 +85,17 @@
                             <?php
                                 foreach ($area_siteplan as $area) :
                                     if ($area->id_perum_siteplan == $id_perum) {
-
                                         $nama = $data->nama;
                                         $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
                                 ?>
-                            <li
-                                <?= $this->uri->segment(1) == 'Home' ? 'class="nav-item active"' : 'class="nav-item"' ?>>
+                            <li class="nav-item">
                                 <a class="nav-link"
-                                    href="<?php echo site_url('Home'); ?>/visit/<?= $data->nama; ?>/<?= $area->area; ?>">
+                                    href="<?php echo site_url('Home'); ?>/visit/<?= $tittle; ?>/<?= $area->area; ?>">
                                     <span class="sidenav-normal"> <?= $area->area; ?> </span>
                                 </a>
                                 </i>
                             </li>
                             <?php
-=======
-                                </svg>
-                            </div>
-                            <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
-                        </a>
-                        <div class="collapse show" id="dashboardsExamples">
-                            <ul class="nav ms-4 ps-3">
-                                <?php
-                                foreach ($area_siteplan as $area) :
-                                    if ($area->id_perum_siteplan == $id_perum) {
-                                        $nama = $data->nama;
-                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
-                                ?>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="<?php echo site_url('Home'); ?>/visit/<?= $tittle; ?>/<?= $area->area; ?>">
-                                                <span class="sidenav-normal"> <?= $area->area; ?> </span>
-                                            </a>
-                                            </i>
-                                        </li>
-                                <?php
->>>>>>> b3184c941ec1540d4b8d52ee274505ebf062b1ee
                                     } else {
                                     }
                                 endforeach;

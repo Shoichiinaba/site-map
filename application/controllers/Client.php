@@ -83,7 +83,7 @@ class Client extends CI_Controller
         }
     }
     public function utara()
-    { {
+     {
             // Cek apakah data sudah ada dalam sesion
             if (!$this->session->userdata('form_data')) {
                 // Data belum ada, tampilkan formulir
@@ -95,10 +95,9 @@ class Client extends CI_Controller
                 $this->load->view($this->template, $data);
             }
         }
-    }
+
 
     public function selatan()
-<<<<<<< HEAD
 	{
          // Cek apakah data sudah ada dalam sesion
     if (!$this->session->userdata('form_data')) {
@@ -110,18 +109,6 @@ class Client extends CI_Controller
         $data['content']        = 'client/map_selatan';
         $this->load->view($this->template, $data);
 
-=======
-    {
-        // Cek apakah data sudah ada dalam sesion
-        if (!$this->session->userdata('form_data')) {
-            // Data belum ada, tampilkan formulir
-            $this->load->view('client/formulir');
-        } else {
-            // Data sudah ada, tampilkan pesan menggunakan flashdata
-            $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
-            $data['content']        = 'client/site_plan/map_selatan';
-            $this->load->view($this->template, $data);
-        }
->>>>>>> 7fd847e56fb5fd8ef485670a6dfc61388b36eb98
     }
+}
 }
