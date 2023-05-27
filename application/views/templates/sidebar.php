@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse  w-auto h-auto " id="sidenav-collapse-main">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a <?=$this->uri->segment(1) =='Dashboard' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
+                    <a <?= $this->uri->segment(1) == 'Dashboard' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : '' ?>
                         class="nav-link" href="<?php echo site_url('Dashboard'); ?> ">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
@@ -46,10 +46,16 @@
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Maps</h6>
                 </li>
+                <?php
+                foreach ($perumahan as $data) {
+                    $id_perum = $data->id_perum;
+                ?>
+
                 <li class="nav-item">
-                    <a <?=$this->uri->segment(1) == 'Home' || $this->uri->segment(1) == 'Utara' ? 'class="nav-link active"' : 'class="nav-link"'?>
-                        data-bs-toggle="collapse" aria-controls="dashboardsExamples" role="button"
-                        aria-expanded="false">
+                    <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p> -->
+
+                    <a class="nav-link active" data-bs-toggle="collapse" aria-controls="dashboardsExamples"
+                        role="button" aria-expanded="false">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
                             <svg width="12px" height="12px" viewBox="0 0 42 42" version="1.1"
@@ -72,32 +78,42 @@
                                 </g>
                             </svg>
                         </div>
-                        <span class="nav-link-text ms-1">Site Map Caruban</span>
+                        <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
                     </a>
                     <div class="collapse show" id="dashboardsExamples">
                         <ul class="nav ms-4 ps-3">
-                            <li <?= $this->uri->segment(1) == 'Home' ? 'class="nav-item active"' : 'class="nav-item"'?>>
-                                <a class="nav-link" href="<?php echo site_url('Home'); ?>">
-                                    <span class="sidenav-normal"> Selatan </span>
+                            <?php
+                                foreach ($area_siteplan as $area) :
+                                    if ($area->id_perum_siteplan == $id_perum) {
+
+                                        $nama = $data->nama;
+                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
+                                ?>
+                            <li
+                                <?= $this->uri->segment(1) == 'Home' ? 'class="nav-item active"' : 'class="nav-item"' ?>>
+                                <a class="nav-link"
+                                    href="<?php echo site_url('Home'); ?>/visit/<?= $data->nama; ?>/<?= $area->area; ?>">
+                                    <span class="sidenav-normal"> <?= $area->area; ?> </span>
                                 </a>
                                 </i>
                             </li>
-                            <li
-                                <?= $this->uri->segment(1) == 'Utara' ? 'class="nav-item active"' : 'class="nav-item"'?>>
-                                <i>
-                                    <a class="nav-link" href="<?php echo site_url('Utara'); ?>">
-                                        <span class="sidenav-normal"> Utara </span>
-                                    </a>
-                                </i>
-                            </li>
+                            <?php
+                                    } else {
+                                    }
+                                endforeach;
+                                ?>
                         </ul>
                     </div>
                 </li>
+                <?php
+                }
+                ?>
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Data</h6>
                 </li>
+
                 <li class="nav-item">
-                    <a <?=$this->uri->segment(1) =='Customer' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : ''?>
+                    <a <?= $this->uri->segment(1) == 'Customer' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : '' ?>
                         class="nav-link" href="<?php echo site_url('Customer'); ?> ">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">

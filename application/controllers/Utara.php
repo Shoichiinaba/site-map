@@ -90,8 +90,9 @@ class Utara extends AUTH_Controller {
         $totalRows = $model->count();
         $filteredRows = $totalRows;
 
+
         $model = $model->where('id_perum', 1)
-        ->where('map', 'utara');
+        ->where('map', '2');
 
         if ($search) {
 			$search = $search['value'];

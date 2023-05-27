@@ -129,55 +129,55 @@
     <script type="text/javascript"
         src="https://rawgit.com/DanielHoffmann/jquery-svg-pan-zoom/master/compiled/jquery.svg.pan.zoom.js"></script>
     <script>
-    var example1, example2; //globals so we can manipulate them in the debugger
-    $(function() {
-        "use strict";
-        var examples = $("svg").svgPanZoom();
+    // var example1, example2; //globals so we can manipulate them in the debugger
+    // $(function() {
+    //     "use strict";
+    //     var examples = $("svg").svgPanZoom();
 
-        var callback = function(example) {
-            return function(event) {
-                if ($(event.target).hasClass("fa-arrow-down"))
-                    example.panUp()
-                if ($(event.target).hasClass("fa-arrow-up"))
-                    example.panDown()
-                if ($(event.target).hasClass("fa-arrow-right"))
-                    example.panLeft()
-                if ($(event.target).hasClass("fa-arrow-left"))
-                    example.panRight()
-                if ($(event.target).hasClass("fa-plus"))
-                    example.zoomIn()
-                if ($(event.target).hasClass("fa-minus"))
-                    example.zoomOut()
-                if ($(event.target).hasClass("fa-refresh"))
-                    example.reset()
-            }
-        };
+    //     var callback = function(example) {
+    //         return function(event) {
+    //             if ($(event.target).hasClass("fa-arrow-down"))
+    //                 example.panUp()
+    //             if ($(event.target).hasClass("fa-arrow-up"))
+    //                 example.panDown()
+    //             if ($(event.target).hasClass("fa-arrow-right"))
+    //                 example.panLeft()
+    //             if ($(event.target).hasClass("fa-arrow-left"))
+    //                 example.panRight()
+    //             if ($(event.target).hasClass("fa-plus"))
+    //                 example.zoomIn()
+    //             if ($(event.target).hasClass("fa-minus"))
+    //                 example.zoomOut()
+    //             if ($(event.target).hasClass("fa-refresh"))
+    //                 example.reset()
+    //         }
+    //     };
 
 
-        $("div#example2 i").click(callback(examples));
-        setTimeout(function() {
-            var denah = $('.cls-2');
-            var data = new FormData();
-            var param = [];
+    //     $("div#example2 i").click(callback(examples));
+    //     setTimeout(function() {
+    //         var denah = $('.cls-2');
+    //         var data = new FormData();
+    //         var param = [];
 
-            for (var i = 0; i < denah.length; i++) {
-                if (denah[i].id) {
-                    param[i] = denah[i].id;
-                    data.append('id[]', denah[i].id);
-                }
-            }
-            $.ajax({
-                url: "<?php echo base_url('index.php/home/allDenahColor') ?>",
-                data: [],
-                type: 'GET',
-                success: function(data) {
-                    for (var i = 0; i < data.results.length; i++) {
-                        var path = data.results[i]
-                        $(`#${path.code}`).css('fill', path.color);
-                    }
-                }
-            });
-        }, 2000);
-    });
+    //         for (var i = 0; i < denah.length; i++) {
+    //             if (denah[i].id) {
+    //                 param[i] = denah[i].id;
+    //                 data.append('id[]', denah[i].id);
+    //             }
+    //         }
+    //         $.ajax({
+    //             url: "<?php echo base_url('index.php/home/allDenahColor') ?>",
+    //             data: [],
+    //             type: 'GET',
+    //             success: function(data) {
+    //                 for (var i = 0; i < data.results.length; i++) {
+    //                     var path = data.results[i]
+    //                     $(`#${path.code}`).css('fill', path.color);
+    //                 }
+    //             }
+    //         });
+    //     }, 2000);
+    // });
     </script>
 </head>
