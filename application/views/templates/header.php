@@ -42,6 +42,7 @@
         margin-right: auto;
         height: auto;
         width: -webkit-fill-available;
+        max-height: 22rem;
 
     }
 

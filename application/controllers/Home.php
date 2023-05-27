@@ -373,7 +373,7 @@ class Home extends CI_Controller
                     if (id_upload == "") {} else {
                         $("#select-pembayaran").attr("readonly", true);
                     }
-                    
+
                 // });
             </script>';
     }
