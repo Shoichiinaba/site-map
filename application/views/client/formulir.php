@@ -65,7 +65,12 @@
                                             <input type="number" class="form-control" autocomplete="off" required="" placeholder="No. telp 62" name="telepon" aria-describedby="email-addon">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="perum" required="" autocomplete="off" value="<?= $perum = $this->uri->segment(3); ?>">
+                                            <?php
+                                            $tittle = $this->uri->segment(3);
+                                            $perum = preg_replace("![^a-z0-9]+!i", "-", $tittle);
+
+                                            ?>
+                                            <input type="text" class="form-control" name="perum" required="" autocomplete="off" value="<?= $tittle; ?>">
                                         </div>
                                         <div class="row">
                                             <!-- /.col -->

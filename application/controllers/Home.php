@@ -72,12 +72,13 @@ class Home extends CI_Controller
     function change_denah()
     {
         // $this->load_db_connection();
+        $id = $this->input->post('id');
         $code = $this->input->post('code');
         $type = $this->input->post('type');
         $desc = $this->input->post('desc');
         if ($type == 'Kosong') {
 
-            $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.code='$code'";
+            $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.id_denahs='$id'";
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
                 foreach ($query->result() as $row) {
@@ -130,7 +131,7 @@ class Home extends CI_Controller
             $color = '#cb0c9f8c';
         }
 
-        $denah = Denah_model::where('code', $code)
+        $denah = Denah_model::where('id_denahs', $id)
             ->update(['type' => $type, 'description' => $desc, 'color' => $color]);
         return $this->output
             ->set_content_type('application/json')
@@ -210,10 +211,10 @@ class Home extends CI_Controller
             ];
 
             if ($result->type == "Dipesan") {
-                $data['action'] = '<button onclick="openDataRow(\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
+                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
                     '<button type="button" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" data-id-denahs="' . $result->id_denahs . '" data-status-type="' . $result->type . '"  value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
             } else {
-                $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
+                $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
             $data_arr[] = $data;
         }

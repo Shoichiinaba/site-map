@@ -162,11 +162,11 @@ sup {
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <!-- <input type="text" id="id-denahs-edit" value=""> -->
                 <form action="" id="form-edit-denah">
                     <div class="mb-3">
                         <label for="code" class="form-label">Kode Kapling</label>
                         <input type="text" class="form-control" id="code" name="code" readonly>
+                        <input type="text" id="id-denahs-edit" value="">
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Status</label>
@@ -494,6 +494,23 @@ function upload_document() {
             }
         });
     }
+update_halaman_formulir
+    $('#save-change-denah').click(function() {
+        $(this).html('Loading...');
+        $(this).attr('disabled', true);
+        var id, code, type, description;
+        id = $('#form-edit-denah #id-denahs-edit').val();
+        code = $('#form-edit-denah #code').val();
+        description = $('#form-edit-denah #description').val();
+        type = $('#form-edit-denah #type').val();
+        $.ajax({
+            url: "<?php echo base_url('Home/change_denah') ?>",
+            data: {
+                id: id,
+                code: code,
+                type: type,
+                desc: description,
+
 };
 
 function load_data_document() {
@@ -576,7 +593,14 @@ function load_data_kapling() {
     });
 
 }
-
+ update_halaman_formulir
+    function openDataRow(id, code, type, desc) {
+        $('#form-edit-denah #id-denahs-edit').val(id).change();
+        $('#form-edit-denah #code').val(code).change();
+        $('#form-edit-denah #description').val(desc).change();
+        $('#form-edit-denah #type').val(type);
+    }
+=======
 function openDataRow(code, type, desc) {
     $('#form-edit-denah #code').val(code).change();
     $('#form-edit-denah #description').val(desc).change();

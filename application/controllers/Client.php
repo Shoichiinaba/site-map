@@ -32,7 +32,9 @@ class Client extends CI_Controller
             // Data sudah ada, tampilkan pesan menggunakan flashdata
             $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
             // redirect('client/site_plan/selatan'); // Redirect kembali ke halaman formulir
-            $perum = $this->uri->segment(3);
+            $tittle = $this->uri->segment(3);
+            $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
+
             $data['area_siteplan'] = $this->FormDataModel->m_area_siteplan($perum);
             $data['content']        = 'client/site_plan/site_plan';
             $this->load->view($this->template, $data);
