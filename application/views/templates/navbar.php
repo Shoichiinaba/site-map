@@ -6,7 +6,11 @@
                     <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a>
                     </li>
                     <li class="breadcrumb-item text-sm text-dark" aria-current="page">Dashboard</li>
-                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><?= $perum = $this->uri->segment(3); ?></li>
+                    <?php
+                    $perum = $this->uri->segment(3);
+                    $tittle = preg_replace("![^a-z0-9]+!i", " ", $perum);
+                    ?>
+                    <li class="breadcrumb-item text-sm text-dark active" aria-current="page"><?= $tittle; ?></li>
                 </ol>
                 <h6 class="font-weight-bolder mb-0">
                     <?= $bread; ?></h6>

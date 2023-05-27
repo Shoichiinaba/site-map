@@ -28,12 +28,14 @@ class Home extends CI_Controller
 
     public function visit()
     {
+        $tittle = $this->uri->segment(3);
+        $area = $this->uri->segment(4);
+        $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
         $id = $this->session->userdata('userdata')->id;
         $role = $this->session->userdata('userdata')->role;
-        $area = $this->uri->segment(4);
         $data['perumahan'] = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan'] = $this->M_admin->m_area_siteplan();
-        $data['siteplan'] = $this->M_admin->m_siteplan($area);
+        $data['siteplan'] = $this->M_admin->m_siteplan($perum, $area);
         $data['bread']          = 'Map Plan ' . $area;
         $data['content']        = 'page/index';
         $this->load->view($this->template, $data);
@@ -73,13 +75,54 @@ class Home extends CI_Controller
         $code = $this->input->post('code');
         $type = $this->input->post('type');
         $desc = $this->input->post('desc');
+        if ($type == 'Kosong') {
 
+            $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.code='$code'";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    $id_upload = $row->id_upload;
+                    $id_doc_kapling = $row->id_denahs;
+                    $progres = '0';
+                    if ($row->ktp == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->ktp);
+                    }
+                    if ($row->kk == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->kk);
+                    }
+                    if ($row->npwp == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->npwp);
+                    }
+                    if ($row->skk == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->skk);
+                    }
+                    if ($row->slip_g == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->slip_g);
+                    }
+                    if ($row->rek_koran == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->rek_koran);
+                    }
+                    if ($row->blanko == '') {
+                    } else {
+                        unlink('./upload/doc/' . $row->blanko);
+                    }
+                }
+                $this->M_admin->m_delete_all_document($id_upload);
+                $this->M_admin->m_update_progres($id_doc_kapling, $progres);
+            };
+        }
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
             $color = 'yellow';
         } elseif ($type == 'Sudah DP') {
             $color = '#60d728';
-        } elseif ($type == 'Dipesan 2 Org') {
+        } elseif ($type == 'Menunggu Konfirmasi') {
             $color = 'red';
         } elseif ($type == 'Sedang Dibangun') {
             $color = '#00b4ff';
@@ -115,8 +158,7 @@ class Home extends CI_Controller
         $filteredRows = $totalRows;
         $id = $this->uri->segment(3);
 
-        $model = $model->where('id_perum', 1)
-            ->where('map',  $id);
+        $model = $model->where('map',  $id);
 
         if ($search) {
             $search = $search['value'];
@@ -318,10 +360,8 @@ class Home extends CI_Controller
                         $("#link-down-pdf").attr("href", "' . base_url('upload') . '/doc/" + $(this).data("pdf"));
                         $("#link-down-pdf").attr("download", $(this).data("pdf"));
                         $("#preview-pdf").removeAttr("hidden", true);
-                        $("#btn-delete-doc").attr("data-id-upload", $(this).data("id-upload"));
-                        $("#btn-delete-doc").attr("data-flied", $(this).data("flied"));
-                        $("#btn-delete-doc").attr("data-file-doc", $(this).data("pdf"));
-
+                        $("#flied").val($(this).data("flied"));
+                        $("#file-doc").val($(this).data("pdf"));
                     });
 
                     var id_upload = $("#id-upload").val();
@@ -332,6 +372,7 @@ class Home extends CI_Controller
                 // });
             </script>';
     }
+
     function upload_document()
     {
         $config['upload_path'] = "./upload/doc/";
@@ -344,6 +385,8 @@ class Home extends CI_Controller
             $nilai = [
                 'ktp' => '45',
                 'kk' => '45',
+                'npwp' => '0',
+                'buku_nikah' => '0',
                 'blanko' => '10',
             ];
         } else if ($select_pembayaran == 'kpr') {
