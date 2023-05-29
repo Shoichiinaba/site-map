@@ -65,12 +65,15 @@
                                             <input type="number" class="form-control" autocomplete="off" required="" placeholder="No. telp 62" name="telepon" aria-describedby="email-addon">
                                         </div>
                                         <div class="input-group mb-3">
-                                            <?php
-                                            $tittle = $this->uri->segment(3);
-                                            $perum = preg_replace("![^a-z0-9]+!i", "-", $tittle);
-
-                                            ?>
-                                            <input type="text" class="form-control" name="perum" required="" autocomplete="off" value="<?= $tittle; ?>">
+                                            <select class="form-select" id="select-perum" name="perum">
+                                                <option value="">Pilih Perumahan </option>
+                                                <?php
+                                                foreach ($perumahan as $data) :
+                                                    $nama = preg_replace("![^a-z0-9]+!i", "-", $data->nama);
+                                                ?>
+                                                    <option value="<?= $nama; ?>"><?= $data->nama; ?></option>
+                                                <?php endforeach ?>
+                                            </select>
                                         </div>
                                         <div class="row">
                                             <!-- /.col -->
@@ -167,6 +170,25 @@
     <script src="<?= base_url('assets_adm/'); ?>js/plugins/smooth-scrollbar.min.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="<?= base_url('assets_adm/'); ?>/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+
+    <script>
+        $(document).ready(function() {
+            <?php
+            $tittle = $this->uri->segment(3);
+            $perum = preg_replace("![^a-z0-9]+!i", "-", $tittle);
+            ?>
+            if('<?= $perum; ?>' == ''){
+
+                $('#select-perum').val('<?= $perum; ?>');
+                $('#select-perum').trigger('change').removeAttr('disabled', true);
+            }else{
+
+                $('#select-perum').val('<?= $perum; ?>');
+                $('#select-perum').trigger('change').attr('disabled', true);
+            }
+            // alert('<?= $perum; ?>')
+        });
+    </script>
 </body>
 
 </html>

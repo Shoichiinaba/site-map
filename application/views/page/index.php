@@ -80,7 +80,9 @@
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
-                        <?php echo $data->file_siteplan; ?>
+                        <div id="perum-siteplan-<?= $data->id_perum_siteplan; ?>">
+                            <?php echo $data->file_siteplan; ?>
+                        </div>
                         <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
                     <?php
                     endforeach;
@@ -166,7 +168,7 @@
                     <div class="mb-3">
                         <label for="code" class="form-label">Kode Kapling</label>
                         <input type="text" class="form-control" id="code" name="code" readonly>
-                        <input type="text" id="id-denahs-edit" value="">
+                        <input type="text" id="id-denahs-edit" value="" hidden>
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Status</label>

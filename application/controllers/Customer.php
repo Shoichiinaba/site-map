@@ -1,28 +1,41 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Container\Container;
 
-class Customer extends AUTH_Controller{
+class Customer extends AUTH_Controller
+{
+    public $input;
+    public $output;
+    public $FormDataModel;
+    public $M_admin;
+    public $session;
+
     var $template = 'templates/index';
 
-	public function __construct()
+    public function __construct()
     {
         parent::__construct();
         $this->load->model('FormDataModel');
         $this->load->model('Customer_model');
+        $this->load->model('M_admin');
     }
 
-	public function index()
-	{
+    public function index()
+    {
+        $id = $this->session->userdata('userdata')->id;
+        $role = $this->session->userdata('userdata')->role;
+        $data['perumahan'] = $this->M_admin->m_perumahan($id, $role);
+        $data['area_siteplan'] = $this->M_admin->m_area_siteplan();
         $data['bread']      = 'Data Customer';
         $data['content']    = 'page/customer/form_customer';
         $this->load->view($this->template, $data);
-	}
+    }
 
-    public function get_customers() {
+    public function get_customers()
+    {
 
         $draw = $this->input->get('draw');
         $start = ($this->input->get('start') != null) ? $this->input->get('start') : 0;
@@ -36,21 +49,21 @@ class Customer extends AUTH_Controller{
         $filteredRows = $totalRows;
 
         if ($search) {
-			$search = $search['value'];
-            $model = $model->where('nama', 'LIKE', '%'.$search.'%')
-            ->orWhere('email', 'LIKE', '%'.$search.'%')
-            ->orWhere('telepon', 'LIKE', '%'.$search.'%')
-            ->orWhere('jml_input', 'LIKE', '%'.$search.'%');
+            $search = $search['value'];
+            $model = $model->where('nama', 'LIKE', '%' . $search . '%')
+                ->orWhere('email', 'LIKE', '%' . $search . '%')
+                ->orWhere('telepon', 'LIKE', '%' . $search . '%')
+                ->orWhere('jml_input', 'LIKE', '%' . $search . '%');
             $filteredRows = $model->count();
         }
 
         $model = $model->skip((int) $start);
         $model = $model->take((int) $rowperpage);
 
-        if($order){
-            foreach($this->input->get('columns') as $key => $column){
+        if ($order) {
+            foreach ($this->input->get('columns') as $key => $column) {
                 $direction = ($order[0]['dir'] == 'asc') ? 'ASC' : 'DESC';
-                if($key == $order[0]['column']){
+                if ($key == $order[0]['column']) {
                     $model = $model->orderBy($column['name'], $direction);
                 }
             }
@@ -61,27 +74,26 @@ class Customer extends AUTH_Controller{
         $data_arr = [];
         $No = 1;
 
-        foreach($resuls as $result){
+        foreach ($resuls as $result) {
             $data_arr[] = [
                 'No' => $No,
                 'nama' => $result->nama,
                 'email' => $result->email,
                 'telepon' => $result->telepon,
-                'jml_input' =>$result->jml_input,
-				// 'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>',
+                'jml_input' => $result->jml_input,
+                // 'action' => '<button onclick="openDataRow(\''.$result->code.'\', \''.$result->type.'\', \''.$result->description.'\')" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fa fa-edit"></i> Edit</button>',
             ];
             $No++;
         }
 
-		return $this->output
-			->set_content_type('application/json')
-			->set_status_header(200)
-			->set_output(json_encode([
-				'draw'            => $draw,
-            	'recordsTotal'    => $totalRows,
-            	'recordsFiltered' => $filteredRows,
-            	'data'            => $data_arr,
-			]));
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'draw'            => $draw,
+                'recordsTotal'    => $totalRows,
+                'recordsFiltered' => $filteredRows,
+                'data'            => $data_arr,
+            ]));
     }
-
 }
