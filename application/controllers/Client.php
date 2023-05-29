@@ -27,7 +27,9 @@ class Client extends CI_Controller
         // Cek apakah data sudah ada dalam sesion
         if (!$this->session->userdata('form_data')) {
             // Data belum ada, tampilkan formulir
-            $this->load->view('client/formulir');
+            $data['perumahan'] = $this->FormDataModel->m_perumahan();
+
+            $this->load->view('client/formulir', $data);
         } else {
             // Data sudah ada, tampilkan pesan menggunakan flashdata
             $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
