@@ -124,6 +124,14 @@ sup {
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
+                <div class="form-group col-sm-2 col-lg-1">
+                    <select class="form-control" id="status">
+                        <option value="">Filter</option>
+                        <option value="Dipesan">Dipesan</option>
+                        <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
+                        <option value="Sudah DP">Sudah DP</option>
+                    </select>
+                </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
@@ -544,8 +552,21 @@ $('#save-change-denah').click(function() {
     });
 });
 
-function load_data_kapling() {
+// load data saat pertama di buka
+$(document).ready(function() {
+    load_data_kapling();
 
+    $('#status').on('change', function() {
+        window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+            "?status=" + $(this).val()).load();
+    });
+});
+
+function load_data_kapling() {
+    if ($.fn.DataTable.isDataTable('#list-selatan')) {
+
+        $('#list-selatan').DataTable().destroy();
+    }
     window.crud = $('#list-selatan').DataTable({
         "paging": true,
         "ordering": true,
@@ -553,7 +574,12 @@ function load_data_kapling() {
         "responsive": true,
         processing: true,
         serverSide: true,
-        ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
+        ajax: {
+            url: "<?php echo base_url('Home/search'); ?>/" + $('#id-siteplan').val(),
+            data: function(d) {
+                d.status = $('#status').val();
+            }
+        },
         columns: [{
                 data: 'code',
                 name: 'code'
@@ -576,8 +602,8 @@ function load_data_kapling() {
             }
         ],
     });
-
 }
+
 
 function openDataRow(id, code, type, desc) {
     $('#form-edit-denah #id-denahs-edit').val(id).change();
