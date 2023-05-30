@@ -80,15 +80,10 @@ sup {
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
-<<<<<<< HEAD
                         <div id="perum-siteplan-<?= $data->id_perum_siteplan; ?>">
                             <?php echo $data->file_siteplan; ?>
                         </div>
                         <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
-=======
-                    <?php echo $data->file_siteplan; ?>
-                    <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
->>>>>>> bda4170bb12165ce47f36e752457b4f021091764
                     <?php
                     endforeach;
                     ?>
