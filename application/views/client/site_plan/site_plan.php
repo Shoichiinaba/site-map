@@ -1,7 +1,8 @@
 <main class="main-content  mt-0">
-    <div class="container-fluid">
-        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/caruban.jpg'); background-position-y: 50%;">
-            <span class="mask bg-gradient-primary opacity-3"></span>
+    <div class="container">
+        <div class="page-header min-heig-nav border-radius-xl m-h">
+            <img class="img-fluid" src="<?= base_url('upload'); ?>/caruba-selatan-siteplan-header.jpg" alt="" style="border-radius: 9px;">
+            <!-- <span class="mask bg-gradient-primary opacity-3"></span> -->
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
             <div class="row gx-4">
@@ -38,7 +39,7 @@
                                             <p class="p-3 mb-0 fa fa-map-marker text-danger"><i class="text-black text-sm-center">Site Map Selatan</i></p>
                                         </div>
 
-                                        <div id="data-site-plan"></div>
+                                        <div id="data-site-plan" style="justify-content: center;display: flex;"></div>
 
                                         <div class="keterangan">
                                             <span style="background-color: yellow" class="badge text-dark">Dipesan</span>
