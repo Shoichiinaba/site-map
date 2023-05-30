@@ -83,8 +83,13 @@ class Home extends CI_Controller
             foreach ($query->result() as $row) {
                 $id = $row->id_perum;
                 $ids = Denah_model::where('id_perum', $id)->get();
+<<<<<<< HEAD
+                // //     $ids = Denah_model::all();
+                return $this->output
+=======
             // //     $ids = Denah_model::all();
                     return $this->output
+>>>>>>> debcab4fe3a1a10a4d8025d63ab10757d2461976
                     ->set_content_type('application/json')
                     ->set_status_header(200)
                     ->set_output(json_encode([
@@ -94,7 +99,10 @@ class Home extends CI_Controller
             }
         }
         // echo $id;
+<<<<<<< HEAD
+=======
 
+>>>>>>> debcab4fe3a1a10a4d8025d63ab10757d2461976
     }
 
 
