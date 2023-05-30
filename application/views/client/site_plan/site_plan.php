@@ -106,7 +106,7 @@
         var example1, example2; //globals so we can manipulate them in the debugger
         $(function() {
             "use strict";
-            var examples = $("svg").svgPanZoom();
+            var examples = $("#svg").svgPanZoom();
 
             var callback = function(example) {
                 return function(event) {
@@ -127,21 +127,21 @@
                 }
             };
 
-
-            $("div#example2 i").click(callback(examples));
+            $("#example2 i").click(callback(examples));
             setTimeout(function() {
+                var perum = '<?= $this->uri->segment(3) ?>'
                 var denah = $('.cls-2');
                 var data = new FormData();
                 var param = [];
-
                 for (var i = 0; i < denah.length; i++) {
                     if (denah[i].id) {
                         param[i] = denah[i].id;
                         data.append('id[]', denah[i].id);
                     }
                 }
+                // alert('<?= $this->uri->segment(3) ?>');
                 $.ajax({
-                    url: "<?php echo base_url('index.php/home/allDenahColor') ?>",
+                    url: "<?php echo base_url('index.php/home/allDenahColor/') ?>" + perum,
                     data: [],
                     type: 'GET',
                     success: function(data) {
@@ -149,28 +149,11 @@
                             var path = data.results[i]
                             $(`#${path.code}`).css('fill', path.color);
                         }
+                        // alert(data);
                     }
                 });
             }, 2000);
+            
         });
     }
 </script>
-<!-- <script>
-            let formData = new FormData();
-        formData.append('id-berita', $(this).data('id-berita'));
-
-    $.ajax({
-        // type: 'POST',
-        url: "<?php echo site_url('Client/load_site_plan') ?>",
-        // data: formData,
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            $('#data-site-plan').html(data);
-        },
-        error: function() {
-            alert("Data Gagal Diupload");
-        }
-    });
-</script> -->
