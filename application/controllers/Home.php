@@ -76,6 +76,19 @@ class Home extends CI_Controller
         $code = $this->input->post('code');
         $type = $this->input->post('type');
         $desc = $this->input->post('desc');
+
+        $color = '#e6e7e8';
+        if ($type == 'Dipesan') {
+            $color = 'yellow';
+        } elseif ($type == 'Sudah DP') {
+            $color = '#60d728';
+        } elseif ($type == 'Menunggu Konfirmasi') {
+            $color = 'red';
+        } elseif ($type == 'Sedang Dibangun') {
+            $color = '#00b4ff';
+        } elseif ($type == 'UTJ') {
+            $color = '#cb0c9f8c';
+        }
         if ($type == 'Kosong') {
 
             $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.id_denahs='$id'";
@@ -115,21 +128,22 @@ class Home extends CI_Controller
                     }
                 }
                 $this->M_admin->m_delete_all_document($id_upload);
-                $this->M_admin->m_update_progres($id_doc_kapling, $progres);
+                // $this->M_admin->m_update_progres($id_doc_kapling, $progres);
             };
+            $denah = Denah_model::where('id_denahs', $id)
+                ->update(['type' => $type, 'description' => '', 'color' => $color, 'status_pembayaran' => '', 'progres_berkas' => '0']);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'message' => '',
+                    'results' => [
+                        'code' => $code,
+                        'color' => $color,
+                    ],
+                ]));
         }
-        $color = '#e6e7e8';
-        if ($type == 'Dipesan') {
-            $color = 'yellow';
-        } elseif ($type == 'Sudah DP') {
-            $color = '#60d728';
-        } elseif ($type == 'Menunggu Konfirmasi') {
-            $color = 'red';
-        } elseif ($type == 'Sedang Dibangun') {
-            $color = '#00b4ff';
-        } elseif ($type == 'UTJ') {
-            $color = '#cb0c9f8c';
-        }
+
 
         $denah = Denah_model::where('id_denahs', $id)
             ->update(['type' => $type, 'description' => $desc, 'color' => $color]);
@@ -212,7 +226,7 @@ class Home extends CI_Controller
 
             if ($result->type == "Dipesan") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
-                    '<button type="button" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" data-id-denahs="' . $result->id_denahs . '" data-status-type="' . $result->type . '"  value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
+                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
             } else {
                 $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
@@ -333,7 +347,7 @@ class Home extends CI_Controller
                     }
                 }
 
-                echo '<input id="id-upload" type="text" hidden value="' . $row->id_upload . '">';
+                echo '<input id="id-upload" type="text" hidden  value="' . $row->id_upload . '">';
             }
         } else {
             if ($status_pembayaran == 'cash') {
@@ -353,7 +367,7 @@ class Home extends CI_Controller
                 echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
                 echo '<li><span><sup>*</sup>BLANKO</span></li>';
             }
-            echo '<input id="id-upload" type="text" hidden value="">';
+            echo '<input id="id-upload" type="text" hidden  value="">';
         }
         echo '<script>
                 // $(document).ready(function() {
@@ -370,10 +384,20 @@ class Home extends CI_Controller
                     });
 
                     var id_upload = $("#id-upload").val();
-                    if (id_upload == "") {} else {
+                    if (id_upload == "") {
+                        
+                        $("#select-pembayaran").removeAttr("readonly", true);
+                    } else {
                         $("#select-pembayaran").attr("readonly", true);
                     }
-
+                    $("#select-pembayaran").click(function(e) {
+                            var id_upload = $("#id-upload").val();
+                            if (id_upload == "") {
+                
+                            } else {
+                                alert("Silahkan kosongkan data unit kapling, jika ingin merubahnya!!")
+                            }
+                        });
                 // });
             </script>';
     }
