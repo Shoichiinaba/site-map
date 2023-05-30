@@ -59,14 +59,27 @@ class Home extends CI_Controller
 
     public function allDenahColor()
     {
-        $ids = Denah_model::all();
-        return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode([
-                'message' => '',
-                'results' => $ids->toArray(),
-            ]));
+        $perumahanNama = $this->uri->segment(3);
+        $perum = preg_replace("![^a-z0-9]+!i", " ", $perumahanNama);
+        // echo($perum);
+
+        $sql = "SELECT *FROM perumahan WHERE nama='$perum'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $id = $row->id_perum;
+                $ids = Denah_model::where('id_perum', $id)->get();
+                // //     $ids = Denah_model::all();
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode([
+                        'message' => '',
+                        'results' => $ids->toArray(),
+                    ]));
+            }
+        }
+        // echo $id;
     }
 
     function change_denah()

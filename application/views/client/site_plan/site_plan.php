@@ -4,7 +4,7 @@
             <img class="img-fluid" src="<?= base_url('upload'); ?>/caruba-selatan-siteplan-header.jpg" alt="" style="border-radius: 9px;">
             <!-- <span class="mask bg-gradient-primary opacity-3"></span> -->
         </div>
-        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden top-padd-mar">
             <div class="row gx-4">
                 <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="nav-wrapper position-relative end-0">

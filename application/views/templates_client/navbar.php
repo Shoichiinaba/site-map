@@ -1,19 +1,40 @@
 <style>
-    @media (max-width: 992px) {
+    .min-heig-nav {
+        height: 30rem;
+    }
+    .blur.blur-rounded {
+        border-radius: 9px;
+    }
+    @media only screen and (max-width: 992px) and (orientation: portrait) {
         .p-nav {
             padding: 0px 0px !important;
-            margin: 11px 5px !important;
+            margin: 0px 5px !important;
         }
 
         .m-h {
-            height: 14rem !important;
+            height: 13rem !important;
             margin: 0 !important;
+        }
+
+        .top-padd-mar {
+            top: -56px;
+            padding: 7px;
+            margin: 0px 7px !important;
         }
     }
 
-    .min-heig-nav {
-        height: 33rem;
+    @media only screen and (max-width: 1024px) and (orientation: landscape) {
+        .min-heig-nav {
+            height: 21rem;
+        }
+        .top-padd-mar {
+            top: -76px;
+            padding: 7px;
+            margin: 0px 7px !important;
+        }
     }
+
+
 </style>
 
 <body class="">
@@ -21,7 +42,7 @@
         <!-- <div class="row"> -->
         <!-- <div class="col-12"> -->
         <!-- Navbar -->
-        <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute my-3 py-2 start-0 end-0 mx-4 p-nav">
+        <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute py-2 start-0 end-0 mx-4 p-nav">
             <div class="container-fluid pe-0">
                 <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="">
                     <?php
