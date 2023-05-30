@@ -142,6 +142,7 @@
 
         $("#example2 i").click(callback(examples));
         setTimeout(function() {
+            var perum = '<?= $this->uri->segment(3)?>'
             var denah = $('.cls-2');
             var data = new FormData();
             var param = [];
@@ -151,8 +152,9 @@
                     data.append('id[]', denah[i].id);
                 }
             }
+            // alert('<?= $this->uri->segment(3)?>');
             $.ajax({
-                url: "<?php echo base_url('index.php/home/allDenahColor') ?>",
+                url: "<?php echo base_url('index.php/home/allDenahColor/')?>" + perum,
                 data: [],
                 type: 'GET',
                 success: function(data) {
@@ -160,6 +162,7 @@
                         var path = data.results[i]
                         $(`#${path.code}`).css('fill', path.color);
                     }
+                    // alert(data);
                 }
             });
         }, 2000);
