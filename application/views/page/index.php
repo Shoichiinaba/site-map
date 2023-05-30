@@ -80,8 +80,11 @@
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
-                        <?php echo $data->file_siteplan; ?>
-                        <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
+                        <div id="perum-siteplan-<?= $data->id_perum_siteplan; ?>">
+                            <?php echo $data->file_siteplan; ?>
+                        </div>
+
+                   
                     <?php
                     endforeach;
                     ?>
@@ -588,5 +591,3 @@ $(document).ready(function() {
         $('#id-denahs').val(id_denahs).change();
     }
 }
-
-</script>
