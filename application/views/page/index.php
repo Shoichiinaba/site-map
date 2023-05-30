@@ -76,7 +76,7 @@ sup {
     <div class="card-body p-3">
         <div class="row">
             <div class="col-xl-9 col-md-6 mb-xl-0 mb-4">
-                <div id="data-siteplan" class="card card-blog card-plain">
+                <div class="card card-blog card-plain">
                     <?php
                     foreach ($siteplan as $data) :
                     ?>

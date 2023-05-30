@@ -57,17 +57,46 @@ class Home extends CI_Controller
         }
     }
 
+    // public function allDenahColor()
+    // {
+    //     $ids = Denah_model::where('id_perum', '4')->get();
+    //     $ids = Denah_model::all();
+    //         return $this->output
+    //         ->set_content_type('application/json')
+    //         ->set_status_header(200)
+    //         ->set_output(json_encode([
+    //             'message' => '',
+    //             'results' => $ids->toArray(),
+    //         ]));
+
+    // }
+
     public function allDenahColor()
     {
-        $ids = Denah_model::all();
-        return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode([
-                'message' => '',
-                'results' => $ids->toArray(),
-            ]));
+        $perumahanNama = $this->uri->segment(3);
+        $perum = preg_replace("![^a-z0-9]+!i", " ", $perumahanNama);
+        // echo($perum);
+
+        $sql = "SELECT *FROM perumahan WHERE nama='$perum'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $id = $row->id_perum;
+                $ids = Denah_model::where('id_perum', $id)->get();
+            // //     $ids = Denah_model::all();
+                    return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode([
+                        'message' => '',
+                        'results' => $ids->toArray(),
+                    ]));
+            }
+        }
+        // echo $id;
+
     }
+
 
     function change_denah()
     {
@@ -77,6 +106,7 @@ class Home extends CI_Controller
         $type = $this->input->post('type');
         $desc = $this->input->post('desc');
         if ($type == 'Kosong') {
+            $perumahan = $this->Perumahan_model->where('nama', $perum)->get();
 
             $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.id_denahs='$id'";
             $query = $this->db->query($sql);
