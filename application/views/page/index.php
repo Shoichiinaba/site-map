@@ -341,13 +341,7 @@ $(document).ready(function() {
 
         // alert('ya')
     });
-    $('#select-pembayaran').click(function(e) {
-        var id_upload = $('#id-upload').val();
-        if (id_upload == '') {} else {
-            alert('Silahkan kosongkan data unit kapling, jika ingin merubahnya!!')
-        }
 
-    });
     $('#select-pembayaran').change(function(e) {
         // alert($(this).val())
         var id_denahs = $('#id-denahs').val();
@@ -495,7 +489,6 @@ function upload_document() {
                 $('#progres-' + $('#id-denahs').val()).html(data);
                 // alert(data)
 
-
             },
             error: function() {
                 alert("Data Gagal Diupload");
@@ -524,6 +517,7 @@ function load_data_document() {
         }
     });
 }
+
 $('#save-change-denah').click(function() {
     $(this).html('Loading...');
     $(this).attr('disabled', true);
