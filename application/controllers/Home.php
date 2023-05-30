@@ -57,6 +57,20 @@ class Home extends CI_Controller
         }
     }
 
+    // public function allDenahColor()
+    // {
+    //     $ids = Denah_model::where('id_perum', '4')->get();
+    //     $ids = Denah_model::all();
+    //         return $this->output
+    //         ->set_content_type('application/json')
+    //         ->set_status_header(200)
+    //         ->set_output(json_encode([
+    //             'message' => '',
+    //             'results' => $ids->toArray(),
+    //         ]));
+
+    // }
+
     public function allDenahColor()
     {
         $perumahanNama = $this->uri->segment(3);
@@ -69,8 +83,13 @@ class Home extends CI_Controller
             foreach ($query->result() as $row) {
                 $id = $row->id_perum;
                 $ids = Denah_model::where('id_perum', $id)->get();
+<<<<<<< HEAD
                 // //     $ids = Denah_model::all();
                 return $this->output
+=======
+            // //     $ids = Denah_model::all();
+                    return $this->output
+>>>>>>> debcab4fe3a1a10a4d8025d63ab10757d2461976
                     ->set_content_type('application/json')
                     ->set_status_header(200)
                     ->set_output(json_encode([
@@ -80,7 +99,12 @@ class Home extends CI_Controller
             }
         }
         // echo $id;
+<<<<<<< HEAD
+=======
+
+>>>>>>> debcab4fe3a1a10a4d8025d63ab10757d2461976
     }
+
 
     function change_denah()
     {
@@ -103,6 +127,7 @@ class Home extends CI_Controller
             $color = '#cb0c9f8c';
         }
         if ($type == 'Kosong') {
+            $perumahan = $this->Perumahan_model->where('nama', $perum)->get();
 
             $sql = "SELECT *FROM denahs, upload WHERE denahs.id_denahs = upload.id_doc_kapling AND denahs.id_denahs='$id'";
             $query = $this->db->query($sql);
@@ -157,7 +182,6 @@ class Home extends CI_Controller
                 ]));
         }
 
-
         $denah = Denah_model::where('id_denahs', $id)
             ->update(['type' => $type, 'description' => $desc, 'color' => $color]);
         return $this->output
@@ -166,19 +190,21 @@ class Home extends CI_Controller
             ->set_output(json_encode([
                 'message' => '',
                 'results' => [
+                    'id_denahs' => $id,
                     'code' => $code,
                     'color' => $color,
                 ],
             ]));
     }
 
-    function search()
+    public function search()
     {
         $draw = $this->input->get('draw');
         $start = ($this->input->get('start') != null) ? $this->input->get('start') : 0;
         $rowperpage = ($this->input->get('length') != null) ? $this->input->get('length') : 10;
         $order = ($this->input->get('order') != null) ? $this->input->get('order') : false;
         $search = ($this->input->get('search') != null && $this->input->get('search')['value'] != null) ? $this->input->get('search') : false;
+        $status = $this->input->get('status');
 
         $model = new Denah_model;
 
@@ -196,8 +222,12 @@ class Home extends CI_Controller
                     ->orWhere('type', 'LIKE', '%' . $search . '%')
                     ->orWhere('color', 'LIKE', '%' . $search . '%');
             });
-            // $filteredRows = $model->count();
         }
+
+        if ($status) {
+            $model = $model->where('type', $status);
+        }
+
         $filteredRows = $model->count();
 
         $model = $model->skip((int) $start);
@@ -213,10 +243,6 @@ class Home extends CI_Controller
         }
 
         $resuls = $model->select('denahs.*')->get();
-        // $resuls = $model->select('denahs.*')
-        //                  ->where('id_perum', 1)
-        //                  ->where('map', 'selatan')
-        //                  ->get();
 
         $data_arr = [];
         foreach ($resuls as $result) {
@@ -224,7 +250,6 @@ class Home extends CI_Controller
                 'code' => $result->code,
                 'description' => $result->description,
                 'type' => '<span class="pup" style="background-color:' . $result->color . '"></span> ' . $result->type,
-                // 'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: ' . $result->color . '">',
                 'color' => '<div id="progres-' . $result->id_denahs . '" class="progress-wrapper">
                                 <div class="progress-info">
                                     <div class="progress-percentage">
@@ -240,6 +265,7 @@ class Home extends CI_Controller
             if ($result->type == "Dipesan") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
                     '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
+
             } else {
                 $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
@@ -256,6 +282,7 @@ class Home extends CI_Controller
                 'data'            => $data_arr,
             ]));
     }
+
     function update_status_pembayaran()
     {
         $id_denahs = $this->input->post('id-denahs');

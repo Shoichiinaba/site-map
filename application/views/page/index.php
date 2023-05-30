@@ -76,7 +76,7 @@
     <div class="card-body p-3">
         <div class="row">
             <div class="col-xl-9 col-md-6 mb-xl-0 mb-4">
-                <div id="data-siteplan" class="card card-blog card-plain">
+                <div class="card card-blog card-plain">
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
@@ -124,6 +124,14 @@
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
+                <div class="form-group col-sm-2 col-lg-1">
+                    <select class="form-control" id="status">
+                        <option value="">Filter</option>
+                        <option value="Dipesan">Dipesan</option>
+                        <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
+                        <option value="Sudah DP">Sudah DP</option>
+                    </select>
+                </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
@@ -492,37 +500,48 @@
 
             },
             error: function() {
-                alert("Data Gagal Diupload 123");
+                alert("Data Gagal Diupload");
             }
         });
     }
-    $('#save-change-denah').click(function() {
-        $(this).html('Loading...');
-        $(this).attr('disabled', true);
-        var id, code, type, description;
-        id = $('#form-edit-denah #id-denahs-edit').val();
-        code = $('#form-edit-denah #code').val();
-        description = $('#form-edit-denah #description').val();
-        type = $('#form-edit-denah #type').val();
-        $.ajax({
-            url: "<?php echo base_url('Home/change_denah') ?>",
-            data: {
-                id: id,
-                code: code,
-                type: type,
-                desc: description,
-            },
-            type: 'post',
-            success: function(data) {
-                $('#save-change-denah').html('Save changes');
-                $('#save-change-denah').attr('disabled', false);
-                $(`#${data.results.code}`).css('fill', data.results.color);
-                window.crud.ajax.reload(null, false);
-                const modal = bootstrap.Modal.getInstance($('#exampleModaledit'));
-                modal.hide();
-            }
-        });
+
+$('#save-change-denah').click(function() {
+    $(this).html('Loading...');
+    $(this).attr('disabled', true);
+    var id, code, type, description;
+    id = $('#form-edit-denah #id-denahs-edit').val();
+    code = $('#form-edit-denah #code').val();
+    description = $('#form-edit-denah #description').val();
+    type = $('#form-edit-denah #type').val();
+    $.ajax({
+        url: "<?php echo base_url('Home/change_denah') ?>",
+        data: {
+            id: id,
+            code: code,
+            type: type,
+            desc: description,
+        },
+        type: 'post',
+        success: function(data) {
+            $('#save-change-denah').html('Save changes');
+            $('#save-change-denah').attr('disabled', false);
+            $(`#${data.results.code}`).css('fill', data.results.color);
+            window.crud.ajax.reload(null, false);
+            const modal = bootstrap.Modal.getInstance($('#exampleModaledit'));
+            modal.hide();
+        }
     });
+});
+
+// load data saat pertama di buka
+$(document).ready(function() {
+    load_data_kapling();
+
+    $('#status').on('change', function() {
+        window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+            "?status=" + $(this).val()).load();
+    });
+});
 
     function load_data_kapling() {
 
@@ -567,8 +586,7 @@
     }
     function getDataDoc(id_denahs) {
         $('#id-denahs').val(id_denahs).change();
-        // $('#select-pembayaran').val(status_pembayaran).change();
-        // $('#form-edit-denah #description').val(desc).change();
-        // $('#form-edit-denah #type').val(type);
     }
+}
+
 </script>

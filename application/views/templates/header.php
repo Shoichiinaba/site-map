@@ -118,6 +118,7 @@
             // "use strict";
             var examples = $("#svg").svgPanZoom();
 
+<<<<<<< HEAD
             var callback = function(example) {
                 return function(event) {
                     if ($(event.target).hasClass("fa-arrow-down"))
@@ -148,7 +149,51 @@
                     if (denah[i].id) {
                         param[i] = denah[i].id;
                         data.append('id[]', denah[i].id);
+=======
+        var callback = function(example) {
+            return function(event) {
+                if ($(event.target).hasClass("fa-arrow-down"))
+                    example.panUp()
+                if ($(event.target).hasClass("fa-arrow-up"))
+                    example.panDown()
+                if ($(event.target).hasClass("fa-arrow-right"))
+                    example.panLeft()
+                if ($(event.target).hasClass("fa-arrow-left"))
+                    example.panRight()
+                if ($(event.target).hasClass("fa-plus"))
+                    example.zoomIn()
+                if ($(event.target).hasClass("fa-minus"))
+                    example.zoomOut()
+                if ($(event.target).hasClass("fa-refresh"))
+                    example.reset()
+            }
+        };
+
+
+        $("#example2 i").click(callback(examples));
+        setTimeout(function() {
+            var perum = '<?= $this->uri->segment(3)?>'
+            var denah = $('.cls-2');
+            var data = new FormData();
+            var param = [];
+            for (var i = 0; i < denah.length; i++) {
+                if (denah[i].id) {
+                    param[i] = denah[i].id;
+                    data.append('id[]', denah[i].id);
+                }
+            }
+            // alert('<?= $this->uri->segment(3)?>');
+            $.ajax({
+                url: "<?php echo base_url('index.php/home/allDenahColor/')?>" + perum,
+                data: [],
+                type: 'GET',
+                success: function(data) {
+                    for (var i = 0; i < data.results.length; i++) {
+                        var path = data.results[i]
+                        $(`#${path.code}`).css('fill', path.color);
+>>>>>>> debcab4fe3a1a10a4d8025d63ab10757d2461976
                     }
+                    // alert(data);
                 }
                 // alert('<?= $this->uri->segment(3) ?>');
                 $.ajax({
