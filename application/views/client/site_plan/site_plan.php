@@ -1,7 +1,14 @@
 <main class="main-content  mt-0">
     <div class="container">
         <div class="page-header min-heig-nav border-radius-xl m-h">
-            <img class="img-fluid" src="<?= base_url('upload'); ?>/caruba-selatan-siteplan-header.jpg" alt="" style="border-radius: 9px;">
+            <?php
+            $no = 1;
+            foreach ($perum as $data) :
+             ?>
+                <img class="img-fluid" src="<?= base_url('upload'); ?>/<?= $data->foto_hed; ?>" alt="" style="border-radius: 9px;">
+            <?php
+            endforeach;
+            ?>
             <!-- <span class="mask bg-gradient-primary opacity-3"></span> -->
         </div>
         <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden top-padd-mar">
@@ -16,7 +23,15 @@
                                 <li class="nav-item">
                                     <div id="area-<?= $no++; ?>" class="nav-link mb-0 px-0 py-1 btn-area" data-id-site-plan="<?= $data->id_siteplan; ?>" style="cursor: pointer;">
                                         <i class="fa fa-street-view" aria-hidden="true"></i>
-                                        <span class="ms-1">Site Plan <?php echo $data->area; ?></span>
+                                        <?php
+                                        if ($data->area == 'Siteplan') { ?>
+                                            <span class="ms-1">Site Plan</span>
+                                        <?php
+                                        } else { ?>
+                                            <span class="ms-1"><?php echo 'Site Plan ' . $data->area; ?></span>
+                                        <?php
+                                        }
+                                        ?>
                                     </div>
                                 </li>
                             <?php
@@ -26,7 +41,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row mt-4">
+            <div class="row mt-2">
                 <div class="col-lg-12">
                     <div class="overflow-hidden position-relative border-radius-lg bg-cover h-100" style="background-image: url('<?= base_url(); ?>assets_adm/img/map1.jpg');">
                         <span class="mask bg-gradient-light"></span>
@@ -153,7 +168,7 @@
                     }
                 });
             }, 2000);
-            
+
         });
     }
 </script>

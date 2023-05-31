@@ -22,21 +22,27 @@ class Client extends CI_Controller
         $this->load->model('FormDataModel');
     }
 
+    public function index()
+    {
+        // Cek apakah data sudah ada dalam sesion
+        $data['perumahan'] = $this->FormDataModel->m_perumahan();
+        $data['content']        = 'client/dash_client';
+        $this->load->view($this->template, $data);
+    }
     public function visit()
     {
         // Cek apakah data sudah ada dalam sesion
         if (!$this->session->userdata('form_data')) {
-            // Data belum ada, tampilkan formulir
-            $data['perumahan'] = $this->FormDataModel->m_perumahan();
+			redirect(base_url('Client'));
 
-            $this->load->view('client/formulir', $data);
         } else {
             // Data sudah ada, tampilkan pesan menggunakan flashdata
             $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
             // redirect('client/site_plan/selatan'); // Redirect kembali ke halaman formulir
             $tittle = $this->uri->segment(3);
             $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
-
+            $data['_tittle'] = 'Site Plan ' . $perum;
+            $data['perum'] = $this->FormDataModel->m_foto_perum($perum);
             $data['area_siteplan'] = $this->FormDataModel->m_area_siteplan($perum);
             $data['content']        = 'client/site_plan/site_plan';
             $this->load->view($this->template, $data);
@@ -86,5 +92,4 @@ class Client extends CI_Controller
             }
         }
     }
-    
 }

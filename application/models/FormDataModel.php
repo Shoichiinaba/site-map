@@ -12,6 +12,15 @@ class FormDataModel extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
+    function m_foto_perum($perum)
+    {
+        $this->db->select('*');
+        $this->db->from('perumahan');
+        $this->db->where('nama', $perum);
+        $query = $this->db->get();
+        return $query->result();
+    }
+    
     public function simpanData($id_customer, $nama, $email, $telepon)
     {
         // Periksa apakah data sudah ada dalam database
