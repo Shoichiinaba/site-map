@@ -58,9 +58,9 @@
 
                                         <div class="keterangan">
                                             <span style="background-color: yellow" class="badge text-dark">Dipesan</span>
-                                            <span class="badge bg-gradient-danger">Dipesan lebih 1 orang</span>
+                                            <span class="badge bg-gradient-danger">Menunggu Konfirmasi</span>
                                             <span class="badge bg-gradient-success">Sudah DP</span>
-                                            <span class="badge bg-gradient-info">Dalam Pembangunan</span>
+                                            <span class="badge bg-gradient-info">Rumah Ready</span>
                                         </div>
                                     </div>
                                 </div>

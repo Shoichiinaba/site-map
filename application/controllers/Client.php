@@ -25,6 +25,7 @@ class Client extends CI_Controller
     public function index()
     {
         // Cek apakah data sudah ada dalam sesion
+        $data['_tittle'] = 'Cek ketersediaan unit';
         $data['perumahan'] = $this->FormDataModel->m_perumahan();
         $data['content']        = 'client/dash_client';
         $this->load->view($this->template, $data);
