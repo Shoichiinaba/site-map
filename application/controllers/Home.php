@@ -180,6 +180,7 @@ class Home extends CI_Controller
         $rowperpage = ($this->input->get('length') != null) ? $this->input->get('length') : 10;
         $order = ($this->input->get('order') != null) ? $this->input->get('order') : false;
         $search = ($this->input->get('search') != null && $this->input->get('search')['value'] != null) ? $this->input->get('search') : false;
+        $status = $this->input->get('status');
 
         $model = new Denah_model;
 
@@ -197,10 +198,11 @@ class Home extends CI_Controller
                     ->orWhere('type', 'LIKE', '%' . $search . '%')
                     ->orWhere('color', 'LIKE', '%' . $search . '%');
             });
-            // $filteredRows = $model->count();
+        }
+        if ($status) {
+            $model = $model->where('type', $status);
         }
         $filteredRows = $model->count();
-
         $model = $model->skip((int) $start);
         $model = $model->take((int) $rowperpage);
 
@@ -214,10 +216,6 @@ class Home extends CI_Controller
         }
 
         $resuls = $model->select('denahs.*')->get();
-        // $resuls = $model->select('denahs.*')
-        //                  ->where('id_perum', 1)
-        //                  ->where('map', 'selatan')
-        //                  ->get();
 
         $data_arr = [];
         foreach ($resuls as $result) {

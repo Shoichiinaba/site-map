@@ -73,7 +73,7 @@ sup {
 <div class="container">
     <div id="svg-container">
     </div>
-    <div class="card-body p-3">
+    <div class="card-body p-1">
         <div class="row">
             <div class="col-xl-9 col-md-6 mb-xl-0 mb-4">
                 <div id="data-siteplan" class="card card-blog card-plain">
@@ -124,6 +124,18 @@ sup {
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
+                <div class="col-sm-3 col-lg-2 align-items-center mb-2">
+                    <div class="input-group col-sm-2 col-lg-1">
+                        <span class="input-group-text text-body">
+                            <i class="ni ni-delivery-fast" aria-hidden="true"></i></span>
+                        <select class="form-control" id="status">
+                            <option value=""> &nbsp; Filter</option>
+                            <option value="Dipesan"> &nbsp; Dipesan</option>
+                            <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
+                            <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                        </select>
+                    </div>
+                </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
@@ -143,16 +155,7 @@ sup {
         </div>
     </div>
 </div>
-<!-- <div class="progress-wrapper">
-    <div class="progress-info">
-        <div class="progress-percentage">
-            <span class="text-sm font-weight-bold">1%</span>
-        </div>
-    </div>
-    <div class="">
-        <div class="progress-bar bg-success" role="progressbar" aria-valuenow="1" aria-valuemin="0" aria-valuemax="100" style="width: 1%;"></div>
-    </div>
-</div> -->
+
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -532,7 +535,21 @@ $('#save-change-denah').click(function() {
     });
 });
 
+// load data saat pertama di buka
+$(document).ready(function() {
+    load_data_kapling();
+
+    $('#status').on('change', function() {
+        window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+            "?status=" + $(this).val()).load();
+    });
+});
+
 function load_data_kapling() {
+    if ($.fn.DataTable.isDataTable('#list-selatan')) {
+
+        $('#list-selatan').DataTable().destroy();
+    }
     window.crud = $('#list-selatan').DataTable({
         "paging": true,
         "ordering": true,
