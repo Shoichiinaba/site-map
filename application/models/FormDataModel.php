@@ -5,7 +5,13 @@ defined('BASEPATH') or exit('No direct script access allowed');
 class FormDataModel extends CI_Model
 {
 
-
+    function m_perumahan()
+    {
+        $this->db->select('*');
+        $this->db->from('perumahan');
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function simpanData($id_customer, $nama, $email, $telepon)
     {
         // Periksa apakah data sudah ada dalam database

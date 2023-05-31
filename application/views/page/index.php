@@ -76,7 +76,7 @@ sup {
     <div class="card-body p-3">
         <div class="row">
             <div class="col-xl-9 col-md-6 mb-xl-0 mb-4">
-                <div class="card card-blog card-plain">
+                <div id="data-siteplan" class="card card-blog card-plain">
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
@@ -124,14 +124,6 @@ sup {
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
-                <div class="form-group col-sm-2 col-lg-1">
-                    <select class="form-control" id="status">
-                        <option value="">Filter</option>
-                        <option value="Dipesan">Dipesan</option>
-                        <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
-                        <option value="Sudah DP">Sudah DP</option>
-                    </select>
-                </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
@@ -323,23 +315,15 @@ load_data_kapling();
 $(document).ready(function() {
     $('.btn-modal-document').click(function() {
         cencel_upload_document();
-        var id_denahs = $('#id-denahs').val($(this).data('id-denahs'));
-        var val_pembayaran = $(this).val();
-        $("#select-pembayaran").val(val_pembayaran);
+        // alert($(this).val())
+        var id_denahs = $('#id-denahs').val();
         $("#select-pembayaran").removeAttr("readonly", true)
-        load_data_document();
-        // $('#select-pembayaran').trigger('change');
-        if (val_pembayaran == 'cash') {
+        if ($("#select-pembayaran").val() == 'cash') {
             $('#select-document').html(html_cash);
-            // $('#btn-document-' + id_denahs).val('cash');
-        } else if (val_pembayaran == 'kpr') {
+        } else if ($("#select-pembayaran").val() == 'kpr') {
             $('#select-document').html(html_kpr);
-            // $('#btn-document-' + id_denahs).val('kpr');
         }
-
-        // previewPDF();
-
-        // alert('ya')
+        load_data_document();
     });
 
     $('#select-pembayaran').change(function(e) {
@@ -353,6 +337,7 @@ $(document).ready(function() {
             $('#btn-document-' + id_denahs).val('kpr');
         } else {
             $('#btn-document-' + id_denahs).val('');
+            $('#select-document').html('');
 
         }
         let formData = new FormData();
@@ -367,6 +352,7 @@ $(document).ready(function() {
             contentType: false,
             success: function(data) {
                 load_data_document();
+                window.crud.ajax.reload(null, false);
 
             },
             error: function() {
@@ -489,6 +475,7 @@ function upload_document() {
                 $('#progres-' + $('#id-denahs').val()).html(data);
                 // alert(data)
 
+
             },
             error: function() {
                 alert("Data Gagal Diupload");
@@ -513,11 +500,10 @@ function load_data_document() {
 
         },
         error: function() {
-            alert("Data Gagal Diupload");
+            alert("Data Gagal Diupload 123");
         }
     });
 }
-
 $('#save-change-denah').click(function() {
     $(this).html('Loading...');
     $(this).attr('disabled', true);
@@ -546,21 +532,7 @@ $('#save-change-denah').click(function() {
     });
 });
 
-// load data saat pertama di buka
-$(document).ready(function() {
-    load_data_kapling();
-
-    $('#status').on('change', function() {
-        window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-            "?status=" + $(this).val()).load();
-    });
-});
-
 function load_data_kapling() {
-    if ($.fn.DataTable.isDataTable('#list-selatan')) {
-
-        $('#list-selatan').DataTable().destroy();
-    }
     window.crud = $('#list-selatan').DataTable({
         "paging": true,
         "ordering": true,
@@ -568,12 +540,7 @@ function load_data_kapling() {
         "responsive": true,
         processing: true,
         serverSide: true,
-        ajax: {
-            url: "<?php echo base_url('Home/search'); ?>/" + $('#id-siteplan').val(),
-            data: function(d) {
-                d.status = $('#status').val();
-            }
-        },
+        ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
         columns: [{
                 data: 'code',
                 name: 'code'
@@ -596,13 +563,18 @@ function load_data_kapling() {
             }
         ],
     });
-}
 
+}
 
 function openDataRow(id, code, type, desc) {
     $('#form-edit-denah #id-denahs-edit').val(id).change();
     $('#form-edit-denah #code').val(code).change();
     $('#form-edit-denah #description').val(desc).change();
     $('#form-edit-denah #type').val(type);
+}
+
+function getDataDoc(id_denahs, status_pembayaran) {
+    $('#id-denahs').val(id_denahs).change();
+    $('#select-pembayaran').val(status_pembayaran).change();
 }
 </script>

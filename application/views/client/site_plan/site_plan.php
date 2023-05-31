@@ -1,9 +1,10 @@
 <main class="main-content  mt-0">
-    <div class="container-fluid">
-        <div class="page-header min-height-300 border-radius-xl mt-4" style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/caruban.jpg'); background-position-y: 50%;">
-            <span class="mask bg-gradient-primary opacity-3"></span>
+    <div class="container">
+        <div class="page-header min-heig-nav border-radius-xl m-h">
+            <img class="img-fluid" src="<?= base_url('upload'); ?>/caruba-selatan-siteplan-header.jpg" alt="" style="border-radius: 9px;">
+            <!-- <span class="mask bg-gradient-primary opacity-3"></span> -->
         </div>
-        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden">
+        <div class="card card-body blur shadow-blur mx-4 mt-n6 overflow-hidden top-padd-mar">
             <div class="row gx-4">
                 <div class="col-lg-4 col-md-6 my-sm-auto ms-sm-auto me-sm-0 mx-auto mt-3">
                     <div class="nav-wrapper position-relative end-0">
@@ -38,7 +39,7 @@
                                             <p class="p-3 mb-0 fa fa-map-marker text-danger"><i class="text-black text-sm-center">Site Map Selatan</i></p>
                                         </div>
 
-                                        <div id="data-site-plan"></div>
+                                        <div id="data-site-plan" style="justify-content: center;display: flex;"></div>
 
                                         <div class="keterangan">
                                             <span style="background-color: yellow" class="badge text-dark">Dipesan</span>
@@ -105,7 +106,7 @@
         var example1, example2; //globals so we can manipulate them in the debugger
         $(function() {
             "use strict";
-            var examples = $("svg").svgPanZoom();
+            var examples = $("#svg").svgPanZoom();
 
             var callback = function(example) {
                 return function(event) {
@@ -126,21 +127,21 @@
                 }
             };
 
-
-            $("div#example2 i").click(callback(examples));
+            $("#example2 i").click(callback(examples));
             setTimeout(function() {
+                var perum = '<?= $this->uri->segment(3) ?>'
                 var denah = $('.cls-2');
                 var data = new FormData();
                 var param = [];
-
                 for (var i = 0; i < denah.length; i++) {
                     if (denah[i].id) {
                         param[i] = denah[i].id;
                         data.append('id[]', denah[i].id);
                     }
                 }
+                // alert('<?= $this->uri->segment(3) ?>');
                 $.ajax({
-                    url: "<?php echo base_url('index.php/home/allDenahColor') ?>",
+                    url: "<?php echo base_url('index.php/home/allDenahColor/') ?>" + perum,
                     data: [],
                     type: 'GET',
                     success: function(data) {
@@ -148,28 +149,11 @@
                             var path = data.results[i]
                             $(`#${path.code}`).css('fill', path.color);
                         }
+                        // alert(data);
                     }
                 });
             }, 2000);
+            
         });
     }
 </script>
-<!-- <script>
-            let formData = new FormData();
-        formData.append('id-berita', $(this).data('id-berita'));
-
-    $.ajax({
-        // type: 'POST',
-        url: "<?php echo site_url('Client/load_site_plan') ?>",
-        // data: formData,
-        cache: false,
-        processData: false,
-        contentType: false,
-        success: function(data) {
-            $('#data-site-plan').html(data);
-        },
-        error: function() {
-            alert("Data Gagal Diupload");
-        }
-    });
-</script> -->
