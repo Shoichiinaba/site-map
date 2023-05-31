@@ -20,13 +20,16 @@
     <main class="main-content  mt-0">
         <section class="min-vh-100 mb-8">
             <div class="page-header align-items-start min-vh-50 pt-5 pb-11 m-3 border-radius-lg"
-                style="background-image: url('<?= base_url(); ?>assets_adm/img/gbr_header/header_login.png');">
-                <span class="mask bg-gradient-info opacity-5"></span>
+                style="background-image: url('<?= base_url('upload'); ?>/header-selamat-datang.png"');">
+                <!-- <img class="img-fluid mt-5" src="<?= base_url('upload'); ?>/header-selamat-datang.png" alt="" style="border-radius: 9px;"> -->
+                <!-- <span class="mask bg-gradient-info opacity-5"></span> -->
                 <div class="container">
                     <div class="row justify-content-center">
                         <div class="col-lg-5 text-center mx-auto">
-                            <h2 class="text-white mb-2 mt-5">Welcome!</h2>
-                            <p class="text-lead text-white">Halaman Login Site Plan Kanzu Permai Abadi</p>
+                            <h2 class="text-white mb-2 mt-5"></h2>
+                            <br><br><br>
+                            <p class="text-lead text-white"></p>
+                            <br><br><br>
                         </div>
                     </div>
                 </div>
@@ -170,21 +173,14 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script>
     $(document).ready(function() {
-        $('#customCheck').click(function() {
-            if ($(this).is(':checked')) {
-                $('#password').attr('type', 'text');
-            } else {
-                $('#password').attr('type', 'password');
-            }
-        });
-    });
-    </script>
-    <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
-    <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
-    <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>
-    <script src="<?= base_url('assets_adm/'); ?>js/plugins/smooth-scrollbar.min.js"></script>
-    <script async defer src="https://buttons.github.io/buttons.js"></script>
-    <script src="<?= base_url('assets_adm/'); ?>/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
+        $(' #customCheck').click(function() { if ($(this).is(':checked')) { $('#password').attr('type', 'text' ); }
+                else { $('#password').attr('type', 'password' ); } }); }); </script>
+                <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
+                <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
+                <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>
+                <script src="<?= base_url('assets_adm/'); ?>js/plugins/smooth-scrollbar.min.js"></script>
+                <script async defer src="https://buttons.github.io/buttons.js"></script>
+                <script src="<?= base_url('assets_adm/'); ?>/js/soft-ui-dashboard.min.js?v=1.0.7"></script>
 </body>
 
 </html>
