@@ -109,7 +109,7 @@ sup {
                             <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
                             <p><span class="badge bg-gradient-danger">Menunggu Konfirmasi</span></P>
                             <p><span class="badge bg-gradient-success">Sudah DP</span></P>
-                            <p><span class="badge bg-gradient-info">Dalam Pembangunan</span></P>
+                            <p><span class="badge bg-gradient-info">Rumah Ready</span></P>
                         </div>
                     </div>
                 </div>
@@ -133,6 +133,7 @@ sup {
                             <option value="Dipesan"> &nbsp; Dipesan</option>
                             <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
                             <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                            <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
                         </select>
                     </div>
                 </div>
@@ -178,7 +179,7 @@ sup {
                             <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
                             <option value="UTJ">UTJ</option>
                             <option value="Sudah DP">Sudah DP</option>
-                            <option value="Sedang Dibangun">Sedang Dibangun</option>
+                            <option value="Sedang Dibangun">Rumah Ready</option>
                             <option value="Kosong">Kosongkan</option>
                         </select>
                     </div>
