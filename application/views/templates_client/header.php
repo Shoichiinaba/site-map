@@ -7,7 +7,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="assets_adm/img/apple-icon.png">
     <link rel="icon" type="image/png" href="<?= base_url(); ?>assets_adm/img/logo/logo1.png">
     <title>
-        Site Plan Selatan
+    <?php echo $_tittle; ?>
     </title>
 
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />

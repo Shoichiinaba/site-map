@@ -1,6 +1,6 @@
 <style>
     .min-heig-nav {
-        height: 30rem;
+        height: 28rem;
     }
     .blur.blur-rounded {
         border-radius: 9px;
@@ -39,17 +39,17 @@
 
 <body class="">
     <div class="container position-sticky z-index-sticky top-0">
-        <!-- <div class="row"> -->
-        <!-- <div class="col-12"> -->
-        <!-- Navbar -->
         <nav class="navbar navbar-expand-lg blur blur-rounded top-0 z-index-3 shadow position-absolute py-2 start-0 end-0 mx-4 p-nav">
             <div class="container-fluid pe-0">
                 <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="">
                     <?php
                     $tittle = $this->uri->segment(3);
                     $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
-                    ?>
-                    <?= $perum; ?>
+                    if (isset($_title)) {
+                        echo $perum; 
+                    }else{
+                        echo'KANZU PERMAI ABADI';
+                    }?>
                 </a>
                 <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation" style="border: none;">
                     <span class="navbar-toggler-icon" style="margin-top: 14px !important;">
