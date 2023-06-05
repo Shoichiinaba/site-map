@@ -124,17 +124,26 @@ sup {
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
-                <div class="col-sm-3 col-lg-2 align-items-center mb-2">
-                    <div class="input-group col-sm-2 col-lg-1">
-                        <span class="input-group-text text-body">
-                            <i class="ni ni-delivery-fast" aria-hidden="true"></i></span>
-                        <select class="form-control" id="status">
-                            <option value=""> &nbsp; Filter</option>
-                            <option value="Dipesan"> &nbsp; Dipesan</option>
-                            <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
-                            <option value="Sudah DP"> &nbsp; Sudah DP</option>
-                            <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
-                        </select>
+                <div class="row">
+                    <div class="col-sm-9 col-lg-2">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="status">
+                                <option value=""> &nbsp; Filter</option>
+                                <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
+                                <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-2">
+                        <button type="button" class="btn bg-gradient-success btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal"> <i class="fa fa-print" style="font-size:small;"></i>
+                            &nbsp; Cetak
+                        </button>
                     </div>
                 </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
