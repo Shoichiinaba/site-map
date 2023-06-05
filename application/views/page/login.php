@@ -39,6 +39,7 @@
                     <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
                         <div class="card z-index-0">
                             <div class="card-header text-center pt-4">
+                                <img src="<?= base_url(); ?>assets_adm/img/logo/logo1.png" alt="Logo" width="50" height="50">
                                 <h5>Login</h5>
                             </div>
                             <div class="card">
