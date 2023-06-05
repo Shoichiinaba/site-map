@@ -1,3 +1,19 @@
+<!-- date range picker JS -->
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+    }, function(start, end, label) {
+        console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+            'YYYY-MM-DD'));
+        alert(start);
+    });
+});
+</script>
+
 <!--   Core JS Files   -->
 <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>

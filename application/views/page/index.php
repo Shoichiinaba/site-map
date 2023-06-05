@@ -141,7 +141,7 @@ sup {
                     </div>
                     <div class="col-sm-3 col-lg-2">
                         <button type="button" class="btn bg-gradient-success btn-sm" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal"> <i class="fa fa-print" style="font-size:small;"></i>
+                            data-bs-target="#exampleModalcetak"> <i class="fa fa-print" style="font-size:small;"></i>
                             &nbsp; Cetak
                         </button>
                     </div>
@@ -204,14 +204,15 @@ sup {
             </div>
         </div>
     </div>
-    <!-- Modal Attech-->
 </div>
+
+<!-- Modal Attech-->
 <div class="modal fade" id="exampleModalatt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Denah</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Document</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -295,6 +296,52 @@ sup {
         </div>
     </div>
 </div>
+
+<!-- Modal Cetak-->
+<div class="modal fade" id="exampleModalcetak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cetak Data</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="status">
+                                <option value=""> &nbsp; Filter</option>
+                                <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
+                                <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body"><i class="fa fa-calendar"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="daterange" placeholder=" Pilih Range Tanggal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm bg-gradient-primary"><i
+                        class="fas fa-file-pdf text-lg me-1"></i>
+                    Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // $(document).ready(function() {
 
