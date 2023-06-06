@@ -92,7 +92,6 @@ sup {
                 <div class="card h-100 card-plain border">
                     <div id="example2" class="controls">
                         <div class="controls-pan">
-
                             <p><i class="btn btn-success fa fa-arrow-up"></i></p>
                             <p>
                                 <i class="btn btn-success fa fa-arrow-left"></i>
@@ -105,11 +104,11 @@ sup {
                             <p><i class="btn btn-danger fa fa-plus"></i></p>
                             <p><i class="btn btn-danger fa fa-minus"></i></p>
                         </div>
+                        <br><br>
                         <div class="controls-keterangan">
                             <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
-                            <p><span class="badge bg-gradient-danger">Menunggu Konfirmasi</span></P>
-                            <p><span class="badge bg-gradient-success">Sudah DP</span></P>
-                            <p><span class="badge bg-gradient-info">Dalam Pembangunan</span></P>
+                            <p><span class="badge bg-gradient-danger">Sold Out</span></P>
+                            <p><span class="badge bg-gradient-info">Rumah Ready</span></P>
                         </div>
                     </div>
                 </div>
@@ -124,16 +123,25 @@ sup {
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
-                <div class="col-sm-3 col-lg-2 align-items-center mb-2">
-                    <div class="input-group col-sm-2 col-lg-1">
-                        <span class="input-group-text text-body">
-                            <i class="ni ni-delivery-fast" aria-hidden="true"></i></span>
-                        <select class="form-control" id="status">
-                            <option value=""> &nbsp; Filter</option>
-                            <option value="Dipesan"> &nbsp; Dipesan</option>
-                            <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
-                            <option value="Sudah DP"> &nbsp; Sudah DP</option>
-                        </select>
+                <div class="row">
+                    <div class="col-sm-9 col-lg-2">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="status">
+                                <option value=""> &nbsp; Filter</option>
+                                <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="Sold Out"> &nbsp; Sold Out</option>
+                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-2">
+                        <button type="button" class="btn bg-gradient-success btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#exampleModalcetak"> <i class="fa fa-print" style="font-size:small;"></i>
+                            &nbsp; Cetak
+                        </button>
                     </div>
                 </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
@@ -175,10 +183,8 @@ sup {
                         <label for="type" class="form-label">Status</label>
                         <select class="form-select" id="type" name="type">
                             <option value="Dipesan">Dipesan</option>
-                            <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
-                            <option value="UTJ">UTJ</option>
-                            <option value="Sudah DP">Sudah DP</option>
-                            <option value="Sedang Dibangun">Sedang Dibangun</option>
+                            <option value="Sold Out">Sold Out</option>
+                            <option value="Rumah Ready">Rumah Ready</option>
                             <option value="Kosong">Kosongkan</option>
                         </select>
                     </div>
@@ -194,14 +200,15 @@ sup {
             </div>
         </div>
     </div>
-    <!-- Modal Attech-->
 </div>
+
+<!-- Modal Attech-->
 <div class="modal fade" id="exampleModalatt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Edit Denah</h1>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Upload Document</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -285,6 +292,51 @@ sup {
         </div>
     </div>
 </div>
+
+<!-- Modal Cetak-->
+<div class="modal fade" id="exampleModalcetak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cetak Data</h5>
+                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-9 col-lg-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="status">
+                                <option value=""> &nbsp; Filter</option>
+                                <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="Sold Out"> &nbsp; Sold Out</option>
+                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3 col-lg-4">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body"><i class="fa fa-calendar"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" name="daterange" placeholder=" Pilih Range Tanggal">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm bg-gradient-primary"><i
+                        class="fas fa-file-pdf text-lg me-1"></i>
+                    Cetak</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
 // $(document).ready(function() {
 

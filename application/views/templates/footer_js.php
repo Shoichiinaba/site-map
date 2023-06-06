@@ -21,6 +21,21 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" integrity="sha512-6PM0qYu5KExuNcKt5bURAoT6KCThUmHRewN3zUFNaoI6Di7XJPTMoT6K0nsagZKk2OB4L7E3q1uQKHNHd4stIQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> -->
 
+<!-- date range picker JS -->
+<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+    }, function(start, end, label) {
+        console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+            'YYYY-MM-DD'));
+        alert(start);
+    });
+});
+</script>
+
 </body>
 
 </html>

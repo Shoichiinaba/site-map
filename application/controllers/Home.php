@@ -93,14 +93,10 @@ class Home extends CI_Controller
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
             $color = 'yellow';
-        } elseif ($type == 'Sudah DP') {
-            $color = '#60d728';
-        } elseif ($type == 'Menunggu Konfirmasi') {
+        } elseif ($type == 'Sold Out') {
             $color = 'red';
-        } elseif ($type == 'Sedang Dibangun') {
+        } elseif ($type == 'Rumah Ready') {
             $color = '#00b4ff';
-        } elseif ($type == 'UTJ') {
-            $color = '#cb0c9f8c';
         }
         if ($type == 'Kosong') {
 
@@ -240,7 +236,7 @@ class Home extends CI_Controller
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
                     '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\', \'' . $result->status_pembayaran . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
             } else {
-                $data['action'] = '&nbsp;&nbsp;<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
+                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
             $data_arr[] = $data;
         }
