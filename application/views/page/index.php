@@ -92,7 +92,6 @@ sup {
                 <div class="card h-100 card-plain border">
                     <div id="example2" class="controls">
                         <div class="controls-pan">
-
                             <p><i class="btn btn-success fa fa-arrow-up"></i></p>
                             <p>
                                 <i class="btn btn-success fa fa-arrow-left"></i>
@@ -105,10 +104,10 @@ sup {
                             <p><i class="btn btn-danger fa fa-plus"></i></p>
                             <p><i class="btn btn-danger fa fa-minus"></i></p>
                         </div>
+                        <br><br>
                         <div class="controls-keterangan">
                             <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
-                            <p><span class="badge bg-gradient-danger">Menunggu Konfirmasi</span></P>
-                            <p><span class="badge bg-gradient-success">Sudah DP</span></P>
+                            <p><span class="badge bg-gradient-danger">Sold Out</span></P>
                             <p><span class="badge bg-gradient-info">Rumah Ready</span></P>
                         </div>
                     </div>
@@ -133,8 +132,7 @@ sup {
                             <select class="form-control" id="status">
                                 <option value=""> &nbsp; Filter</option>
                                 <option value="Dipesan"> &nbsp; Dipesan</option>
-                                <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
-                                <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                                <option value="Sold Out"> &nbsp; Sold Out</option>
                                 <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
                             </select>
                         </div>
@@ -185,10 +183,8 @@ sup {
                         <label for="type" class="form-label">Status</label>
                         <select class="form-select" id="type" name="type">
                             <option value="Dipesan">Dipesan</option>
-                            <option value="Menunggu Konfirmasi">Menunggu Konfirmasi</option>
-                            <option value="UTJ">UTJ</option>
-                            <option value="Sudah DP">Sudah DP</option>
-                            <option value="Sedang Dibangun">Rumah Ready</option>
+                            <option value="Sold Out">Sold Out</option>
+                            <option value="Rumah Ready">Rumah Ready</option>
                             <option value="Kosong">Kosongkan</option>
                         </select>
                     </div>
@@ -318,8 +314,7 @@ sup {
                             <select class="form-control" id="status">
                                 <option value=""> &nbsp; Filter</option>
                                 <option value="Dipesan"> &nbsp; Dipesan</option>
-                                <option value="Menunggu Konfirmasi"> &nbsp; Menunggu Konfirmasi</option>
-                                <option value="Sudah DP"> &nbsp; Sudah DP</option>
+                                <option value="Sold Out"> &nbsp; Sold Out</option>
                                 <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
                             </select>
                         </div>

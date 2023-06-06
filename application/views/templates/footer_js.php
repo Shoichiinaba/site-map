@@ -1,19 +1,3 @@
-<!-- date range picker JS -->
-<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-<script type="text/javascript">
-$(function() {
-    $('input[name="daterange"]').daterangepicker({
-        opens: 'left'
-    }, function(start, end, label) {
-        console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
-            'YYYY-MM-DD'));
-        alert(start);
-    });
-});
-</script>
-
 <!--   Core JS Files   -->
 <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
@@ -35,6 +19,21 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
     integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
 </script>
 <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+<!-- date range picker JS -->
+<script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script type="text/javascript">
+$(function() {
+    $('input[name="daterange"]').daterangepicker({
+        opens: 'left'
+    }, function(start, end, label) {
+        console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+            'YYYY-MM-DD'));
+        alert(start);
+    });
+});
+</script>
 
 </body>
 
