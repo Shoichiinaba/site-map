@@ -93,14 +93,10 @@ class Home extends CI_Controller
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
             $color = 'yellow';
-        } elseif ($type == 'Sudah DP') {
-            $color = '#60d728';
-        } elseif ($type == 'Menunggu Konfirmasi') {
+        } elseif ($type == 'Sold Out') {
             $color = 'red';
-        } elseif ($type == 'Sedang Dibangun') {
+        } elseif ($type == 'Rumah Ready') {
             $color = '#00b4ff';
-        } elseif ($type == 'UTJ') {
-            $color = '#cb0c9f8c';
         }
         if ($type == 'Kosong') {
 
