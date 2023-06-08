@@ -544,9 +544,14 @@
         if ($(this).val() == '') {
             $('#tgl-trans, #nominal').attr('disabled', true);
             $('#btn-form-trans').hide(300);
+            $('#btn-simpan-trans').val('');
+            $('#save-change-denah').attr("data-bs-dismiss", "modal");
+            
         } else {
             $('#tgl-trans, #nominal').removeAttr('disabled', true);
             $('#btn-form-trans').show(300)
+            $('#save-change-denah').removeAttr("data-bs-dismiss", true);
+            $('#btn-simpan-trans').val('action')
         }
         // alert($(this).val())
 
@@ -570,7 +575,8 @@
                 load_data_transaksi();
                 $('#tgl-trans, #nominal').attr('disabled', true);
                 $('#btn-form-trans').hide(300);
-                $('#status-trans, #nominal').val('').change()
+                $('#status-trans, #nominal').val('').change();
+                $('#save-change-denah').attr("data-bs-dismiss", "modal");
                 alert('Transaksi berhasil di upload..');
             },
             error: function() {
@@ -764,6 +770,15 @@
                     save_change_denah();
                 } else {
                     alert('Silahkan kosongkan data unit terlebih dahulu !');
+                }
+            } else if ($('#type').val() == 'Dipesan') {
+
+                if ($('#btn-simpan-trans').val() == 'action') {
+                    alert('Silahkan simpan data transaksi terlebih dahulu !');
+                } else {
+                    $(this).html('Loading...');
+                    $(this).attr('disabled', true);
+                    save_change_denah();
                 }
             } else {
                 // $('#type-unit').remmoveClass('required');

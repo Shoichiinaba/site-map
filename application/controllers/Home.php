@@ -899,6 +899,8 @@ class Home extends CI_Controller
             }
         } else {
             $data = [
+                'id_trans_denahs' => $id_trans_denahs,
+                'status_trans' => $status_trans,
                 'nama_cus' => $nama_cus,
                 'no_wa' => $no_wa,
                 'tgl_trans' => $tgl_trans,
