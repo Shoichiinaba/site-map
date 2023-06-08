@@ -845,7 +845,7 @@ class Home extends CI_Controller
                         </tr>';
             }
             echo '<script>
-                        if ($("#type").val("Sold Out")) {
+                        if ($("#type").val()=="Sold Out") {
                             $(".btn-delete-transaksi").hide();
                         } else {
                             $(".btn-delete-transaksi").show();
