@@ -20,7 +20,7 @@ class FormDataModel extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    
+
     public function simpanData($id_customer, $nama, $email, $telepon)
     {
         // Periksa apakah data sudah ada dalam database
