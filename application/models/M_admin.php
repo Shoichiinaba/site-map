@@ -65,7 +65,7 @@ class M_admin extends CI_Model
 		$this->db->select('*');
 		$this->db->from('site_plan');
 		$this->db->Join('perumahan', ' perumahan.id_perum = site_plan.id_perum_siteplan');
-		$this->db->where('nama', $perum); 
+		$this->db->where('nama', $perum);
 		$this->db->where('area', $area);
 		$query = $this->db->get();
 		return $query->result();
@@ -106,7 +106,51 @@ class M_admin extends CI_Model
 			->delete('upload');
 		return $delete;
 	}
+	function m_update_nama_cus($id, $nama_cus, $no_wa)
+	{
+
+		$update = $this->db->set('nama_cus', $nama_cus)
+			->set('no_wa', $no_wa)
+			->where('id_trans_denahs', $id)
+			->update('transaksi');
+		return $update;
+	}
+
+	function m_insert_sold_out($data)
+	{
+		$result = $this->db->insert('transaksi', $data);
+		return $result;
+	}
+	function m_update_sold_out($id_trans, $tgl_trans)
+	{
+		$update = $this->db->set('tgl_trans', $tgl_trans)
+			->where('id_trans', $id_trans)
+			->update('transaksi');
+		return $update;
+	}
+	function m_upload_transaksi($data)
+	{
+		$result = $this->db->insert('transaksi', $data);
+		return $result;
+	}
+	function m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal)
+	{
+		
+		$update = $this->db->set('tgl_trans', $tgl_trans)
+		->set('nominal', $nominal)
+		->where('id_trans', $id_trans)
+			->update('transaksi');
+		return $update;
+	}
+	function m_delete_data_transaksi($id_trans)
+	{
+		$delete = $this->db->where('id_trans', $id_trans)
+			->delete('transaksi');
+		return $delete;
+	}
 }
+
+
 
 /* End of file M_admin.php */
 /* Location: ./application/models/M_admin.php */
