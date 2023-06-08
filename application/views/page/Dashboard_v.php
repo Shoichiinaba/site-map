@@ -167,8 +167,7 @@ $(document).ready(function() {
         }
     });
 });
-</script>
-<script>
+
 var chartData = <?php echo json_encode($ChartData); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
 var labels = [];
