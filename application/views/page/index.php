@@ -546,7 +546,7 @@
             $('#btn-form-trans').hide(300);
             $('#btn-simpan-trans').val('');
             $('#save-change-denah').attr("data-bs-dismiss", "modal");
-            
+
         } else {
             $('#tgl-trans, #nominal').removeAttr('disabled', true);
             $('#btn-form-trans').show(300)
@@ -736,9 +736,11 @@
             }
         });
     }
+
     $('#type').change(function() {
         if ($(this).val() == 'Dipesan') {
             $('#nama-cus, #no-wa, #status-trans').removeAttr('disabled', true)
+            $('.btn-delete-transaksi').show();
         } else if ($(this).val() == 'Sold Out') {
             $('#nama-cus, #no-wa, #status-trans, #nominal').attr('disabled', true)
             $('#tgl-trans').removeAttr('disabled', true);
