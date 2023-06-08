@@ -845,7 +845,12 @@ class Home extends CI_Controller
                         </tr>';
             }
             echo '<script>
-                                $("#nama-cus").val("' . $nama_cus . '");
+                        if ($("#type").val("Sold Out")) {
+                            $(".btn-delete-transaksi").hide();
+                        } else {
+                            $(".btn-delete-transaksi").show();
+                        }
+                          $("#nama-cus").val("' . $nama_cus . '");
                                 $("#no-wa").val("' . $no_wa . '");
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
