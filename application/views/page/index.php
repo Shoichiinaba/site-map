@@ -119,8 +119,8 @@
                         </div>
                         <br><br>
                         <div class="controls-keterangan">
-                            <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
-                            <p><span class="badge bg-gradient-danger">Sold Out</span></P>
+                            <p><span class="badge bg-gradient-danger">Dipesan</span></P>
+                            <p><span style="background-color: yellow" class="badge text-dark">Sold Out</span></P>
                             <p><span class="badge bg-gradient-info">Rumah Ready</span></P>
                         </div>
                     </div>
@@ -175,7 +175,7 @@
         </div>
     </div>
 </div>
-<input type="text" id="progres-berkas" value="">
+<input type="text" id="progres-berkas" value="" hidden>
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">

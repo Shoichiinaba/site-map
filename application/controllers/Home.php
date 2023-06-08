@@ -96,9 +96,9 @@ class Home extends CI_Controller
 
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
-            $color = 'yellow';
-        } elseif ($type == 'Sold Out') {
             $color = 'red';
+        } elseif ($type == 'Sold Out') {
+            $color = 'yellow';
         } elseif ($type == 'Rumah Ready') {
             $color = '#00b4ff';
         }
