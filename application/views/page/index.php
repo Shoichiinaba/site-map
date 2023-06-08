@@ -119,8 +119,8 @@
                         </div>
                         <br><br>
                         <div class="controls-keterangan">
-                            <p><span style="background-color: yellow" class="badge text-dark">Dipesan</span></P>
-                            <p><span class="badge bg-gradient-danger">Sold Out</span></P>
+                            <p><span class="badge bg-gradient-danger">Dipesan</span></P>
+                            <p><span style="background-color: yellow" class="badge text-dark">Sold Out</span></P>
                             <p><span class="badge bg-gradient-info">Rumah Ready</span></P>
                         </div>
                     </div>
