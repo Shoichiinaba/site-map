@@ -175,7 +175,7 @@
         </div>
     </div>
 </div>
-<input type="text" id="progres-berkas" value="">
+<input type="text" id="progres-berkas" value="" hidden>
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog  modal-lg">
