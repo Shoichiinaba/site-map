@@ -69,8 +69,8 @@ class Home extends CI_Controller
             foreach ($query->result() as $row) {
                 $id = $row->id_perum;
                 $ids = Denah_model::where('id_perum', $id)->get();
-            // //     $ids = Denah_model::all();
-                    return $this->output
+                // //     $ids = Denah_model::all();
+                return $this->output
                     ->set_content_type('application/json')
                     ->set_status_header(200)
                     ->set_output(json_encode([
@@ -87,8 +87,12 @@ class Home extends CI_Controller
         // $this->load_db_connection();
         $id = $this->input->post('id');
         $code = $this->input->post('code');
+        $type_unit = $this->input->post('type_unit');
         $type = $this->input->post('type');
         $desc = $this->input->post('desc');
+        $nama_cus = $this->input->post('nama_cus');
+        $no_wa = $this->input->post('no_wa');
+        $tgl_trans = $this->input->post('tgl_trans');
 
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
@@ -135,12 +139,57 @@ class Home extends CI_Controller
                     } else {
                         unlink('./upload/doc/' . $row->blanko);
                     }
+                    if ($row->pas_foto == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->pas_foto);
+                    }
+
+                    if ($row->spt == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->spt);
+                    }
+
+                    if ($row->bpjs == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->bpjs);
+                    }
+
+                    if ($row->doc1 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc1);
+                    }
+
+                    if ($row->doc2 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc2);
+                    }
+
+                    if ($row->doc3 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc3);
+                    }
+
+                    if ($row->doc4 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc4);
+                    }
+
+                    if ($row->doc5 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc5);
+                    }
+
+                    if ($row->doc6 == '') {
+                    } else {
+                        unlink('.uppload/doc/' . $row->doc6);
+                    }
                 }
                 $this->M_admin->m_delete_all_document($id_upload);
                 // $this->M_admin->m_update_progres($id_doc_kapling, $progres);
             };
+
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type' => $type, 'description' => '', 'color' => $color, 'status_pembayaran' => '', 'progres_berkas' => '0']);
+                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => '', 'color' => $color, 'status_pembayaran' => '', 'progres_berkas' => '0']);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -151,10 +200,49 @@ class Home extends CI_Controller
                         'color' => $color,
                     ],
                 ]));
+        } else if ($type == 'Sold Out') {
+
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id' AND status_trans = 'Sold Out'";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    $id_trans = $row->id_trans;
+                }
+                $this->M_admin->m_update_sold_out($id_trans, $tgl_trans);
+            } else {
+                $data = [
+                    'id_trans_denahs' => $id,
+                    'nama_cus' => $nama_cus,
+                    'no_wa' => $no_wa,
+                    'status_trans' => 'Sold Out',
+                    'tgl_trans' => $tgl_trans,
+                ];
+                $this->M_admin->m_insert_sold_out($data);
+            }
+            $denah = Denah_model::where('id_denahs', $id)
+                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'message' => '',
+                    'results' => [
+                        'id_denahs' => $id,
+                        'code' => $code,
+                        'color' => $color,
+                    ],
+                ]));
         } else {
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                }
+                $this->M_admin->m_update_nama_cus($id, $nama_cus, $no_wa);
+            }
 
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type' => $type, 'description' => $desc, 'color' => $color]);
+                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -232,11 +320,11 @@ class Home extends CI_Controller
                             </div>',
             ];
 
-            if ($result->type == "Dipesan") {
-                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
-                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\', \'' . $result->status_pembayaran . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
+            if ($result->type == "Dipesan" or $result->type == "Sold Out") {
+                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
+                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
             } else {
-                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
+                $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
             $data_arr[] = $data;
         }
@@ -274,7 +362,16 @@ class Home extends CI_Controller
                 $skk = $row->skk;
                 $slip_g = $row->slip_g;
                 $rek_koran = $row->rek_koran;
+                $pas_foto = $row->pas_foto;
+                $spt = $row->spt;
+                $bpjs = $row->bpjs;
                 $blanko = $row->blanko;
+                $doc1 = $row->doc1;
+                $doc2 = $row->doc2;
+                $doc3 = $row->doc3;
+                $doc4 = $row->doc4;
+                $doc5 = $row->doc5;
+                $doc6 = $row->doc6;
                 if ($status_pembayaran == 'cash') {
                     if ($ktp == '') {
                         echo '<li><span><sup>*</sup>KTP</span></li>';
@@ -299,13 +396,7 @@ class Home extends CI_Controller
                     } else {
                         echo ' <li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li>';
                     }
-
-                    if ($blanko == '') {
-                        echo '<li><span><sup>*</sup>BLANKO</span></li>';
-                    } else {
-                        echo '<li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></li>';
-                    }
-                } else if ($status_pembayaran == 'kpr') {
+                } else if ($status_pembayaran == 'kpr-kom') {
 
                     if ($ktp == '') {
                         echo '<li><span><sup>*</sup>KTP</span></li>';
@@ -333,25 +424,144 @@ class Home extends CI_Controller
                     if ($skk == '') {
                         echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
                     } else {
-                        echo '<li> lass="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></li>';
+                        echo '<li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li>';
                     }
 
                     if ($slip_g == '') {
                         echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
                     } else {
-                        echo '<li> lass="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></li>';
+                        echo '<li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
                     }
 
                     if ($rek_koran == '') {
                         echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
                     } else {
-                        echo '<li> lass="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></li>';
+                        echo '<li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
                     }
+                    if ($pas_foto == '') {
+                        echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                    } else {
 
+                        echo '<li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($spt == '') {
+                        echo '<li><span><sup>*</sup>SPT</span></li>';
+                    } else {
+
+                        echo '<li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($bpjs == '') {
+                        echo '<li><span><sup>*</sup>BPJS</span></li>';
+                    } else {
+
+                        echo '<li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
                     if ($blanko == '') {
                         echo '<li><span><sup>*</sup>BLANKO</span></li>';
                     } else {
-                        echo '<li> lass="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></li>';
+                        echo '<li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                } else if ($status_pembayaran == 'kpr-sub') {
+
+                    if ($ktp == '') {
+                        echo '<li><span><sup>*</sup>KTP</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li>';
+                    }
+
+                    if ($kk == '') {
+                        echo ' <li><span><sup>*</sup>KK </span></li>';
+                    } else {
+                        echo ' <li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+
+                    if ($npwp == '') {
+                        echo ' <li><span><sup>*</sup>NPWP </span></li>';
+                    } else {
+                        echo ' <li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+
+                    if ($buku_nikah == '') {
+                        echo ' <li><span><sup>*</sup>BUKU NIKAH</span> </li>';
+                    } else {
+                        echo ' <li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($skk == '') {
+                        echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+
+                    if ($slip_g == '') {
+                        echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+
+                    if ($rek_koran == '') {
+                        echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($pas_foto == '') {
+                        echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                    } else {
+
+                        echo '<li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($spt == '') {
+                        echo '<li><span><sup>*</sup>SPT</span></li>';
+                    } else {
+
+                        echo '<li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($bpjs == '') {
+                        echo '<li><span><sup>*</sup>BPJS</span></li>';
+                    } else {
+
+                        echo '<li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($blanko == '') {
+                        echo '<li><span><sup>*</sup>BLANKO</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+
+                    if ($doc1 == '') {
+
+                        echo '<li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc1 . '" data-flied="doc1" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($doc2 == '') {
+
+                        echo '<li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc2 . '" data-flied="doc2" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($doc3 == '') {
+
+                        echo '<li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc3 . '" data-flied="doc3" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($doc4 == '') {
+
+                        echo '<li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc4 . '" data-flied="doc4" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($doc5 == '') {
+
+                        echo '<li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc5 . '" data-flied="doc5" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR <i class="ni ni-check-bold"></i></a></span></li>';
+                    }
+                    if ($doc6 == '') {
+
+                        // echo '<li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li>';
+                    } else {
+                        echo '<li class="pdf" data-pdf="' . $doc6 . '" data-flied="doc6" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM <i class="ni ni-check-bold"></i></a></span></li>';
                     }
                 }
 
@@ -363,8 +573,7 @@ class Home extends CI_Controller
                 echo ' <li><span><sup>*</sup>KK </span></li>';
                 echo ' <li><span>NPWP </span></li>';
                 echo ' <li><span>BUKU NIKAH</span> </li>';
-                echo ' <li><span><sup>*</sup>BLANKO </span> </li>';
-            } else if ($status_pembayaran == 'kpr') {
+            } else if ($status_pembayaran == 'kpr-sub') {
 
                 echo '<li><span><sup>*</sup>KTP </span></li>';
                 echo '<li><span><sup>*</sup>KK </span></li>';
@@ -373,6 +582,30 @@ class Home extends CI_Controller
                 echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
                 echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
                 echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                echo '<li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li>';
+                echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                echo '<li><span><sup>*</sup>SPT</span></li>';
+                echo '<li><span><sup>*</sup>BPJS</span></li>';
+                echo '<li><span><sup>*</sup>BLANKO</span></li>';
+                echo '<li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li>';
+                echo '<li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li>';
+                echo '<li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li>';
+                echo '<li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li>';
+                echo '<li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li>';
+                echo '<li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li>';
+            } else if ($status_pembayaran == 'kpr-kom') {
+
+                echo '<li><span><sup>*</sup>KTP </span></li>';
+                echo '<li><span><sup>*</sup>KK </span></li>';
+                echo '<li><span><sup>*</sup>NPWP </span></li>';
+                echo '<li><span><sup>*</sup>BUKU NIKAH</span></li>';
+                echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
+                echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
+                echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                echo '<li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li>';
+                echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                echo '<li><span><sup>*</sup>SPT</span></li>';
+                echo '<li><span><sup>*</sup>BPJS</span></li>';
                 echo '<li><span><sup>*</sup>BLANKO</span></li>';
             }
             echo '<input id="id-upload" type="text" hidden  value="">';
@@ -391,21 +624,7 @@ class Home extends CI_Controller
                         $("#file-doc").val($(this).data("pdf"));
                     });
 
-                    var id_upload = $("#id-upload").val();
-                    if (id_upload == "") {
-
-                        $("#select-pembayaran").removeAttr("readonly", true);
-                    } else {
-                        $("#select-pembayaran").attr("readonly", true);
-                    }
-                    $("#select-pembayaran").click(function(e) {
-                            var id_upload = $("#id-upload").val();
-                            if (id_upload == "") {
-
-                            } else {
-                                alert("Silahkan kosongkan data unit kapling, jika ingin merubahnya!!")
-                            }
-                        });
+                   
                 // });
             </script>';
     }
@@ -419,22 +638,45 @@ class Home extends CI_Controller
         $select_document = $this->input->post('select-document');
         if ($select_pembayaran == 'cash') {
             $nilai = [
-                'ktp' => '45',
-                'kk' => '45',
+                'ktp' => '50',
+                'kk' => '50',
                 'npwp' => '0',
                 'buku_nikah' => '0',
-                'blanko' => '10',
+
             ];
-        } else if ($select_pembayaran == 'kpr') {
+        } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '10',
-                'kk' => '10',
+                'ktp' => '5',
+                'kk' => '5',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
-                'slip_g' => '20',
-                'rek_koran' => '20',
+                'slip_g' => '10',
+                'rek_koran' => '10',
+                'pas_foto' => '10',
+                'spt' => '10',
+                'bpjs' => '10',
                 'blanko' => '10',
+            ];
+        } else if ($select_pembayaran == 'kpr-sub') {
+            $nilai = [
+                'ktp' => '5',
+                'kk' => '5',
+                'npwp' => '5',
+                'buku_nikah' => '5',
+                'skk' => '5',
+                'slip_g' => '5',
+                'rek_koran' => '5',
+                'pas_foto' => '5',
+                'spt' => '5',
+                'bpjs' => '5',
+                'blanko' => '5',
+                'doc1' => '5',
+                'doc2' => '5',
+                'doc3' => '5',
+                'doc4' => '10',
+                'doc5' => '10',
+                'doc6' => '10',
             ];
         }
         $sql = "SELECT *FROM denahs, upload WHERE upload.id_doc_kapling = denahs.id_denahs AND upload.id_doc_kapling = $id_doc_kapling";
@@ -518,27 +760,48 @@ class Home extends CI_Controller
         unlink('./upload/doc/' . $file_doc);
         if ($select_pembayaran == 'cash') {
             $nilai = [
-                'ktp' => '45',
-                'kk' => '45',
+                'ktp' => '50',
+                'kk' => '50',
                 'npwp' => '0',
                 'buku_nikah' => '0',
-                'blanko' => '10',
 
             ];
-        } else if ($select_pembayaran == 'kpr') {
+        } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '10',
-                'kk' => '10',
+                'ktp' => '5',
+                'kk' => '5',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
-                'slip_g' => '20',
-                'rek_koran' => '20',
+                'slip_g' => '10',
+                'rek_koran' => '10',
+                'pas_foto' => '10',
+                'spt' => '10',
+                'bpjs' => '10',
                 'blanko' => '10',
+            ];
+        } else if ($select_pembayaran == 'kpr-sub') {
+            $nilai = [
+                'ktp' => '5',
+                'kk' => '5',
+                'npwp' => '5',
+                'buku_nikah' => '5',
+                'skk' => '5',
+                'slip_g' => '5',
+                'rek_koran' => '5',
+                'pas_foto' => '5',
+                'spt' => '5',
+                'bpjs' => '5',
+                'blanko' => '5',
+                'doc1' => '5',
+                'doc2' => '5',
+                'doc3' => '5',
+                'doc4' => '10',
+                'doc5' => '10',
+                'doc6' => '10',
             ];
         }
         $sql = "SELECT *FROM denahs, upload WHERE upload.id_doc_kapling = denahs.id_denahs AND upload.id_upload = $id_upload";
-
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
@@ -562,5 +825,92 @@ class Home extends CI_Controller
                 // }
             }
         }
+    }
+    function load_data_transaksi()
+    {
+        $id_trans_denahs = $this->input->post('id-trans-denahs');
+
+        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_trans_denahs";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $nama_cus = $row->nama_cus;
+                $no_wa = $row->no_wa;
+                echo $row->status_trans . $row->nama_cus;
+                echo '<tr class="tr">
+                        <td class="text-center">' . $row->status_trans . '</td>
+                        <td class="text-center">' . $row->tgl_trans . '</td>
+                        <td class="text-center">' . $row->nominal . '</td>
+                        <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
+                        </tr>';
+            }
+            echo '<script>
+                                $("#nama-cus").val("' . $nama_cus . '");
+                                $("#no-wa").val("' . $no_wa . '");
+                                $(".btn-delete-transaksi").click(function() {
+                                    alert($(this).data("id-trans"));
+                                    var el = this;
+                                
+                                    // Delete id
+                                    var confirmalert = confirm("Apakah anda yakin untuk menghapus transaksi ..?");
+                                    if (confirmalert == true) {
+                                        let formData = new FormData();
+                                        formData.append("id-trans", $(this).data("id-trans"));
+                                        $.ajax({
+                                            type: "POST",
+                                            url: "' . site_url("Home/delete_data_transaksi") . '",
+                                            data: formData,
+                                            cache: false,
+                                            processData: false,
+                                            contentType: false,
+                                            success: function(msg) {
+                                                $(el).closest("tr").css("background", "tomato");
+                                                $(el).closest("tr").fadeOut(300, function() {
+                                                    $(this).remove();
+                                                });
+                                            }
+                                        });
+                                    }
+                                });        
+                            </script>';
+        } else {
+
+            echo '<script>
+                                    $("#nama-cus").val("");
+                                    $("#no-wa").val("");
+                                    
+                                    </script>';
+        }
+    }
+    function upload_transaksi()
+    {
+        $id_trans_denahs = $this->input->post('id-trans-denahs');
+        $nama_cus = $this->input->post('nama-cus');
+        $no_wa = $this->input->post('no-wa');
+        $status_trans = $this->input->post('status-trans');
+        $tgl_trans = $this->input->post('tgl-trans');
+        $nominal = $this->input->post('nominal');
+        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id_trans_denahs' AND status_trans = '$status_trans'";
+        $query = $this->db->query($sql);
+        if ($query->num_rows() > 0) {
+            foreach ($query->result() as $row) {
+                $id_trans = $row->id_trans;
+                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal);
+            }
+        } else {
+            $data = [
+                'nama_cus' => $nama_cus,
+                'no_wa' => $no_wa,
+                'tgl_trans' => $tgl_trans,
+                'nominal' => $nominal,
+            ];
+            $this->M_admin->m_upload_transaksi($data);
+        }
+    }
+
+    function delete_data_transaksi()
+    {
+        $id_trans = $this->input->post('id-trans');
+        $this->M_admin->m_delete_data_transaksi($id_trans);
     }
 }
