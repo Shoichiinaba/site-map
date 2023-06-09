@@ -119,7 +119,7 @@ class Dashboard_Model extends CI_Model
 
     }
 
-	public function getTransaksiByBulan($id_perum ='')
+	public function getTransaksiByBulan()
 	{
 
 		$this->db->select("MONTHNAME(STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(tgl_trans, '/', 2), '/', -1), '%m')) AS bulan, status_trans, COUNT(*) AS jumlah");

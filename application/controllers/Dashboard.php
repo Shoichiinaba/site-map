@@ -36,7 +36,7 @@ class Dashboard extends AUTH_Controller{
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
         $data['transaksi']          = $this->Dashboard_Model->getTransaksiByBulan();
-        $id_perum = $this->input->get('id_perum');
+        // $id_perum = $this->input->get('id_perum');
         $bulan = [];
         $status_trans = [];
         $data_jumlah = [];
