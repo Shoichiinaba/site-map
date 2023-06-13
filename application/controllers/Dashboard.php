@@ -7,6 +7,12 @@ use Illuminate\Container\Container;
 
 class Dashboard extends AUTH_Controller
 {
+    public $session;
+    public $M_admin;
+    public $Dashboard_Model;
+    public $userdata;
+    public $uri;
+
     var $template = 'templates/index';
 
 	public function __construct()
@@ -36,7 +42,7 @@ class Dashboard extends AUTH_Controller
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
-        $data['transaksi'] = $this->Dashboard_Model->getTransaksiByBulan();
+        $data['transaksi']          = $this->Dashboard_Model->getTransaksiByBulan();
         $this->load->view($this->template, $data);
     }
 
@@ -53,7 +59,7 @@ class Dashboard extends AUTH_Controller
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
-        $data['transaksi']          = $this->Dashboard_Model->getstatusByBulan();
+        $data['transaksi']         = $this->Dashboard_Model->getstatusByBulan();
         $this->load->view($this->template, $data);
 
     }

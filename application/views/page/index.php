@@ -164,6 +164,8 @@
                             <th>Description</th>
                             <th>Progress</th>
                             <th>Action</th>
+                            <th>Tgl Update</th>
+                            <th>Admin</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -274,6 +276,8 @@
                                     <th>TANGGAL</th>
                                     <th>NOMINAL</th>
                                     <th>ACTION</th>
+                                    <th>TGL UPDATE</th>
+                                    <th>ADMIN</th>
                                 </tr>
                             </thead>
                             <tbody id="data-transaksi">
@@ -344,7 +348,21 @@
                     </div>
                 </div>
                 <hr class="mt-0" style="border-top: solid #00000040 !important;">
-                <div id="data-document" class="row"></div>
+                <table class="table align-items-center mb-0" style="overflow: auto;display: block;">
+                    <thead>
+                        <tr class="tr bg-tr">
+                            <th>DOCUMENT</th>
+                            <th>TGL UPDATE</th>
+                            <th>ADMIN</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-document">
+                        <!-- <tr>
+                            <td><li><span><sup>*</sup>KTP</span></li></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                <div id="" class="row"></div>
                 <!-- <center>
                     <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> Mohon lampirkan Blanko
                         jika unit kapling subsidi!</span>
@@ -870,6 +888,14 @@
                 {
                     data: 'action',
                     name: 'action'
+                },
+                {
+                    data: 'tgl_update',
+                    name: 'tgl_update'
+                },
+                {
+                    data: 'user_admin',
+                    name: 'user_admin'
                 }
             ],
         });

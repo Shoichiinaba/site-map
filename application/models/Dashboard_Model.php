@@ -119,7 +119,7 @@ class Dashboard_Model extends CI_Model
 		$this->db->select('MONTHNAME(STR_TO_DATE(tgl_trans, "%d/%m/%Y")) AS bulan,status_trans,id_perum, COUNT(*) AS jumlah');
 		$this->db->from('transaksi');
 		$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
-		$this->db->group_by('id_perum, bulan, status_trans');
+		$this->db->group_by('status_trans');
 		$query = $this->db->get();
 
 		return $query->result();
