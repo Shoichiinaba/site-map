@@ -93,7 +93,8 @@ class Home extends CI_Controller
         $nama_cus = $this->input->post('nama_cus');
         $no_wa = $this->input->post('no_wa');
         $tgl_trans = $this->input->post('tgl_trans');
-
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
             $color = 'red';
@@ -189,7 +190,16 @@ class Home extends CI_Controller
             };
 
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => '', 'color' => $color, 'status_pembayaran' => '', 'progres_berkas' => '0']);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => '',
+                    'color' => $color,
+                    'status_pembayaran' => '',
+                    'progres_berkas' => '0',
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -208,7 +218,7 @@ class Home extends CI_Controller
                 foreach ($query->result() as $row) {
                     $id_trans = $row->id_trans;
                 }
-                $this->M_admin->m_update_sold_out($id_trans, $tgl_trans);
+                $this->M_admin->m_update_sold_out($id_trans, $tgl_trans, $user_admin, $tgl_update);
             } else {
                 $data = [
                     'id_trans_denahs' => $id,
@@ -216,11 +226,20 @@ class Home extends CI_Controller
                     'no_wa' => $no_wa,
                     'status_trans' => 'Sold Out',
                     'tgl_trans' => $tgl_trans,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
                 ];
                 $this->M_admin->m_insert_sold_out($data);
             }
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => $desc,
+                    'color' => $color,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -242,7 +261,14 @@ class Home extends CI_Controller
             }
 
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => $desc,
+                    'color' => $color,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -326,6 +352,8 @@ class Home extends CI_Controller
             } else {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
+            $data['tgl_update'] = $result->tgl_update;
+            $data['user_admin'] = $result->user_admin;
             $data_arr[] = $data;
         }
 
@@ -842,7 +870,9 @@ class Home extends CI_Controller
                         <td class="text-center">' . $row->tgl_trans . '</td>
                         <td class="text-center">' . $row->nominal . '</td>
                         <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
-                        </tr>';
+                        <td class="text-center">' . $row->tgl_update . '</td>
+                        <td class="text-center">' . $row->user_admin . '</td>
+                    </tr>';
             }
             echo '<script>
                         if ($("#type").val()=="Sold Out") {
@@ -895,12 +925,15 @@ class Home extends CI_Controller
         $status_trans = $this->input->post('status-trans');
         $tgl_trans = $this->input->post('tgl-trans');
         $nominal = $this->input->post('nominal');
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
+
         $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id_trans_denahs' AND status_trans = '$status_trans'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_trans = $row->id_trans;
-                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal);
+                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update);
             }
         } else {
             $data = [
@@ -910,6 +943,8 @@ class Home extends CI_Controller
                 'no_wa' => $no_wa,
                 'tgl_trans' => $tgl_trans,
                 'nominal' => $nominal,
+                'user_admin' => $user_admin,
+                'tgl_update' => $tgl_update
             ];
             $this->M_admin->m_upload_transaksi($data);
         }

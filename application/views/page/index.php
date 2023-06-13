@@ -164,6 +164,8 @@
                             <th>Description</th>
                             <th>Progress</th>
                             <th>Action</th>
+                            <th>Tgl Update</th>
+                            <th>Admin</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -274,6 +276,8 @@
                                     <th>TANGGAL</th>
                                     <th>NOMINAL</th>
                                     <th>ACTION</th>
+                                    <th>TGL UPDATE</th>
+                                    <th>ADMIN</th>
                                 </tr>
                             </thead>
                             <tbody id="data-transaksi">
@@ -870,6 +874,14 @@
                 {
                     data: 'action',
                     name: 'action'
+                },
+                {
+                    data: 'tgl_update',
+                    name: 'tgl_update'
+                },
+                {
+                    data: 'user_admin',
+                    name: 'user_admin'
                 }
             ],
         });

@@ -1,4 +1,6 @@
 <!-- conten -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-xl-3 col-6 mb-xl-0 mb-4">
@@ -36,7 +38,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">UTJ</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_dipesan;  ?>
+                                    <?= $jum_dipesan;  ?>
                                     <span class="text-warning text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -50,20 +52,16 @@
                 <div class="card-body p-2">
                     <div class="row">
                         <div class="col-3">
-                            <div type="button"
-                                class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md btn-tooltip">
-                                <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"
-                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Kautsar: <?=$tolp_sold_k;?>
-                                       | BP2: <?=$tolp_sold_b;?> | Caruban: <?=$tolp_sold_car;?> | AGH: <?=$tolp_sold_agh;?> | Sukoharjo: <?=$tolp_sold_suk;?>"
-                                    data-container="body" data-animation="true"></i>
+                            <div type="button" class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md btn-tooltip">
+                                <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Kautsar: <?= $tolp_sold_k; ?>
+                                       | BP2: <?= $tolp_sold_b; ?> | Caruban: <?= $tolp_sold_car; ?> | AGH: <?= $tolp_sold_agh; ?> | Sukoharjo: <?= $tolp_sold_suk; ?>" data-container="body" data-animation="true"></i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sold Out</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_sold;  ?>
+                                    <?= $jum_sold;  ?>
                                     <span class=" text-danger text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -85,7 +83,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sudah DP</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_null;  ?>
+                                    <?= $jum_null;  ?>
                                     <span class="text-success text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -114,17 +112,82 @@
                         foreach ($perumahan as $data) {
                             $id_perum = $data->id_perum;
                         ?>
-                        <div class="col-lg-6 col-12 ">
-                            <div class="card mb-2">
-                                <div class="card-body p-2">
-                                    <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
-                                    <input type="text" name="id_perum" value="<?= $data->id_perum; ?>">
-                                    <div class="chart">
-                                        <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
+                            <div class="col-lg-6 col-12 ">
+                                <div class="card mb-2">
+                                    <div class="card-body p-2">
+                                        <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
+                                        <input type="text" name="id_perum" value="<?= $data->id_perum; ?>">
+                                        <!-- tes develop -->
+                                        <div class="chart">
+                                            <canvas id="myChart<?= $data->id_perum; ?>" class="chart-canvas" height="200px"></canvas>
+                                            <?php
+                                            $labels = [];
+                                            $datasets = [];
+                                            foreach ($transaksi as $chart) {
+                                                if ($chart->id_perum == $id_perum) {
+                                                    $index = array_search($chart->bulan, $labels);
+                                                    if ($index === false) {
+                                                        $labels[] = $chart->bulan;
+                                                        $datasets[$chart->status_trans] = [$chart->jumlah];
+                                                    } else {
+                                                        $datasets[$chart->status_trans][$index] = $chart->jumlah;
+                                                    }
+                                            ?>
+                                                    <!-- <?= $chart->bulan; ?> <br>
+                                                    <?= $chart->status_trans; ?> <br>
+                                                    <?= $chart->jumlah; ?> <br> -->
+                                            <?php
+                                                }
+                                                echo $status_trans;
+                                            }
+                                            // rsort($labels);
+                                            ?>
+                                            <script>
+                                                var ctx<?= $data->id_perum; ?> = document.getElementById(
+                                                    'myChart<?= $data->id_perum; ?>').getContext('2d');
+                                                var chart = new Chart(ctx<?= $data->id_perum; ?>, {
+                                                    type: 'bar',
+                                                    data: {
+                                                        labels: <?= json_encode($labels); ?>,
+                                                        datasets: [
+                                                            <?php
+                                                            foreach ($datasets as $status_trans => $jumlah) {
+                                                                $backgroundColor = '';
+                                                                if ($status_trans == 'UTJ') {
+                                                                    $backgroundColor = 'rgba(255, 0, 0, 0.7)';
+                                                                } elseif ($status_trans == 'DP') {
+                                                                    $backgroundColor = 'rgba(0, 255, 0, 0.7)';
+                                                                } elseif ($status_trans == 'Sold Out') {
+                                                                    $backgroundColor = 'rgba(255, 255, 0, 0.7)';
+                                                                }
+                                                            ?> {
+                                                                    label: '<?= $status_trans; ?>',
+                                                                    data: <?= json_encode($jumlah); ?>,
+                                                                    backgroundColor: '<?= $backgroundColor; ?>',
+                                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                                    borderWidth: 1
+                                                                },
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        ]
+                                                    },
+                                                    options: {
+                                                        scales: {
+                                                            yAxes: [{
+                                                                ticks: {
+                                                                    beginAtZero: true
+                                                                }
+                                                            }]
+                                                        }
+                                                    }
+                                                });
+                                            </script>
+                                        </div>
+                                        <!-- tes develop -->
                                     </div>
                                 </div>
                             </div>
-                        </div>
                         <?php
                         }
                         ?>
@@ -145,59 +208,41 @@
 </div>
 
 <!-- script grafik -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script> -->
 <script type="text/javascript">
-$(document).ready(function() {
-    var bulan = <?php echo $bulan; ?>;
-    var datasets = <?php echo $datasets; ?>;
+    // $(document).ready(function() {
 
-    var ctx = document.getElementById('myChart').getContext('2d');
+
+    var chartData = <?php echo json_encode($ChartData); ?>;
+    var colors = ['#FFFF00', '#0000FF', '#333333'];
+    var labels = [];
+    var data = [];
+
+    chartData.forEach(function(item) {
+        labels.push(item.label);
+        data.push(item.value);
+    });
+
+    var ctx = document.getElementById('barChart').getContext('2d');
     var chart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: bulan,
-            datasets: datasets
+            labels: labels,
+            datasets: [{
+                label: 'Jumlah Rumah Ready',
+                data: data,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
         },
         options: {
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    precision: 0
                 }
             }
         }
     });
-});
-
-var chartData = <?php echo json_encode($ChartData); ?>;
-var colors = ['#FFFF00', '#0000FF', '#333333'];
-var labels = [];
-var data = [];
-
-chartData.forEach(function(item) {
-    labels.push(item.label);
-    data.push(item.value);
-});
-
-var ctx = document.getElementById('barChart').getContext('2d');
-var chart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [{
-            label: 'Jumlah Rumah Ready',
-            data: data,
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgba(75, 192, 192, 1)',
-            borderWidth: 1
-        }]
-    },
-    options: {
-        scales: {
-            y: {
-                beginAtZero: true,
-                precision: 0
-            }
-        }
-    }
-});
 </script>
