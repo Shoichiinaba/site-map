@@ -15,7 +15,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Rumah Ready</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?php echo $jum_ready;  ?>
+                                    <!-- <?php echo $jum_ready;  ?> -->
                                     <span class="text-info text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -37,7 +37,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">UTJ</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_dipesan;  ?>
+                                    <!-- <?=$jum_dipesan;  ?> -->
                                     <span class="text-warning text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -54,17 +54,14 @@
                             <div type="button"
                                 class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md btn-tooltip">
                                 <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"
-                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Kautsar: <?=$tolp_sold_k;?>
-                                       | BP2: <?=$tolp_sold_b;?> | Caruban: <?=$tolp_sold_car;?> | AGH: <?=$tolp_sold_agh;?> | Sukoharjo: <?=$tolp_sold_suk;?>"
-                                    data-container="body" data-animation="true"></i>
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom"></i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sold Out</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_sold;  ?>
+                                    <!-- <?=$jum_sold;  ?> -->
                                     <span class=" text-danger text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -86,7 +83,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sudah DP</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <?=$jum_null;  ?>
+                                    <!-- <?=$jum_null;  ?> -->
                                     <span class="text-success text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -112,87 +109,49 @@
                             </div>
                         </div>
                         <?php
-                                foreach ($perumahan as $data) {
-                                $id_perum = $data->id_perum;
+                                foreach ($status as $data) {
                         ?>
                         <div class="col-lg-6 col-12">
                             <div class="card mb-2">
                                 <div class="card-body p-2">
-                                    <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
+                                    <span class="nav-link-text ms-1"><?= $data->status_trans; ?></span>
                                     <!-- tes develop -->
                                     <div class="chart">
-                                        <canvas id="myChart<?= $data->id_perum; ?>" class="chart-canvas"
-                                            height="200px"></canvas>
-                                        <?php
-                                        foreach ($area_siteplan as $area) :
-                                        if ($area->id_perum_siteplan == $id_perum) {
-                                        $nama = $data->nama;
-                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
-                                        ?>
-                                        <a href="<?php echo site_url('Dashboard/detail/'.$tittle); ?>"
-                                            class="mask bg-gradient-dark opacity-5"></a>
-                                        <?php
-                                            } else {
-                                            }
-                                        endforeach;
-                                        ?>
-                                        <?php
-                                            $labels = [];
-                                            $datasets = [];
-                                            foreach ($transaksi as $chart) {
-                                                if ($chart->id_perum == $id_perum) {
-                                                    $index = array_search($chart->bulan, array_column($labels, 'bulan'));
-                                                    if ($index === false) {
-                                                        $labels[] = ['bulan' => $chart->bulan];
-                                                        $index = count($labels) - 1;
-                                                    }
-                                                    $datasets[$chart->status_trans][$index] = $chart->jumlah;
-                                                }
-                                            }
-
-                                            usort($labels, function ($a, $b) {
-                                                return strtotime($a['bulan']) - strtotime($b['bulan']);
-                                            });
-                                            ?>
+                                        <?php foreach ($transaksi as $chart) {
+        if ($chart->$status_trans == $status_trans) {
+            echo '<canvas id="myChart' . $chart->status_trans . '" class="chart-canvas" height="200px"></canvas>';
+    ?>
                                         <script>
-                                        var ctx<?=$data->id_perum; ?> = document.getElementById(
-                                            'myChart<?=$data->id_perum; ?>').getContext('2d');
-                                        var chart = new Chart(ctx<?=$data->id_perum; ?>, {
+                                        var ctx<?=$chart->status_trans; ?> = document.getElementById(
+                                            'myChart<?=$chart->status_trans; ?>').getContext('2d');
+                                        var chart = new Chart(ctx<?=$chart->status_trans; ?>, {
                                             type: 'bar',
                                             data: {
-                                                labels: <?= json_encode(array_column($labels, 'bulan')); ?>,
-                                                datasets: [
-                                                    <?php
-                                                        $colors = [
-                                                            'UTJ' => 'rgba(255, 0, 0, 0.7)',
-                                                            'DP' => 'rgba(0, 255, 0, 0.7)',
-                                                            'Sold Out' => 'rgba(255, 255, 0, 0.7)'
-                                                        ];
-                                                        foreach ($datasets as $status_trans => $jumlah) {
-                                                            ?> {
-                                                        label: '<?= $status_trans; ?>',
-                                                        data: <?= json_encode(array_values($jumlah)); ?>,
-                                                        backgroundColor: '<?= $colors[$status_trans]; ?>',
-                                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                                        borderWidth: 1
-                                                    },
-                                                    <?php
-                                                        }
-                                                        ?>
-                                                ]
+                                                labels: ['<?= $chart->bulan; ?>'],
+                                                datasets: [{
+                                                    label: '<?= $chart->status_trans; ?>',
+                                                    data: ['<?= $chart->jumlah; ?>'],
+                                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                                                    borderColor: 'rgba(75, 192, 192, 1)',
+                                                    borderWidth: 1
+                                                }]
                                             },
                                             options: {
                                                 scales: {
-                                                    yAxes: [{
-                                                        ticks: {
-                                                            beginAtZero: true
-                                                        }
-                                                    }]
+                                                    y: {
+                                                        beginAtZero: true,
+                                                        precision: 0
+                                                    }
                                                 }
                                             }
                                         });
                                         </script>
+                                        <?php
+        }
+    }
+    ?>
                                     </div>
+
 
                                     <!-- tes develop -->
                                 </div>
