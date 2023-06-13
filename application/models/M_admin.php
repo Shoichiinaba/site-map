@@ -111,7 +111,7 @@ class M_admin extends CI_Model
 	function m_update_nama_cus($id, $nama_cus, $no_wa)
 	{
 
-		$update = $this->db->set('nama_cus', $nama_cus)
+		$update = $this->db->set('nama_cus', 'nama cuss')
 			->set('no_wa', $no_wa)
 			->where('id_trans_denahs', $id)
 			->update('transaksi');

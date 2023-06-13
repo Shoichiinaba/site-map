@@ -95,6 +95,7 @@ class Home extends CI_Controller
         $tgl_trans = $this->input->post('tgl_trans');
         $user_admin = $this->session->userdata('userdata')->nama;
         $tgl_update = date("d/m/Y | H:i:s");
+
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
             $color = 'red';
@@ -726,7 +727,6 @@ class Home extends CI_Controller
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
                         echo '</tr>';
-
                     }
                     if ($spt == '') {
                         echo '<tr class="tr">';
@@ -741,7 +741,6 @@ class Home extends CI_Controller
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
                         echo '</tr>';
-
                     }
                     if ($bpjs == '') {
                         echo '<tr class="tr">';
@@ -756,7 +755,6 @@ class Home extends CI_Controller
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
                         echo '</tr>';
-
                     }
                     if ($blanko == '') {
                         echo '<tr class="tr">';
@@ -1278,6 +1276,31 @@ class Home extends CI_Controller
             foreach ($query->result() as $row) {
                 $nama_cus = $row->nama_cus;
                 $no_wa = $row->no_wa;
+                $kontak = $this->input->post('kontak');
+                //Terlebih dahulu kita trim dl
+                $nomorhp = trim($no_wa);
+                //bersihkan dari karakter yang tidak perlu
+                $nomorhp = strip_tags($nomorhp);
+                // Berishkan dari spasi
+                $nomorhp = str_replace(" ", "", $nomorhp);
+                // bersihkan dari bentuk seperti  (022) 66677788
+                $nomorhp = str_replace("(", "", $nomorhp);
+                // bersihkan dari format yang ada titik seperti 0811.222.333.4
+                $nomorhp = str_replace(".", "", $nomorhp);
+
+                //cek apakah mengandung karakter + dan 0-9
+                if (!preg_match('/[^+0-9]/', trim($nomorhp))) {
+                    // cek apakah no hp karakter 1-3 adalah +62
+                    if (substr(trim($nomorhp), 0, 3) == '+62') {
+                        $nomorhp = trim($nomorhp);
+                        // echo $nomorhp;
+                    }
+                    // cek apakah no hp karakter 1 adalah 0
+                    elseif (substr($nomorhp, 0, 1) == '0') {
+                        $nomorhp = '62' . substr($nomorhp, 1);
+                        // $nomorhp1 = str_replace("'", "", $nomorhp);
+                    }
+                }
                 echo $row->status_trans . $row->nama_cus;
                 echo '<tr class="tr">
                         <td class="text-center">' . $row->status_trans . '</td>
@@ -1295,7 +1318,8 @@ class Home extends CI_Controller
                             $(".btn-delete-transaksi").show();
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
-                                $("#no-wa").val("' . $no_wa . '");
+                                $("#no-wa").val("62' . $nomorhp . '");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62'. $nomorhp .'&text=");
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
                                     var el = this;

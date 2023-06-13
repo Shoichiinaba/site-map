@@ -228,7 +228,9 @@
                             <label for="no-wa" class="form-label">Whatsap</label>
                             <div class="form-group mb-1">
                                 <div class="input-group">
-                                    <span class="input-group-text"><i class="fa fa-whatsapp"></i></span>
+                                    <a class="chat-wa">
+                                        <span class="input-group-text"><i class="fa fa-whatsapp"></i></span>
+                                    </a>
                                     <input class="form-control form-control-sm" placeholder="" type="number" id="no-wa" name="no-wa">
                                 </div>
                             </div>
