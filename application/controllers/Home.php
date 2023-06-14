@@ -93,6 +93,8 @@ class Home extends CI_Controller
         $nama_cus = $this->input->post('nama_cus');
         $no_wa = $this->input->post('no_wa');
         $tgl_trans = $this->input->post('tgl_trans');
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
 
         $color = '#e6e7e8';
         if ($type == 'Dipesan') {
@@ -189,7 +191,16 @@ class Home extends CI_Controller
             };
 
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => '', 'color' => $color, 'status_pembayaran' => '', 'progres_berkas' => '0']);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => '',
+                    'color' => $color,
+                    'status_pembayaran' => '',
+                    'progres_berkas' => '0',
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -208,7 +219,7 @@ class Home extends CI_Controller
                 foreach ($query->result() as $row) {
                     $id_trans = $row->id_trans;
                 }
-                $this->M_admin->m_update_sold_out($id_trans, $tgl_trans);
+                $this->M_admin->m_update_sold_out($id_trans, $tgl_trans, $user_admin, $tgl_update);
             } else {
                 $data = [
                     'id_trans_denahs' => $id,
@@ -216,11 +227,20 @@ class Home extends CI_Controller
                     'no_wa' => $no_wa,
                     'status_trans' => 'Sold Out',
                     'tgl_trans' => $tgl_trans,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
                 ];
                 $this->M_admin->m_insert_sold_out($data);
             }
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => $desc,
+                    'color' => $color,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -242,7 +262,14 @@ class Home extends CI_Controller
             }
 
             $denah = Denah_model::where('id_denahs', $id)
-                ->update(['type_unit' => $type_unit, 'type' => $type, 'description' => $desc, 'color' => $color]);
+                ->update([
+                    'type_unit' => $type_unit,
+                    'type' => $type,
+                    'description' => $desc,
+                    'color' => $color,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ]);
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -326,6 +353,8 @@ class Home extends CI_Controller
             } else {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
+            $data['tgl_update'] = $result->tgl_update;
+            $data['user_admin'] = $result->user_admin;
             $data_arr[] = $data;
         }
 
@@ -355,6 +384,8 @@ class Home extends CI_Controller
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_upload = $row->id_upload;
+                $user_admin = $row->user_admin;
+                $tgl_update = $row->tgl_update;
                 $ktp = $row->ktp;
                 $kk = $row->kk;
                 $npwp = $row->npwp;
@@ -374,194 +405,461 @@ class Home extends CI_Controller
                 $doc6 = $row->doc6;
                 if ($status_pembayaran == 'cash') {
                     if ($ktp == '') {
-                        echo '<li><span><sup>*</sup>KTP</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KTP</span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span class="ktp" data-text="aaa"><sup>*</sup>KTP <i class="ni ni-check-bold"></i></span></a> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span class="ktp" data-text="aaa"><sup>*</sup>KTP <i class="ni ni-check-bold"></i></span></a> </li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($kk == '') {
-                        echo ' <li><span><sup>*</sup>KK </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KK </span></li></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($npwp == '') {
-                        echo ' <li><span>NPWP </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span>NPWP </span></li></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span>NPWP <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($buku_nikah == '') {
-                        echo ' <li><span>BUKU NIKAH</span> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span>BUKU NIKAH</span> </li></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                 } else if ($status_pembayaran == 'kpr-kom') {
 
                     if ($ktp == '') {
-                        echo '<li><span><sup>*</sup>KTP</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KTP</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($kk == '') {
-                        echo ' <li><span><sup>*</sup>KK </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KK </span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($npwp == '') {
-                        echo ' <li><span><sup>*</sup>NPWP </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>NPWP </span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($buku_nikah == '') {
-                        echo ' <li><span><sup>*</sup>BUKU NIKAH</span> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BUKU NIKAH</span> </li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                     if ($skk == '') {
-                        echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($slip_g == '') {
-                        echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
 
                     if ($rek_koran == '') {
-                        echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                     if ($pas_foto == '') {
-                        echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>Pas Foto</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                     if ($spt == '') {
-                        echo '<li><span><sup>*</sup>SPT</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SPT</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                     if ($bpjs == '') {
-                        echo '<li><span><sup>*</sup>BPJS</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BPJS</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                     if ($blanko == '') {
-                        echo '<li><span><sup>*</sup>BLANKO</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BLANKO</span></li>';
+                        echo '<td class="text-center"></td>';
+                        echo '<td class="text-center"></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '</tr>';
                     }
                 } else if ($status_pembayaran == 'kpr-sub') {
 
                     if ($ktp == '') {
-                        echo '<li><span><sup>*</sup>KTP</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KTP</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($kk == '') {
-                        echo ' <li><span><sup>*</sup>KK </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>KK </span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($npwp == '') {
-                        echo ' <li><span><sup>*</sup>NPWP </span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>NPWP </span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($buku_nikah == '') {
-                        echo ' <li><span><sup>*</sup>BUKU NIKAH</span> </li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BUKU NIKAH</span> </li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo ' <li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($skk == '') {
-                        echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($slip_g == '') {
-                        echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($rek_koran == '') {
-                        echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($pas_foto == '') {
-                        echo '<li><span><sup>*</sup>Pas Foto</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($spt == '') {
-                        echo '<li><span><sup>*</sup>SPT</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SPT</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($bpjs == '') {
-                        echo '<li><span><sup>*</sup>BPJS</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-
-                        echo '<li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($blanko == '') {
-                        echo '<li><span><sup>*</sup>BLANKO</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
 
                     if ($doc1 == '') {
 
-                        echo '<li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc1 . '" data-flied="doc1" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc1 . '" data-flied="doc1" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($doc2 == '') {
 
-                        echo '<li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc2 . '" data-flied="doc2" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc2 . '" data-flied="doc2" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($doc3 == '') {
 
-                        echo '<li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc3 . '" data-flied="doc3" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc3 . '" data-flied="doc3" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($doc4 == '') {
 
-                        echo '<li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc4 . '" data-flied="doc4" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc4 . '" data-flied="doc4" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($doc5 == '') {
 
-                        echo '<li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc5 . '" data-flied="doc5" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc5 . '" data-flied="doc5" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                     if ($doc6 == '') {
 
-                        // echo '<li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li></td>';
+                        echo '<td></td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     } else {
-                        echo '<li class="pdf" data-pdf="' . $doc6 . '" data-flied="doc6" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM <i class="ni ni-check-bold"></i></a></span></li>';
+                        echo '<tr class="tr">';
+                        echo '<td><li class="pdf" data-pdf="' . $doc6 . '" data-flied="doc6" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td class="text-center">' . $tgl_update . '</td>';
+                        echo '<td class="text-center">' . $user_admin . '</td>';
+                        echo '<td></td>';
+                        echo '</tr>';
                     }
                 }
 
@@ -569,44 +867,179 @@ class Home extends CI_Controller
             }
         } else {
             if ($status_pembayaran == 'cash') {
-                echo '<li><span><sup>*</sup>KTP</span></li>';
-                echo ' <li><span><sup>*</sup>KK </span></li>';
-                echo ' <li><span>NPWP </span></li>';
-                echo ' <li><span>BUKU NIKAH</span> </li>';
+
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KTP</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KK </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span>NPWP </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span>BUKU NIKAH</span> </li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
             } else if ($status_pembayaran == 'kpr-sub') {
-
-                echo '<li><span><sup>*</sup>KTP </span></li>';
-                echo '<li><span><sup>*</sup>KK </span></li>';
-                echo '<li><span><sup>*</sup>NPWP </span></li>';
-                echo '<li><span><sup>*</sup>BUKU NIKAH</span></li>';
-                echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
-                echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
-                echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
-                echo '<li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li>';
-                echo '<li><span><sup>*</sup>Pas Foto</span></li>';
-                echo '<li><span><sup>*</sup>SPT</span></li>';
-                echo '<li><span><sup>*</sup>BPJS</span></li>';
-                echo '<li><span><sup>*</sup>BLANKO</span></li>';
-                echo '<li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li>';
-                echo '<li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li>';
-                echo '<li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li>';
-                echo '<li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li>';
-                echo '<li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li>';
-                echo '<li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KTP </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KK </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>NPWP </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BUKU NIKAH</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SPT</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
             } else if ($status_pembayaran == 'kpr-kom') {
-
-                echo '<li><span><sup>*</sup>KTP </span></li>';
-                echo '<li><span><sup>*</sup>KK </span></li>';
-                echo '<li><span><sup>*</sup>NPWP </span></li>';
-                echo '<li><span><sup>*</sup>BUKU NIKAH</span></li>';
-                echo '<li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li>';
-                echo '<li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li>';
-                echo '<li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li>';
-                echo '<li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li>';
-                echo '<li><span><sup>*</sup>Pas Foto</span></li>';
-                echo '<li><span><sup>*</sup>SPT</span></li>';
-                echo '<li><span><sup>*</sup>BPJS</span></li>';
-                echo '<li><span><sup>*</sup>BLANKO</span></li>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KTP </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>KK </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>NPWP </span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BUKU NIKAH</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SURAT KETERANGAN KERJA</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>SPT</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
+                echo '<tr class="tr">';
+                echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
+                echo '<td></td>';
+                echo '<td></td>';
+                echo '</tr>';
             }
             echo '<input id="id-upload" type="text" hidden  value="">';
         }
@@ -636,6 +1069,9 @@ class Home extends CI_Controller
         $id_doc_kapling = $this->input->post('id-doc-kapling');
         $select_pembayaran = $this->input->post('select-pembayaran');
         $select_document = $this->input->post('select-document');
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
+
         if ($select_pembayaran == 'cash') {
             $nilai = [
                 'ktp' => '50',
@@ -717,7 +1153,7 @@ class Home extends CI_Controller
             }
             // echo 'ada';
 
-            $this->M_admin->m_update_document($id_doc_kapling, $select_document, $file_document);
+            $this->M_admin->m_update_document($id_doc_kapling, $select_document, $file_document, $user_admin, $tgl_update);
             // echo json_encode($update);
         } else {
             // echo 'tidak ada';
@@ -742,6 +1178,8 @@ class Home extends CI_Controller
                 $data = [
                     'id_doc_kapling' => $id_doc_kapling,
                     $select_document => $file_document,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update,
 
                 ];
             };
@@ -756,6 +1194,8 @@ class Home extends CI_Controller
         $file_doc = $this->input->post('file-doc');
         $flied = $this->input->post('flied');
         $select_pembayaran = $this->input->post('select-pembayaran');
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
 
         unlink('./upload/doc/' . $file_doc);
         if ($select_pembayaran == 'cash') {
@@ -820,7 +1260,7 @@ class Home extends CI_Controller
                 $select_document = $flied;
                 $file_document = '';
                 $this->M_admin->m_update_progres($id_doc_kapling, $progres);
-                $this->M_admin->m_update_document($id_doc_kapling, $select_document, $file_document);
+                $this->M_admin->m_update_document($id_doc_kapling, $select_document, $file_document, $user_admin, $tgl_update);
 
                 // }
             }
@@ -836,13 +1276,40 @@ class Home extends CI_Controller
             foreach ($query->result() as $row) {
                 $nama_cus = $row->nama_cus;
                 $no_wa = $row->no_wa;
+                $kontak = $this->input->post('kontak');
+                //Terlebih dahulu kita trim dl
+                $nomorhp = trim($no_wa);
+                //bersihkan dari karakter yang tidak perlu
+                $nomorhp = strip_tags($nomorhp);
+                // Berishkan dari spasi
+                $nomorhp = str_replace(" ", "", $nomorhp);
+                // bersihkan dari bentuk seperti  (022) 66677788
+                $nomorhp = str_replace("(", "", $nomorhp);
+                // bersihkan dari format yang ada titik seperti 0811.222.333.4
+                $nomorhp = str_replace(".", "", $nomorhp);
+
+                //cek apakah mengandung karakter + dan 0-9
+                if (!preg_match('/[^+0-9]/', trim($nomorhp))) {
+                    // cek apakah no hp karakter 1-3 adalah +62
+                    if (substr(trim($nomorhp), 0, 3) == '+62') {
+                        $nomorhp = trim($nomorhp);
+                        // echo $nomorhp;
+                    }
+                    // cek apakah no hp karakter 1 adalah 0
+                    elseif (substr($nomorhp, 0, 1) == '0') {
+                        $nomorhp = '62' . substr($nomorhp, 1);
+                        // $nomorhp1 = str_replace("'", "", $nomorhp);
+                    }
+                }
                 echo $row->status_trans . $row->nama_cus;
                 echo '<tr class="tr">
                         <td class="text-center">' . $row->status_trans . '</td>
                         <td class="text-center">' . $row->tgl_trans . '</td>
                         <td class="text-center">' . $row->nominal . '</td>
                         <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
-                        </tr>';
+                        <td class="text-center">' . $row->tgl_update . '</td>
+                        <td class="text-center">' . $row->user_admin . '</td>
+                    </tr>';
             }
             echo '<script>
                         if ($("#type").val()=="Sold Out") {
@@ -851,7 +1318,8 @@ class Home extends CI_Controller
                             $(".btn-delete-transaksi").show();
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
-                                $("#no-wa").val("' . $no_wa . '");
+                                $("#no-wa").val("62' . $nomorhp . '");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62'. $nomorhp .'&text=");
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
                                     var el = this;
@@ -895,12 +1363,15 @@ class Home extends CI_Controller
         $status_trans = $this->input->post('status-trans');
         $tgl_trans = $this->input->post('tgl-trans');
         $nominal = $this->input->post('nominal');
+        $user_admin = $this->session->userdata('userdata')->nama;
+        $tgl_update = date("d/m/Y | H:i:s");
+
         $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id_trans_denahs' AND status_trans = '$status_trans'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_trans = $row->id_trans;
-                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal);
+                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update);
             }
         } else {
             $data = [
@@ -910,6 +1381,8 @@ class Home extends CI_Controller
                 'no_wa' => $no_wa,
                 'tgl_trans' => $tgl_trans,
                 'nominal' => $nominal,
+                'user_admin' => $user_admin,
+                'tgl_update' => $tgl_update
             ];
             $this->M_admin->m_upload_transaksi($data);
         }

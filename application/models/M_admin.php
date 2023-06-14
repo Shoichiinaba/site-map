@@ -85,9 +85,11 @@ class M_admin extends CI_Model
 		return $result;
 	}
 
-	function m_update_document($id_doc_kapling, $select_document, $file_document)
+	function m_update_document($id_doc_kapling, $select_document, $file_document, $user_admin, $tgl_update)
 	{
 		$update = $this->db->set($select_document, $file_document)
+			->set('user_admin', $user_admin)
+			->set('tgl_update', $tgl_update)
 			->where('id_doc_kapling', $id_doc_kapling)
 			->update('upload');
 		return $update;
@@ -121,9 +123,11 @@ class M_admin extends CI_Model
 		$result = $this->db->insert('transaksi', $data);
 		return $result;
 	}
-	function m_update_sold_out($id_trans, $tgl_trans)
+	function m_update_sold_out($id_trans, $tgl_trans, $user_admin, $tgl_update)
 	{
 		$update = $this->db->set('tgl_trans', $tgl_trans)
+			->set('user_admin', $user_admin)
+			->set('tgl_update', $tgl_update)
 			->where('id_trans', $id_trans)
 			->update('transaksi');
 		return $update;
@@ -133,12 +137,14 @@ class M_admin extends CI_Model
 		$result = $this->db->insert('transaksi', $data);
 		return $result;
 	}
-	function m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal)
+	function m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update)
 	{
-		
+
 		$update = $this->db->set('tgl_trans', $tgl_trans)
-		->set('nominal', $nominal)
-		->where('id_trans', $id_trans)
+			->set('nominal', $nominal)
+			->set('user_admin', $user_admin)
+			->set('tgl_update', $tgl_update)
+			->where('id_trans', $id_trans)
 			->update('transaksi');
 		return $update;
 	}

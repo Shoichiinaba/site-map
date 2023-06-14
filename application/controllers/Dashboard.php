@@ -7,6 +7,12 @@ use Illuminate\Container\Container;
 
 class Dashboard extends AUTH_Controller
 {
+    public $session;
+    public $M_admin;
+    public $Dashboard_Model;
+    public $userdata;
+    public $uri;
+
     var $template = 'templates/index';
 
 	public function __construct()
