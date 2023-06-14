@@ -108,58 +108,24 @@
                                 </div>
                             </div>
                         </div>
-                        <?php
-                                foreach ($status as $data) {
-                        ?>
-                        <div class="col-lg-6 col-12">
+                        <div class="col-lg-6 col-12 ">
                             <div class="card mb-2">
                                 <div class="card-body p-2">
-                                    <span class="nav-link-text ms-1"><?= $data->status_trans; ?></span>
-                                    <!-- tes develop -->
                                     <div class="chart">
-                                        <?php foreach ($transaksi as $chart) {
-        if ($chart->$status_trans == $status_trans) {
-            echo '<canvas id="myChart' . $chart->status_trans . '" class="chart-canvas" height="200px"></canvas>';
-    ?>
-                                        <script>
-                                        var ctx<?=$chart->status_trans; ?> = document.getElementById(
-                                            'myChart<?=$chart->status_trans; ?>').getContext('2d');
-                                        var chart = new Chart(ctx<?=$chart->status_trans; ?>, {
-                                            type: 'bar',
-                                            data: {
-                                                labels: ['<?= $chart->bulan; ?>'],
-                                                datasets: [{
-                                                    label: '<?= $chart->status_trans; ?>',
-                                                    data: ['<?= $chart->jumlah; ?>'],
-                                                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                                                    borderColor: 'rgba(75, 192, 192, 1)',
-                                                    borderWidth: 1
-                                                }]
-                                            },
-                                            options: {
-                                                scales: {
-                                                    y: {
-                                                        beginAtZero: true,
-                                                        precision: 0
-                                                    }
-                                                }
-                                            }
-                                        });
-                                        </script>
+                                        <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
                                         <?php
-        }
-    }
-    ?>
+                                            // foreach ($transaksi as $chart) {
+                                            //         // debag
+                                            //         echo $chart->bulan . " ";
+                                            //         echo $chart->status_trans . " ";
+                                            //         echo $chart->jumlah . " " . " " . " | ";
+                                            //         // debag akhir
+                                            // }
+                                            // ?>
                                     </div>
-
-
-                                    <!-- tes develop -->
                                 </div>
                             </div>
                         </div>
-                        <?php
-                            }
-                        ?>
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
@@ -174,6 +140,82 @@
         </div>
     </div>
 </div>
+
+<script>
+var transaksi = <?php echo json_encode($transaksi); ?>;
+
+// Mengelompokkan data transaksi berdasarkan bulan
+var groupedData = {};
+transaksi.forEach(function(item) {
+    var bulan = item.bulan;
+    if (!groupedData[bulan]) {
+        groupedData[bulan] = {};
+    }
+    if (!groupedData[bulan][item.status_trans]) {
+        groupedData[bulan][item.status_trans] = 0;
+    }
+    groupedData[bulan][item.status_trans] += parseInt(item.jumlah);
+});
+
+// Membuat array bulan dan array data untuk setiap status_trans
+var bulanArray = Object.keys(groupedData);
+var datasets = [];
+var statusTransArray = Object.keys(transaksi.reduce(function(result, item) {
+    result[item.status_trans] = true;
+    return result;
+}, {}));
+statusTransArray.forEach(function(statusTrans) {
+    var data = [];
+    // Tambahkan variabel warna latar belakang
+    var backgroundColor = '';
+    if (statusTrans === 'UTJ') {
+        backgroundColor = 'red';
+    } else if (statusTrans === 'DP') {
+        backgroundColor = 'green';
+    } else if (statusTrans === 'Sold Out') {
+        backgroundColor = 'yellow';
+    }
+    bulanArray.forEach(function(bulan) {
+        data.push(groupedData[bulan][statusTrans] || 0);
+    });
+    datasets.push({
+        label: statusTrans,
+        data: data,
+        backgroundColor: backgroundColor,
+    });
+});
+
+// Membuat grafik dengan Chart.js
+var ctx = document.getElementById('myChart').getContext('2d');
+new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: bulanArray,
+        datasets: datasets,
+    },
+    options: {
+        responsive: true,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    },
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+<!-- grafik rumah ready -->
 <script>
 var chartData = <?php echo json_encode($ChartData); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
@@ -212,7 +254,5 @@ var chart = new Chart(ctx, {
             }]
         }
     }
-
-
 });
 </script>
