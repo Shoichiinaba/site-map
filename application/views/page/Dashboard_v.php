@@ -143,9 +143,9 @@
                                             foreach ($transaksi as $chart) {
                                                 if ($chart->id_perum == $id_perum) {
                                                     // debag
-                                                    echo $chart->bulan . " ";
-                                                    echo $chart->status_trans . " ";
-                                                    echo $chart->jumlah . " " . " " . " | ";
+                                                    // echo $chart->bulan . " ";
+                                                    // echo $chart->status_trans . " ";
+                                                    // echo $chart->jumlah . " " . " " . " | ";
                                                     // debag akhir
                                                     $index = array_search($chart->bulan, array_column($labels, 'bulan'));
                                                     if ($index === false) {
