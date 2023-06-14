@@ -113,15 +113,6 @@
                                 <div class="card-body p-2">
                                     <div class="chart">
                                         <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
-                                        <?php
-                                            // foreach ($transaksi as $chart) {
-                                            //         // debag
-                                            //         echo $chart->bulan . " ";
-                                            //         echo $chart->status_trans . " ";
-                                            //         echo $chart->jumlah . " " . " " . " | ";
-                                            //         // debag akhir
-                                            // }
-                                            // ?>
                                     </div>
                                 </div>
                             </div>
@@ -206,18 +197,9 @@ new Chart(ctx, {
 });
 </script>
 
-
-
-
-
-
-
-
-
-
 <!-- grafik rumah ready -->
 <script>
-var chartData = <?php echo json_encode($ChartData); ?>;
+var chartData = <?php echo json_encode($Rmh_ready); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
 var labels = [];
 var data = [];

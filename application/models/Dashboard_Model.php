@@ -119,10 +119,30 @@ class Dashboard_Model extends CI_Model
         return $query->result();
     }
 
+	public function readyByperum($perum)
+	{
+		$this->db->select('denahs.type, COUNT(*) as jumlah_record');
+		$this->db->from('denahs');
+		$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+		$this->db->where('denahs.type', 'Rumah Ready');
+		$this->db->where('perumahan.nama', $perum);
+		$this->db->group_by('denahs.type');
+		$query = $this->db->get();
 
+		$result = $query->result();
 
+		$chartData = array();
+		foreach ($result as $row) {
+			$data = array(
+				'label' => $row->type,
+				'value' => $row->jumlah_record
+			);
+			array_push($chartData, $data);
+		}
 
+		return $chartData;
 
+    }
 
 
 }

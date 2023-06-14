@@ -111,6 +111,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <?php
                                 foreach ($perumahan as $data) {
                                 $id_perum = $data->id_perum;

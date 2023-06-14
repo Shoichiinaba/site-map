@@ -59,6 +59,7 @@ class Dashboard extends AUTH_Controller
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
         $data['transaksi']          = $this->Dashboard_Model->getperumByBulan($perum);
+        $data['Rmh_ready']          = $this->Dashboard_Model->readyByperum($perum);
         $this->load->view($this->template, $data);
 
     }
