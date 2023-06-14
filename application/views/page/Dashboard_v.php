@@ -124,13 +124,13 @@
                                         <canvas id="myChart<?= $data->id_perum; ?>" class="chart-canvas"
                                             height="200px"></canvas>
                                         <?php
-                                        foreach ($area_siteplan as $area) :
-                                        if ($area->id_perum_siteplan == $id_perum) {
-                                        $nama = $data->nama;
-                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
-                                        ?>
-                                        <a href="<?php echo site_url('Dashboard/detail/'.$tittle); ?>"
-                                            class="mask bg-gradient-dark opacity-5"></a>
+                                            foreach ($area_siteplan as $area) :
+                                                if ($area->id_perum_siteplan == $id_perum) {
+                                                    $nama = $data->nama;
+                                                    $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
+                                                    ?>
+                                        <a href="<?php echo site_url('Dashboard/detail/' . $tittle); ?>"
+                                            class="mask bg-gradient-dark opacity-0"></a>
                                         <?php
                                             } else {
                                             }
@@ -139,8 +139,14 @@
                                         <?php
                                             $labels = [];
                                             $datasets = [];
+                                            // echo "<pre>".json_encode($transaksi)."</pre>";
                                             foreach ($transaksi as $chart) {
                                                 if ($chart->id_perum == $id_perum) {
+                                                    // debag
+                                                    // echo $chart->bulan . " ";
+                                                    // echo $chart->status_trans . " ";
+                                                    // echo $chart->jumlah . " " . " " . " | ";
+                                                    // debag akhir
                                                     $index = array_search($chart->bulan, array_column($labels, 'bulan'));
                                                     if ($index === false) {
                                                         $labels[] = ['bulan' => $chart->bulan];
@@ -155,6 +161,9 @@
                                             });
                                             ?>
                                         <script>
+                                        // tes-1
+                                        window.data_label = <?= json_encode(array_column($labels, 'bulan')); ?>;
+                                        window.dataset = <?= json_encode($datasets); ?>;
                                         var ctx<?=$data->id_perum; ?> = document.getElementById(
                                             'myChart<?=$data->id_perum; ?>').getContext('2d');
                                         var chart = new Chart(ctx<?=$data->id_perum; ?>, {
@@ -193,7 +202,6 @@
                                         });
                                         </script>
                                     </div>
-
                                     <!-- tes develop -->
                                 </div>
                             </div>

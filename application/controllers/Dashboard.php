@@ -48,18 +48,17 @@ class Dashboard extends AUTH_Controller
 
     public function detail()
     {
-        $tittle = $this->uri->segment(4);
+        $tittle = $this->uri->segment(3);
         $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
         $id = $this->session->userdata('userdata')->id;
         $role = $this->session->userdata('userdata')->role;
         $data['perumahan']          = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan']      = $this->M_admin->m_area_siteplan();
-        $data['status']             = $this->Dashboard_Model->status_chart();
         $data['bread']              = 'Dashboard/ Detail';
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
-        $data['transaksi']         = $this->Dashboard_Model->getstatusByBulan();
+        $data['transaksi']          = $this->Dashboard_Model->getperumByBulan($perum);
         $this->load->view($this->template, $data);
 
     }
