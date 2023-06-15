@@ -330,6 +330,7 @@ class Home extends CI_Controller
 
         $data_arr = [];
         foreach ($resuls as $result) {
+            $id_denahs = $result->id_denahs;
             $data = [
                 'code' => $result->code,
                 'description' => $result->description,
@@ -349,12 +350,42 @@ class Home extends CI_Controller
 
             if ($result->type == "Dipesan" or $result->type == "Sold Out") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
-                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
+                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Doc</button>';
             } else {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
             $data['tgl_update'] = $result->tgl_update;
             $data['user_admin'] = $result->user_admin;
+            $data_trans = [];
+            $count = [];
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_denahs";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
+                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
+                    }
+                }
+                if ($row->status_trans == 'Sold Out') {
+                    $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
+                } else {
+                    $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
+                    date_default_timezone_set('Asia/Jakarta');
+                    $awal  = date_create('' . $tgl . '');
+                    $akhir = date_create(); // waktu sekarang, pukul 06:13
+                    $diff  = date_diff($akhir, $awal);
+                    if ($diff->days >= '0' && $diff->days <= '14') {
+                        $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                    } else if ($diff->days >= '15' && $diff->days <= '22') {
+                        $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                    } else if ($diff->days >= '23') {
+                        $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                    }
+                    // $count[] = $row->tgl_trans;
+                }
+            }
+            $data['transaction'] = $data_trans;
+            $data['duration'] = $count;
             $data_arr[] = $data;
         }
 
@@ -1319,7 +1350,7 @@ class Home extends CI_Controller
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
                                 $("#no-wa").val("62' . $nomorhp . '");
-                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62'. $nomorhp .'&text=");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62' . $nomorhp . '&text=");
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
                                     var el = this;
