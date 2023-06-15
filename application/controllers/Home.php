@@ -151,11 +151,6 @@ class Home extends CI_Controller
                         unlink('.uppload/doc/' . $row->spt);
                     }
 
-                    if ($row->bpjs == '') {
-                    } else {
-                        unlink('.uppload/doc/' . $row->bpjs);
-                    }
-
                     if ($row->doc1 == '') {
                     } else {
                         unlink('.uppload/doc/' . $row->doc1);
@@ -426,7 +421,6 @@ class Home extends CI_Controller
                 $rek_koran = $row->rek_koran;
                 $pas_foto = $row->pas_foto;
                 $spt = $row->spt;
-                $bpjs = $row->bpjs;
                 $blanko = $row->blanko;
                 $doc1 = $row->doc1;
                 $doc2 = $row->doc2;
@@ -614,19 +608,6 @@ class Home extends CI_Controller
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
                     }
-                    if ($bpjs == '') {
-                        echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>BPJS</span></li>';
-                        echo '<td class="text-center"></td>';
-                        echo '<td class="text-center"></td>';
-                        echo '</tr>';
-                    } else {
-                        echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
-                        echo '<td class="text-center">' . $tgl_update . '</td>';
-                        echo '<td class="text-center">' . $user_admin . '</td>';
-                        echo '</tr>';
-                    }
                     if ($blanko == '') {
                         echo '<tr class="tr">';
                         echo '<td><li><span><sup>*</sup>BLANKO</span></li>';
@@ -768,20 +749,6 @@ class Home extends CI_Controller
                     } else {
                         echo '<tr class="tr">';
                         echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
-                        echo '<td class="text-center">' . $tgl_update . '</td>';
-                        echo '<td class="text-center">' . $user_admin . '</td>';
-                        echo '<td></td>';
-                        echo '</tr>';
-                    }
-                    if ($bpjs == '') {
-                        echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo '</tr>';
-                    } else {
-                        echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -971,11 +938,6 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
                 echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
@@ -1062,11 +1024,6 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
                 echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
@@ -1113,8 +1070,8 @@ class Home extends CI_Controller
             ];
         } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '5',
-                'kk' => '5',
+                'ktp' => '10',
+                'kk' => '10',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
@@ -1122,7 +1079,6 @@ class Home extends CI_Controller
                 'rek_koran' => '10',
                 'pas_foto' => '10',
                 'spt' => '10',
-                'bpjs' => '10',
                 'blanko' => '10',
             ];
         } else if ($select_pembayaran == 'kpr-sub') {
@@ -1133,10 +1089,9 @@ class Home extends CI_Controller
                 'buku_nikah' => '5',
                 'skk' => '5',
                 'slip_g' => '5',
-                'rek_koran' => '5',
+                'rek_koran' => '10',
                 'pas_foto' => '5',
                 'spt' => '5',
-                'bpjs' => '5',
                 'blanko' => '5',
                 'doc1' => '5',
                 'doc2' => '5',
@@ -1239,8 +1194,8 @@ class Home extends CI_Controller
             ];
         } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '5',
-                'kk' => '5',
+                'ktp' => '10',
+                'kk' => '10',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
@@ -1248,7 +1203,6 @@ class Home extends CI_Controller
                 'rek_koran' => '10',
                 'pas_foto' => '10',
                 'spt' => '10',
-                'bpjs' => '10',
                 'blanko' => '10',
             ];
         } else if ($select_pembayaran == 'kpr-sub') {
@@ -1259,10 +1213,9 @@ class Home extends CI_Controller
                 'buku_nikah' => '5',
                 'skk' => '5',
                 'slip_g' => '5',
-                'rek_koran' => '5',
+                'rek_koran' => '10',
                 'pas_foto' => '5',
                 'spt' => '5',
-                'bpjs' => '5',
                 'blanko' => '5',
                 'doc1' => '5',
                 'doc2' => '5',
