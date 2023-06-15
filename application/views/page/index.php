@@ -1,10 +1,47 @@
 <style>
+    .bg-dur-green {
+        background: #5dcf32;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .bg-dur-orange {
+        background: #e0ab0e;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .bg-dur-red {
+        background: #e00e13;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
+
+    .bg-dur-sold-out {
+        border: dashed 2px red;
+        padding: 0px 6px;
+        border-radius: 5px;
+        font-weight: bold;
+        color: #f05151;
+    }
+
     .bg-tr {
         background: aliceblue;
     }
 
     .tr {
         font-size: x-small;
+    }
+
+    .border-transaksi {
+        border: 2px solid #0000002e;
+        padding: 0px 6px;
+        border-radius: 5px;
+        font-size: x-small;
+        font-weight: bold;
     }
 
     .btn-small {
@@ -159,10 +196,12 @@
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
-                            <th>Kode Kapling</th>
+                            <th>Kode unit</th>
                             <th>Status</th>
+                            <th>Transaction</th>
                             <th>Description</th>
-                            <th>Progress</th>
+                            <th>Progress doc</th>
+                            <th>Duration</th>
                             <th>Action</th>
                             <th>Tgl Update</th>
                             <th>Admin</th>
@@ -880,12 +919,20 @@
                     name: 'type'
                 },
                 {
+                    data: 'transaction',
+                    name: 'transaction'
+                },
+                {
                     data: 'description',
                     name: 'description'
                 },
                 {
                     data: 'color',
                     name: 'color'
+                },
+                {
+                    data: 'duration',
+                    name: 'duration'
                 },
                 {
                     data: 'action',
