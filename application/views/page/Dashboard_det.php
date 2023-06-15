@@ -1,5 +1,4 @@
 <!-- conten -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-xl-3 col-6 mb-xl-0 mb-4">
@@ -7,8 +6,14 @@
                 <div class="card-body p-2">
                     <div class="row">
                         <div class="col-3">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-building fa-beat text-lg opacity-10" aria-hidden="true"></i>
+                            <div type="button"
+                                class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md btn-tooltip">
+                                <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-container="body"
+                                    data-animation="true" title="
+
+
+                                    "></i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
@@ -37,7 +42,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">UTJ</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <!-- <?=$jum_dipesan;  ?> -->
+                                    <?=$jum_UTJ; ?>
                                     <span class="text-warning text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -61,7 +66,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sold Out</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <!-- <?=$jum_sold;  ?> -->
+                                    <?=$jum_sold;  ?>
                                     <span class=" text-danger text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -83,7 +88,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Sudah DP</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <!-- <?=$jum_null;  ?> -->
+                                    <?=$jum_DP;  ?>
                                     <span class="text-success text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
@@ -113,15 +118,6 @@
                                 <div class="card-body p-2">
                                     <div class="chart">
                                         <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
-                                        <?php
-                                            // foreach ($transaksi as $chart) {
-                                            //         // debag
-                                            //         echo $chart->bulan . " ";
-                                            //         echo $chart->status_trans . " ";
-                                            //         echo $chart->jumlah . " " . " " . " | ";
-                                            //         // debag akhir
-                                            // }
-                                            // ?>
                                     </div>
                                 </div>
                             </div>
@@ -206,18 +202,9 @@ new Chart(ctx, {
 });
 </script>
 
-
-
-
-
-
-
-
-
-
 <!-- grafik rumah ready -->
 <script>
-var chartData = <?php echo json_encode($ChartData); ?>;
+var chartData = <?php echo json_encode($Rmh_ready); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
 var labels = [];
 var data = [];

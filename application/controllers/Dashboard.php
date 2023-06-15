@@ -33,12 +33,11 @@ class Dashboard extends AUTH_Controller
         $data['jum_ready'] 			= $this->Dashboard_Model->jumlah_ready();
         $data['jum_dipesan'] 		= $this->Dashboard_Model->jumlah_dipesan();
         $data['jum_sold'] 			= $this->Dashboard_Model->jumlah_sold();
-        $data['jum_null'] 			= $this->Dashboard_Model->jumlah_kosong();
-        $data['tolp_sold_k'] 		= $this->Dashboard_Model->toolp_sold();
-        $data['tolp_sold_b'] 		= $this->Dashboard_Model->toolp_sold_bp();
-        $data['tolp_sold_agh'] 		= $this->Dashboard_Model->toolp_sold_agh();
-        $data['tolp_sold_car'] 		= $this->Dashboard_Model->toolp_sold_car();
-        $data['tolp_sold_suk'] 		= $this->Dashboard_Model->toolp_sold_suk();
+        $data['jum_null'] 			= $this->Dashboard_Model->all_DP();
+        $data['tolp_ready'] 		= $this->Dashboard_Model->tooltip_ready();
+        $data['tolp_UTJ'] 		    = $this->Dashboard_Model->tooltip_UTJ();
+        $data['tolp_DP'] 		    = $this->Dashboard_Model->tooltip_DP();
+        $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold();
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
@@ -54,11 +53,15 @@ class Dashboard extends AUTH_Controller
         $role = $this->session->userdata('userdata')->role;
         $data['perumahan']          = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan']      = $this->M_admin->m_area_siteplan();
+        $data['jum_UTJ'] 			= $this->Dashboard_Model->jumlah_UTJ($perum);
+        $data['jum_DP'] 		    = $this->Dashboard_Model->jumlah_DP($perum);
+        $data['jum_sold'] 			= $this->Dashboard_Model->jum_sold($perum);
         $data['bread']              = 'Dashboard/ Detail';
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData();
         $data['transaksi']          = $this->Dashboard_Model->getperumByBulan($perum);
+        $data['Rmh_ready']          = $this->Dashboard_Model->readyByperum($perum);
         $this->load->view($this->template, $data);
 
     }
