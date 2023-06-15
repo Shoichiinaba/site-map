@@ -151,11 +151,6 @@ class Home extends CI_Controller
                         unlink('.uppload/doc/' . $row->spt);
                     }
 
-                    if ($row->bpjs == '') {
-                    } else {
-                        unlink('.uppload/doc/' . $row->bpjs);
-                    }
-
                     if ($row->doc1 == '') {
                     } else {
                         unlink('.uppload/doc/' . $row->doc1);
@@ -330,6 +325,7 @@ class Home extends CI_Controller
 
         $data_arr = [];
         foreach ($resuls as $result) {
+            $id_denahs = $result->id_denahs;
             $data = [
                 'code' => $result->code,
                 'description' => $result->description,
@@ -349,12 +345,42 @@ class Home extends CI_Controller
 
             if ($result->type == "Dipesan" or $result->type == "Sold Out") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
-                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Document</button>';
+                    '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Doc</button>';
             } else {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"> <i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>';
             }
             $data['tgl_update'] = $result->tgl_update;
             $data['user_admin'] = $result->user_admin;
+            $data_trans = [];
+            $count = [];
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_denahs";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
+                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
+                    }
+                }
+                if ($row->status_trans == 'Sold Out') {
+                    $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
+                } else {
+                    $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
+                    date_default_timezone_set('Asia/Jakarta');
+                    $awal  = date_create('' . $tgl . '');
+                    $akhir = date_create(); // waktu sekarang, pukul 06:13
+                    $diff  = date_diff($akhir, $awal);
+                    if ($diff->days >= '0' && $diff->days <= '14') {
+                        $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                    } else if ($diff->days >= '15' && $diff->days <= '22') {
+                        $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                    } else if ($diff->days >= '23') {
+                        $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                    }
+                    // $count[] = $row->tgl_trans;
+                }
+            }
+            $data['transaction'] = $data_trans;
+            $data['duration'] = $count;
             $data_arr[] = $data;
         }
 
@@ -395,7 +421,6 @@ class Home extends CI_Controller
                 $rek_koran = $row->rek_koran;
                 $pas_foto = $row->pas_foto;
                 $spt = $row->spt;
-                $bpjs = $row->bpjs;
                 $blanko = $row->blanko;
                 $doc1 = $row->doc1;
                 $doc2 = $row->doc2;
@@ -583,19 +608,6 @@ class Home extends CI_Controller
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
                     }
-                    if ($bpjs == '') {
-                        echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>BPJS</span></li>';
-                        echo '<td class="text-center"></td>';
-                        echo '<td class="text-center"></td>';
-                        echo '</tr>';
-                    } else {
-                        echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
-                        echo '<td class="text-center">' . $tgl_update . '</td>';
-                        echo '<td class="text-center">' . $user_admin . '</td>';
-                        echo '</tr>';
-                    }
                     if ($blanko == '') {
                         echo '<tr class="tr">';
                         echo '<td><li><span><sup>*</sup>BLANKO</span></li>';
@@ -737,20 +749,6 @@ class Home extends CI_Controller
                     } else {
                         echo '<tr class="tr">';
                         echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
-                        echo '<td class="text-center">' . $tgl_update . '</td>';
-                        echo '<td class="text-center">' . $user_admin . '</td>';
-                        echo '<td></td>';
-                        echo '</tr>';
-                    }
-                    if ($bpjs == '') {
-                        echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                        echo '<td></td>';
-                        echo '<td></td>';
-                        echo '</tr>';
-                    } else {
-                        echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $bpjs . '" data-flied="bpjs" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BPJS <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -940,11 +938,6 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
                 echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
@@ -1031,11 +1024,6 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>BPJS</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
                 echo '<td><li><span><sup>*</sup>BLANKO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
@@ -1082,8 +1070,8 @@ class Home extends CI_Controller
             ];
         } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '5',
-                'kk' => '5',
+                'ktp' => '10',
+                'kk' => '10',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
@@ -1091,7 +1079,6 @@ class Home extends CI_Controller
                 'rek_koran' => '10',
                 'pas_foto' => '10',
                 'spt' => '10',
-                'bpjs' => '10',
                 'blanko' => '10',
             ];
         } else if ($select_pembayaran == 'kpr-sub') {
@@ -1102,10 +1089,9 @@ class Home extends CI_Controller
                 'buku_nikah' => '5',
                 'skk' => '5',
                 'slip_g' => '5',
-                'rek_koran' => '5',
+                'rek_koran' => '10',
                 'pas_foto' => '5',
                 'spt' => '5',
-                'bpjs' => '5',
                 'blanko' => '5',
                 'doc1' => '5',
                 'doc2' => '5',
@@ -1208,8 +1194,8 @@ class Home extends CI_Controller
             ];
         } else if ($select_pembayaran == 'kpr-kom') {
             $nilai = [
-                'ktp' => '5',
-                'kk' => '5',
+                'ktp' => '10',
+                'kk' => '10',
                 'npwp' => '10',
                 'buku_nikah' => '10',
                 'skk' => '10',
@@ -1217,7 +1203,6 @@ class Home extends CI_Controller
                 'rek_koran' => '10',
                 'pas_foto' => '10',
                 'spt' => '10',
-                'bpjs' => '10',
                 'blanko' => '10',
             ];
         } else if ($select_pembayaran == 'kpr-sub') {
@@ -1228,10 +1213,9 @@ class Home extends CI_Controller
                 'buku_nikah' => '5',
                 'skk' => '5',
                 'slip_g' => '5',
-                'rek_koran' => '5',
+                'rek_koran' => '10',
                 'pas_foto' => '5',
                 'spt' => '5',
-                'bpjs' => '5',
                 'blanko' => '5',
                 'doc1' => '5',
                 'doc2' => '5',
@@ -1319,7 +1303,7 @@ class Home extends CI_Controller
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
                                 $("#no-wa").val("62' . $nomorhp . '");
-                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62'. $nomorhp .'&text=");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62' . $nomorhp . '&text=");
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
                                     var el = this;
