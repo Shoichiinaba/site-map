@@ -507,7 +507,6 @@
         '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
         '<option value="pas_foto">Pas Foto</option>' +
         '<option value="spt">SPT</option>' +
-        '<option value="bpjs">BPJS</option>' +
         '<option value="blanko">Blanko</option>' +
         '<option value="doc1">Surat Pernyataan permohonan KPR</option>' +
         '<option value="doc2">Surat Pernyataan penghuni rumah umum bersubsidi</option>' +
@@ -526,7 +525,6 @@
         '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
         '<option value="pas_foto">Pas Foto</option>' +
         '<option value="spt">SPT</option>' +
-        '<option value="bpjs">BPJS</option>' +
         '<option value="blanko">Blanko</option>';
     load_data_kapling();
 
