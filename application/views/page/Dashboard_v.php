@@ -1,5 +1,5 @@
 <!-- conten -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-xl-3 col-6 mb-xl-0 mb-4">
@@ -8,10 +8,21 @@
                     <div class="row">
                         <div class="col-3">
                             <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-building fa-beat text-lg opacity-10" aria-hidden="true"></i>
+                                <i type="button" class="ni ni-building fa-beat text-lg opacity-10" aria-hidden="true"
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-container="body"
+                                    data-animation="true" title="
+                                    <?php
+                                        foreach ($tolp_ready as $data) {
+                                    ?>
+                                        <?= $data->nama; ?> | <?=$data->jumlah_record; ?>
+                                    <?php
+                                        }
+                                    ?>
+
+                                "></i>
                             </div>
                         </div>
-                        <div class="col-9 text-end">
+                        <div class=" col-9 text-end">
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Rumah Ready</p>
                                 <h5 class="font-weight-bolder mb-0">
@@ -29,8 +40,18 @@
                 <div class="card-body p-2">
                     <div class="row">
                         <div class="col-3">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-world text-lg opacity-10" aria-hidden="true"></i>
+                            <div type="button"
+                                class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="ni ni-world text-lg opacity-10" aria-hidden="true" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" data-container="body" data-animation="true" title="
+                                    <?php
+                                        foreach ($tolp_UTJ as $data) {
+                                    ?>
+                                        <?= $data->nama; ?> | <?=$data->jumlah_record; ?> ||
+                                    <?php
+                                        }
+                                    ?>
+                                    "></i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
@@ -54,10 +75,16 @@
                             <div type="button"
                                 class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md btn-tooltip">
                                 <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"
-                                    data-bs-toggle="tooltip" data-bs-placement="bottom"
-                                    title="Kautsar: <?=$tolp_sold_k;?>
-                                       | BP2: <?=$tolp_sold_b;?> | Caruban: <?=$tolp_sold_car;?> | AGH: <?=$tolp_sold_agh;?> | Sukoharjo: <?=$tolp_sold_suk;?>"
-                                    data-container="body" data-animation="true"></i>
+                                    data-bs-toggle="tooltip" data-bs-placement="bottom" data-container="body"
+                                    data-animation="true" title="
+                                    <?php
+                                        foreach ($tolp_Sold as $data) {
+                                    ?>
+                                        <?= $data->nama; ?> | <?=$data->jumlah_record; ?>
+                                    <?php
+                                        }
+                                    ?>">
+                                </i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
@@ -78,8 +105,18 @@
                 <div class="card-body p-2">
                     <div class="row">
                         <div class="col-3">
-                            <div class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
-                                <i class="ni ni-cart text-lg opacity-10" aria-hidden="true"></i>
+                            <div type="button"
+                                class="icon icon-shape bg-gradient-primary shadow text-center border-radius-md">
+                                <i class="ni ni-cart text-lg opacity-10" aria-hidden="true" data-bs-toggle="tooltip"
+                                    data-bs-placement="bottom" data-container="body" data-animation="true" title="
+                                    <?php
+                                        foreach ($tolp_DP as $data) {
+                                    ?>
+                                        <?= $data->nama; ?> | <?=$data->jumlah_record; ?>
+                                    <?php
+                                        }
+                                    ?>
+                                "></i>
                             </div>
                         </div>
                         <div class="col-9 text-end">
@@ -111,6 +148,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <?php
                                 foreach ($perumahan as $data) {
                                 $id_perum = $data->id_perum;
@@ -124,13 +162,13 @@
                                         <canvas id="myChart<?= $data->id_perum; ?>" class="chart-canvas"
                                             height="200px"></canvas>
                                         <?php
-                                        foreach ($area_siteplan as $area) :
-                                        if ($area->id_perum_siteplan == $id_perum) {
-                                        $nama = $data->nama;
-                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
-                                        ?>
-                                        <a href="<?php echo site_url('Dashboard/detail/'.$tittle); ?>"
-                                            class="mask bg-gradient-dark opacity-5"></a>
+                                            foreach ($area_siteplan as $area) :
+                                                if ($area->id_perum_siteplan == $id_perum) {
+                                                    $nama = $data->nama;
+                                                    $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
+                                                    ?>
+                                        <a href="<?php echo site_url('Dashboard/detail/' . $tittle); ?>"
+                                            class="mask bg-gradient-dark opacity-0"></a>
                                         <?php
                                             } else {
                                             }
@@ -139,8 +177,14 @@
                                         <?php
                                             $labels = [];
                                             $datasets = [];
+                                            // echo "<pre>".json_encode($transaksi)."</pre>";
                                             foreach ($transaksi as $chart) {
                                                 if ($chart->id_perum == $id_perum) {
+                                                    // debag
+                                                    // echo $chart->bulan . " ";
+                                                    // echo $chart->status_trans . " ";
+                                                    // echo $chart->jumlah . " " . " " . " | ";
+                                                    // debag akhir
                                                     $index = array_search($chart->bulan, array_column($labels, 'bulan'));
                                                     if ($index === false) {
                                                         $labels[] = ['bulan' => $chart->bulan];
@@ -155,6 +199,8 @@
                                             });
                                             ?>
                                         <script>
+                                        // tes-1
+
                                         var ctx<?=$data->id_perum; ?> = document.getElementById(
                                             'myChart<?=$data->id_perum; ?>').getContext('2d');
                                         var chart = new Chart(ctx<?=$data->id_perum; ?>, {
@@ -193,7 +239,6 @@
                                         });
                                         </script>
                                     </div>
-
                                     <!-- tes develop -->
                                 </div>
                             </div>
@@ -215,6 +260,8 @@
         </div>
     </div>
 </div>
+
+<!-- chart rumah ready -->
 <script>
 var chartData = <?php echo json_encode($ChartData); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
