@@ -306,8 +306,24 @@ class Home extends CI_Controller
             });
         }
         if ($status) {
-            $model = $model->where('type', $status);
+            if ($status == 'UTJ' || $status == 'DP') {
+                $id_denahs = [];
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
+                $query = $this->db->query($sql);
+                if ($query->num_rows() > 0) {
+                    foreach ($query->result() as $row) {
+                        $id_denahs[] = $row->id_denahs;
+                    }
+                }
+                
+                // $model = $model->where('id_denahs', $id_denahs);
+                
+                $model = $model->whereIn('id_denahs', $id_denahs);
+            } else {
+                $model = $model->where('type', $status);
+            }
         }
+
         $filteredRows = $model->count();
         $model = $model->skip((int) $start);
         $model = $model->take((int) $rowperpage);

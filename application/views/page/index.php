@@ -182,6 +182,8 @@
                             <select class="form-control" id="status">
                                 <option value=""> &nbsp; Filter</option>
                                 <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="UTJ"> &nbsp; UTJ</option>
+                                <option value="DP"> &nbsp; DP</option>
                                 <option value="Sold Out"> &nbsp; Sold Out</option>
                                 <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
                             </select>

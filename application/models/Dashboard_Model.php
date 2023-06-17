@@ -6,29 +6,29 @@ class Dashboard_Model extends CI_Model
 	public function jumlah_ready()
 	{
 		$this->db->where('type', 'Rumah Ready');
-        $this->db->from('denahs');
-        return $this->db->count_all_results();
+		$this->db->from('denahs');
+		return $this->db->count_all_results();
 	}
 
 	public function jumlah_dipesan()
 	{
 		$this->db->where('status_trans', 'UTJ');
-        $this->db->from('transaksi');
-        return $this->db->count_all_results();
+    $this->db->from('transaksi');
+    return $this->db->count_all_results();
 	}
 
 	public function jumlah_sold()
 	{
 		$this->db->where('status_trans', 'Sold Out');
-        $this->db->from('transaksi');
-        return $this->db->count_all_results();
+    $this->db->from('transaksi');
+    return $this->db->count_all_results();
 	}
 
 	public function all_DP()
 	{
 		$this->db->where('status_trans', 'DP');
-        $this->db->from('transaksi');
-        return $this->db->count_all_results();
+    $this->db->from('transaksi');
+    return $this->db->count_all_results();
 	}
 
 	// tooltip
@@ -82,10 +82,10 @@ class Dashboard_Model extends CI_Model
 		$this->db->select('transaksi.status_trans, COUNT(*) as jumlah_record');
 		$this->db->from('transaksi');
 		$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
-        $this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+    $this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
 		$this->db->where('transaksi.status_trans', 'UTJ');
 		$this->db->where('perumahan.nama', $perum);
-        return $this->db->count_all_results();
+    return $this->db->count_all_results();
 	}
 
 	public function jumlah_DP( $perum)
@@ -101,6 +101,7 @@ class Dashboard_Model extends CI_Model
 
 	public function jum_sold( $perum)
 	{
+
 		$this->db->select('transaksi.status_trans, COUNT(*) as jumlah_record');
 		$this->db->from('transaksi');
 		$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
@@ -111,29 +112,51 @@ class Dashboard_Model extends CI_Model
 	}
 	// akhir dashboard detail
 
-	public function getChartData()
+	public function getChartData($id, $role)
 	{
-		$this->db->select('perumahan.nama, COUNT(*) as jumlah_record');
-		$this->db->from('denahs');
-		$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
-		$this->db->where('denahs.type', 'Rumah Ready');
-		$this->db->group_by('perumahan.nama');
-		$query = $this->db->get();
+		if ($role == 'Admin') {
+			$this->db->select('perumahan.nama, COUNT(*) as jumlah_record');
+			$this->db->from('denahs');
+			$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+			$this->db->where('denahs.type', 'Rumah Ready');
+			$this->db->group_by('perumahan.nama');
+			$query = $this->db->get();
 
-		$result = $query->result();
+			$result = $query->result();
 
-		$chartData = array();
-		foreach ($result as $row) {
-			$data = array(
-				'label' => $row->nama,
-				'value' => $row->jumlah_record
-			);
-			array_push($chartData, $data);
+			$chartData = array();
+			foreach ($result as $row) {
+				$data = array(
+					'label' => $row->nama,
+					'value' => $row->jumlah_record
+				);
+				array_push($chartData, $data);
+			}
+
+			return $chartData;
+		} else {
+			$this->db->select('perumahan.nama, COUNT(*) as jumlah_record');
+			$this->db->from('denahs');
+			$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+			$this->db->where('perumahan.id_perum,', $id);
+			$this->db->where('denahs.type', 'Rumah Ready');
+			$this->db->group_by('perumahan.nama');
+			$query = $this->db->get();
+
+			$result = $query->result();
+
+			$chartData = array();
+			foreach ($result as $row) {
+				$data = array(
+					'label' => $row->nama,
+					'value' => $row->jumlah_record
+				);
+				array_push($chartData, $data);
+			}
+
+			return $chartData;
 		}
-
-		return $chartData;
-
-    }
+	}
 
 	public function getTransaksiByBulan()
 	{
@@ -146,7 +169,7 @@ class Dashboard_Model extends CI_Model
 		return $query->result();
 	}
 
-	public function getperumByBulan($perum)
+  public function getperumByBulan($perum)
     {
         $this->db->select('MONTHNAME(STR_TO_DATE(tgl_trans, "%d/%m/%Y")) AS bulan, status_trans, perumahan.id_perum, COUNT(*) AS jumlah');
         $this->db->from('transaksi');
@@ -183,6 +206,5 @@ class Dashboard_Model extends CI_Model
 		return $chartData;
 
     }
-
 
 }
