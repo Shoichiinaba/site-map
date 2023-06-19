@@ -61,7 +61,6 @@ class Home extends CI_Controller
     {
         $perumahanNama = $this->uri->segment(3);
         $perum = preg_replace("![^a-z0-9]+!i", " ", $perumahanNama);
-        // echo($perum);
 
         $sql = "SELECT *FROM perumahan WHERE nama='$perum'";
         $query = $this->db->query($sql);
@@ -293,7 +292,6 @@ class Home extends CI_Controller
         $totalRows = $model->count();
         $filteredRows = $totalRows;
         $id = $this->uri->segment(3);
-
         $model = $model->where('map',  $id);
 
         if ($search) {
@@ -315,9 +313,7 @@ class Home extends CI_Controller
                         $id_denahs[] = $row->id_denahs;
                     }
                 }
-                
-                // $model = $model->where('id_denahs', $id_denahs);
-                
+
                 $model = $model->whereIn('id_denahs', $id_denahs);
             } else {
                 $model = $model->where('type', $status);
@@ -413,6 +409,7 @@ class Home extends CI_Controller
                 'data'            => $data_arr,
             ]));
     }
+
     function update_status_pembayaran()
     {
         $id_denahs = $this->input->post('id-denahs');
@@ -420,6 +417,7 @@ class Home extends CI_Controller
         $update = $this->M_admin->m_update_status_pembayaran($id_denahs, $status_pembayaran);
         echo json_encode($update);
     }
+
     function select_data_document()
     {
         $status_pembayaran = $this->input->post('status-pembayaran');
@@ -1064,10 +1062,11 @@ class Home extends CI_Controller
                         $("#file-doc").val($(this).data("pdf"));
                     });
 
-                   
+
                 // });
             </script>';
     }
+
     function upload_document()
     {
         $config['upload_path'] = "./upload/doc/";
@@ -1269,6 +1268,7 @@ class Home extends CI_Controller
             }
         }
     }
+
     function load_data_transaksi()
     {
         $id_trans_denahs = $this->input->post('id-trans-denahs');
@@ -1326,7 +1326,7 @@ class Home extends CI_Controller
                                 $(".btn-delete-transaksi").click(function() {
                                     alert($(this).data("id-trans"));
                                     var el = this;
-                                
+
                                     // Delete id
                                     var confirmalert = confirm("Apakah anda yakin untuk menghapus transaksi ..?");
                                     if (confirmalert == true) {
@@ -1347,17 +1347,18 @@ class Home extends CI_Controller
                                             }
                                         });
                                     }
-                                });        
+                                });
                             </script>';
         } else {
 
             echo '<script>
                                     $("#nama-cus").val("");
                                     $("#no-wa").val("");
-                                    
+
                                     </script>';
         }
     }
+
     function upload_transaksi()
     {
         $id_trans_denahs = $this->input->post('id-trans-denahs');
