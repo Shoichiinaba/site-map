@@ -91,16 +91,15 @@
     }
 
     .pup {
-        height: 12px;
+        height: 10px;
         width: 12px;
         display: inline-flex;
         padding-right: 12px;
-        border: 1px solid gray;
+        border-radius: 5px;
     }
 
     @media screen and (max-width: 700px) {
         svg {
-            /* border: 1px solid purple; */
             display: block;
             margin-left: auto;
             margin-right: auto;

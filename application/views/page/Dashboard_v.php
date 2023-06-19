@@ -1,5 +1,82 @@
 <!-- conten -->
+<?php
+    function getChartDataset($id_perum = null, $database){
+        $id_perum = $id_perum;
 
+        $dataset = $database;
+
+        $dataset_filter = [];
+
+        $bulan_filter = [];
+
+        // $group_filter = [];
+        $group_filter = ['UTJ','DP','Sold Out'];
+
+        foreach($dataset as $data){
+            if(($id_perum != null) && ($data->id_perum == $id_perum)){
+                $dataset_filter[] = $data;
+            }else if($id_perum == null){
+                $dataset_filter[] = $data;
+            }
+            if($data->bulan){
+                if(!in_array($data->bulan, $bulan_filter)){
+                    $bulan_filter[] = $data->bulan;
+                }
+            }
+            if($data->status_trans){
+                if(!in_array($data->status_trans, $group_filter)){
+                    $group_filter[] = $data->status_trans;
+                }
+            }
+        }
+
+        arsort($bulan_filter);
+        arsort($group_filter);
+
+        $data_results = [];
+
+        foreach ($group_filter as $group) {
+            $g = $group;
+            if (!array_key_exists($group, $dataset)) {
+                $data_results[$g] = [];
+            }
+            foreach ($bulan_filter as $bulan) {
+                $count = 0;
+                $b = $bulan;
+                foreach ($dataset_filter as $list) {
+                    if (($list->bulan == $b) && ($list->status_trans == $g)) {
+                        $count += $list->jumlah;
+                    }
+                }
+                $data_results[$group][] = $count;
+            }
+        }
+
+        $final_result = [];
+        $final_result['label'] = [];
+        $final_result['data'] = [];
+
+        $colors = ['red', 'yellow', 'green'];
+
+        foreach($bulan_filter as $b){
+            $final_result['label'][] = $b;
+        }
+
+        $i = 0;
+        foreach($data_results as $key => $result){
+            $final_result['data'][] = [
+                'label' => $key,
+                'backgroundColor' => $colors[$i],
+                'data' => $result,
+                'borderColor' => 'rgba(75, 192, 192, 1)',
+                'borderWidth' => 1
+            ];
+            $i++;
+        }
+        return $final_result;
+
+    }
+?>
 <div class="container-fluid py-4">
     <div class="row">
         <div class="col-xl-3 col-6 mb-xl-0 mb-4">
@@ -177,14 +254,8 @@
                                         <?php
                                             $labels = [];
                                             $datasets = [];
-                                            // echo "<pre>".json_encode($transaksi)."</pre>";
                                             foreach ($transaksi as $chart) {
                                                 if ($chart->id_perum == $id_perum) {
-                                                    // debag
-                                                    // echo $chart->bulan . " ";
-                                                    // echo $chart->status_trans . " ";
-                                                    // echo $chart->jumlah . " " . " " . " | ";
-                                                    // debag akhir
                                                     $index = array_search($chart->bulan, array_column($labels, 'bulan'));
                                                     if ($index === false) {
                                                         $labels[] = ['bulan' => $chart->bulan];
@@ -200,32 +271,19 @@
                                             ?>
                                         <script>
                                         // tes-1
+                                        window.data_grafik = [];
 
                                         var ctx<?=$data->id_perum; ?> = document.getElementById(
                                             'myChart<?=$data->id_perum; ?>').getContext('2d');
+
+                                        window.data_grafik["<?=$data->id_perum?>"] =
+                                            <?php echo json_encode(getChartDataset($data->id_perum, $transaksi)); ?>;
+
                                         var chart = new Chart(ctx<?=$data->id_perum; ?>, {
                                             type: 'bar',
                                             data: {
-                                                labels: <?= json_encode(array_column($labels, 'bulan')); ?>,
-                                                datasets: [
-                                                    <?php
-                                                        $colors = [
-                                                            'UTJ' => 'rgba(255, 0, 0, 0.7)',
-                                                            'DP' => 'rgba(0, 255, 0, 0.7)',
-                                                            'Sold Out' => 'rgba(255, 255, 0, 0.7)'
-                                                        ];
-                                                        foreach ($datasets as $status_trans => $jumlah) {
-                                                            ?> {
-                                                        label: '<?= $status_trans; ?>',
-                                                        data: <?= json_encode(array_values($jumlah)); ?>,
-                                                        backgroundColor: '<?= $colors[$status_trans]; ?>',
-                                                        borderColor: 'rgba(75, 192, 192, 1)',
-                                                        borderWidth: 1
-                                                    },
-                                                    <?php
-                                                        }
-                                                        ?>
-                                                ]
+                                                labels: data_grafik["<?=$data->id_perum?>"].label,
+                                                datasets: data_grafik["<?=$data->id_perum?>"].data
                                             },
                                             options: {
                                                 scales: {
@@ -300,7 +358,5 @@ var chart = new Chart(ctx, {
             }]
         }
     }
-
-
 });
 </script>
