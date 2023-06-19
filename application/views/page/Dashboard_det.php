@@ -144,7 +144,22 @@
                 <div class="card-header pb-0 p-3">
                     <div class="d-flex justify-content-between">
                         <h6 class="mb-2 mt-2">Information Transaction</h6>
-                    </div><br>
+                    </div>
+                </div>
+                <div class="col-sm-9 col-lg-2">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text text-body">
+                            <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                        </span>
+                        <select class="form-control" id="status">
+                            <option value=""> &nbsp; Filter</option>
+                            <option value="Dipesan"> &nbsp; Dipesan</option>
+                            <option value="UTJ"> &nbsp; UTJ</option>
+                            <option value="DP"> &nbsp; DP</option>
+                            <option value="Sold Out"> &nbsp; Sold Out</option>
+                        </select>
+                    </div>
+                    <br>
                 </div>
                 <div class="table-responsive">
                     <table id="list-data" class="table align-items-center mb-0">
@@ -297,13 +312,18 @@ var chart = new Chart(ctx, {
 
 // data tabel
 window.crud = $('#list-data').DataTable({
-    " paging": true,
+    "paging": true,
     "ordering": true,
     "autoWidth": false,
     "responsive": true,
     processing: true,
     serverSide: true,
-    ajax: "<?php echo base_url('/Dashboard/data_transaksi') ?>/<?= $this->uri->segment(3)?>",
+    ajax: {
+        url: "<?php echo base_url('/Dashboard/data_transaksi') ?>/<?= $this->uri->segment(3)?>",
+        data: function(d) {
+            d.status = $('#status').val();
+        }
+    },
     columns: [{
             data: 'code',
             name: 'code'
@@ -326,6 +346,9 @@ window.crud = $('#list-data').DataTable({
             name: 'performance'
         },
     ],
+});
+$('#status').on('change', function() {
+    window.crud.ajax.reload();
 });
 // akhir data tabel
 </script>

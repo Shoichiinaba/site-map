@@ -71,10 +71,11 @@ class Dashboard extends AUTH_Controller
     function data_transaksi()
     {
         $draw = $this->input->get('draw');
-        $start = $this->input->get('start') ?: 0;
-        $rowperpage = $this->input->get('length') ?: 10;
-        $order = $this->input->get('order') ?: false;
-        $search = $this->input->get('search') ?: false;
+        $start = ($this->input->get('start') != null) ? $this->input->get('start') : 0;
+        $rowperpage = ($this->input->get('length') != null) ? $this->input->get('length') : 10;
+        $order = ($this->input->get('order') != null) ? $this->input->get('order') : false;
+        $search = ($this->input->get('search') != null && $this->input->get('search')['value'] != null) ? $this->input->get('search') : false;
+        $status = $this->input->get('status');
 
         $model = new Denah_model;
 
@@ -82,7 +83,6 @@ class Dashboard extends AUTH_Controller
         $filteredRows = $totalRows;
         $id = $this->uri->segment(3);
         $perum = preg_replace("![^a-z0-9]+!i", " ", $id);
-
 
         $sql = "SELECT * FROM perumahan WHERE nama = '$perum'";
         $query = $this->db->query($sql);
@@ -98,18 +98,32 @@ class Dashboard extends AUTH_Controller
         if ($search) {
             $search = $search['value'];
             $model = $model->where(function ($query) use ($search) {
-                $query->orWhere('code', 'LIKE', '%' . $search . '%')
+                $query->Where('code', 'LIKE', '%' . $search . '%')
                     ->orWhere('description', 'LIKE', '%' . $search . '%')
                     ->orWhere('type', 'LIKE', '%' . $search . '%')
                     ->orWhere('color', 'LIKE', '%' . $search . '%');
             });
         }
-
         $model = $model->where(function ($query) {
                  $query->where('type', '!=', 'Rumah Ready')
                        ->where('type', '!=', 'Kosong');
-
         });
+
+        if ($status) {
+            if ($status == 'UTJ' || $status == 'DP') {
+                $id_denahs = ['UTJ'];
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = 'transaksi.id_trans_denahs' AND status_trans = '$status'";
+                $query = $this->db->query($sql);
+                if ($query->num_rows() > 0) {
+                    foreach ($query->result() as $row) {
+                        $id_denahs[] = $row->id_denahs;
+                    }
+                }
+                $model = $model->whereIn('id_denahs', $id_denahs);
+            } else {
+                $model = $model->where('type', $status);
+            }
+        }
 
         $filteredRows = $model->count();
         $model = $model->skip((int)$start);

@@ -292,7 +292,6 @@ class Home extends CI_Controller
         $totalRows = $model->count();
         $filteredRows = $totalRows;
         $id = $this->uri->segment(3);
-
         $model = $model->where('map',  $id);
 
         if ($search) {
@@ -314,9 +313,7 @@ class Home extends CI_Controller
                         $id_denahs[] = $row->id_denahs;
                     }
                 }
-                
-                // $model = $model->where('id_denahs', $id_denahs);
-                
+
                 $model = $model->whereIn('id_denahs', $id_denahs);
             } else {
                 $model = $model->where('type', $status);

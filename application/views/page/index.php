@@ -983,7 +983,7 @@ function openDataRow(id, type_unit, code, type, desc, progres_berkas) {
         $('#form-edit-denah #type-unit').prop('disabled', true);
         $('.readonly-select-type-unit').html(
             '<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>'
-            )
+        )
     }
     $('#progres-berkas').val(progres_berkas);
     load_data_transaksi();
@@ -1033,7 +1033,7 @@ function getDataDoc(id_denahs, type_unit, status_pembayaran, progres_berkas) {
         $('#select-pembayaran').prop('disabled', true);
         $('.readonly-select-pembayaran').html(
             '<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>'
-            )
+        )
     }
     $('#progres-berkas').val(progres_berkas);
 
