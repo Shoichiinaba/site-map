@@ -305,8 +305,24 @@ class Home extends CI_Controller
             });
         }
         if ($status) {
-            $model = $model->where('type', $status);
+            if ($status == 'UTJ' || $status == 'DP') {
+                $id_denahs = [];
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
+                $query = $this->db->query($sql);
+                if ($query->num_rows() > 0) {
+                    foreach ($query->result() as $row) {
+                        $id_denahs[] = $row->id_denahs;
+                    }
+                }
+                
+                // $model = $model->where('id_denahs', $id_denahs);
+                
+                $model = $model->whereIn('id_denahs', $id_denahs);
+            } else {
+                $model = $model->where('type', $status);
+            }
         }
+
         $filteredRows = $model->count();
         $model = $model->skip((int) $start);
         $model = $model->take((int) $rowperpage);
@@ -359,23 +375,26 @@ class Home extends CI_Controller
                     if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
                         $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
                     }
-                }
-                if ($row->status_trans == 'Sold Out') {
-                    $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
-                } else {
-                    $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
-                    date_default_timezone_set('Asia/Jakarta');
-                    $awal  = date_create('' . $tgl . '');
-                    $akhir = date_create(); // waktu sekarang, pukul 06:13
-                    $diff  = date_diff($akhir, $awal);
-                    if ($diff->days >= '0' && $diff->days <= '14') {
-                        $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
-                    } else if ($diff->days >= '15' && $diff->days <= '22') {
-                        $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
-                    } else if ($diff->days >= '23') {
-                        $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                    if ($result->type == 'Dipesan') {
+                        if ($row->status_trans == 'UTJ') {
+                            $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
+                            date_default_timezone_set('Asia/Jakarta');
+                            $awal  = date_create('' . $tgl . '');
+                            $akhir = date_create(); // waktu sekarang, pukul 06:13
+                            $diff  = date_diff($akhir, $awal);
+                            if ($diff->days >= '0' && $diff->days <= '14') {
+                                $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                            } else if ($diff->days >= '15' && $diff->days <= '22') {
+                                $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                            } else if ($diff->days >= '23') {
+                                $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                            }
+                        }
+                    } else if ($result->type == 'Sold Out') {
+                        if ($row->status_trans == 'Sold Out') {
+                            $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
+                        }
                     }
-                    // $count[] = $row->tgl_trans;
                 }
             }
             $data['transaction'] = $data_trans;

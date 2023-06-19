@@ -41,7 +41,7 @@ class Dashboard extends AUTH_Controller
         $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold();
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
-        $data['ChartData']          = $this->Dashboard_Model->getChartData();
+        $data['ChartData']          = $this->Dashboard_Model->getChartData($id, $role);
         $data['transaksi']          = $this->Dashboard_Model->getTransaksiByBulan();
 
         $this->load->view($this->template, $data);
