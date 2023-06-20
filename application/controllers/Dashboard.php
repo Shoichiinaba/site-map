@@ -41,7 +41,7 @@ class Dashboard extends AUTH_Controller
         $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold();
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
-        $data['ChartData']          = $this->Dashboard_Model->getChartData($id, $role);
+        $data['ChartData']          = $this->Dashboard_Model->getChartData($role, $id);
         $data['transaksi']          = $this->Dashboard_Model->getTransaksiByBulan();
 
         $this->load->view($this->template, $data);
@@ -58,6 +58,7 @@ class Dashboard extends AUTH_Controller
         $data['jum_UTJ'] 			= $this->Dashboard_Model->jumlah_UTJ($perum);
         $data['jum_DP'] 		    = $this->Dashboard_Model->jumlah_DP($perum);
         $data['jum_sold'] 			= $this->Dashboard_Model->jum_sold($perum);
+        $data['jum_ready'] 			= $this->Dashboard_Model->jum_ready($perum);
         $data['bread']              = 'Dashboard/ Detail';
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
@@ -111,8 +112,8 @@ class Dashboard extends AUTH_Controller
 
         if ($status) {
             if ($status == 'UTJ' || $status == 'DP') {
-                $id_denahs = ['UTJ'];
-                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = 'transaksi.id_trans_denahs' AND status_trans = '$status'";
+                $id_denahs = [''];
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = '$id_perum' AND status_trans = '$status' AND status_trans not in('UTJ,Sold') ";
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
                     foreach ($query->result() as $row) {

@@ -314,7 +314,7 @@ class Home extends CI_Controller
                     }
                 }
 
-                $model = $model->whereIn('id_denahs', $id_denahs);
+                $model = $model->whereIn('id_denahs', '$id_denahs' );
             } else {
                 $model = $model->where('type', $status);
             }

@@ -101,12 +101,21 @@ class Dashboard_Model extends CI_Model
 
 	public function jum_sold( $perum)
 	{
-
 		$this->db->select('transaksi.status_trans, COUNT(*) as jumlah_record');
 		$this->db->from('transaksi');
 		$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
         $this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
 		$this->db->where('transaksi.status_trans', 'Sold Out');
+		$this->db->where('perumahan.nama', $perum);
+        return $this->db->count_all_results();
+	}
+
+	public function jum_ready($perum)
+	{
+		$this->db->select('perumahan.nama, COUNT(*) as jumlah_record');
+		$this->db->from('denahs');
+		$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+		$this->db->where('denahs.type', 'Rumah Ready');
 		$this->db->where('perumahan.nama', $perum);
         return $this->db->count_all_results();
 	}
@@ -134,6 +143,7 @@ class Dashboard_Model extends CI_Model
 
 		return $chartData;
 	}
+
 	public function getTransaksiByBulan()
 	{
 		$this->db->select('MONTHNAME(STR_TO_DATE(tgl_trans, "%d/%m/%Y")) AS bulan,status_trans,id_perum, COUNT(*) AS jumlah');
