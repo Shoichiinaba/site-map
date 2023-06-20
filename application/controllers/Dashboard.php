@@ -144,6 +144,17 @@ class Dashboard extends AUTH_Controller
         $data_arr = [];
         foreach ($results as $result) {
             $id_denahs = $result->id_denahs;
+            $color = '';
+            if ($result->progres_berkas >= 1 && $result->progres_berkas <= 15) {
+                $color = 'gradient-danger';
+            } elseif ($result->progres_berkas > 15 && $result->progres_berkas <= 30) {
+                $color = 'gradient-warning';
+            }elseif ($result->progres_berkas > 30 && $result->progres_berkas <= 50) {
+                $color = 'gradient-info';
+            } elseif ($result->progres_berkas > 50 && $result->progres_berkas <= 100) {
+                $color = 'gradient-success';
+            }
+
             $data = [
                 'code' => $result->code,
                 'type' => '<span class="pup" style="background-color:' . $result->color . '"></span> ' . $result->type,
@@ -154,8 +165,7 @@ class Dashboard extends AUTH_Controller
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="' . $result->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $result->progres_berkas . '%;"></div>
-                                </div>
+                                <div class="progress-bar bg-'. $color . '" role="progressbar" aria-valuenow="' . $result->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $result->progres_berkas . '%;"></div>
                             </div>',
             ];
 
