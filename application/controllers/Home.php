@@ -287,6 +287,8 @@ class Home extends CI_Controller
         $order = ($this->input->get('order') != null) ? $this->input->get('order') : false;
         $search = ($this->input->get('search') != null && $this->input->get('search')['value'] != null) ? $this->input->get('search') : false;
         $status = $this->input->get('status');
+        $tgl_start = $this->input->get('tgl_start');
+        $tgl_end = $this->input->get('tgl_end');
 
         $model = new Denah_model;
 
@@ -305,20 +307,33 @@ class Home extends CI_Controller
                     ->orWhere('color', 'LIKE', '%' . $search . '%');
             });
         }
+        $id_denahs = [];
         if ($status) {
-            if ($status == 'UTJ' || $status == 'DP') {
-                $id_denahs = [];
-                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
-                $query = $this->db->query($sql);
-                if ($query->num_rows() > 0) {
-                    foreach ($query->result() as $row) {
-                        $id_denahs[] = $row->id_denahs;
+            if ($status == 'UTJ' || $status == 'DP' || $status == 'Sold Out') {
+                if ($tgl_start == '') {
+
+                    $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
+                    $query = $this->db->query($sql);
+                    if ($query->num_rows() > 0) {
+                        foreach ($query->result() as $row) {
+                            $id_denahs[] = $row->id_denahs;
+                        }
                     }
+                    $model = $model->whereIn('id_denahs', $id_denahs);
+                } else {
+                    date_default_timezone_set("Asia/jakarta");
+                    $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status' AND STR_TO_DATE(tgl_trans, '%d/%m/%Y') BETWEEN STR_TO_DATE('$tgl_start', '%d/%m/%Y') AND STR_TO_DATE('$tgl_end', '%d/%m/%Y')";
+                    $query = $this->db->query($sql);
+                    if ($query->num_rows() > 0) {
+                        foreach ($query->result() as $row) {
+                            $id_denahs[] = $row->id_denahs;
+                        }
+                    }
+                    $model = $model->whereIn('id_denahs', $id_denahs);
                 }
-                
+
                 // $model = $model->where('id_denahs', $id_denahs);
-                
-                $model = $model->whereIn('id_denahs', $id_denahs);
+
             } else {
                 $model = $model->where('type', $status);
             }
@@ -379,7 +394,7 @@ class Home extends CI_Controller
                     if ($result->type == 'Dipesan') {
                         if ($row->status_trans == 'UTJ') {
                             $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
-                            date_default_timezone_set('Asia/Jakarta');
+                            // date_default_timezone_set('Asia/Jakarta');
                             $awal  = date_create('' . $tgl . '');
                             $akhir = date_create(); // waktu sekarang, pukul 06:13
                             $diff  = date_diff($akhir, $awal);

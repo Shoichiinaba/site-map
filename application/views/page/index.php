@@ -173,8 +173,8 @@
     <div class="container-fluid py-4">
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
-                <div class="row">
-                    <div class="col-sm-9 col-lg-2">
+                <div class="row mb-2">
+                    <div class="col-lg-2 col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body">
                                 <i class="ni ni-delivery-fast" aria-hidden="true"></i>
@@ -189,11 +189,20 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-sm-3 col-lg-2">
+
+                    <div class="col-lg-3 col-md-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" id="filter-tgl" name="daterange" placeholder=" Pilih Range Tanggal">
+                            <input type="text" id="tgl-start" value="" hidden>
+                            <input type="text" id="tgl-end" value="" hidden>
+                        </div>
+                    </div>
+                    <!-- <div class="col-lg-2 col-md-2">
                         <button type="button" class="btn bg-gradient-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalcetak"> <i class="fa fa-print" style="font-size:small;"></i>
                             &nbsp; Cetak
                         </button>
-                    </div>
+                    </div> -->
                 </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
@@ -469,10 +478,10 @@
                         </div>
                     </div>
                     <div class="col-sm-3 col-lg-4">
-                        <div class="input-group input-group-sm">
+                        <!-- <div class="input-group input-group-sm">
                             <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" name="daterange" placeholder=" Pilih Range Tanggal">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -529,7 +538,7 @@
         '<option value="spt">SPT</option>' +
         '<option value="blanko">Blanko</option>';
     load_data_kapling();
-
+    filter_tgl();
     $(document).ready(function() {
         $('.btn-modal-document').click(function() {
             cencel_upload_document();
@@ -591,8 +600,14 @@
                 }
             });
         });
+        // load data saat pertama di buka
+        $('#status').on('change', function() {
+            window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+                "?status=" + $(this).val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+        });
 
     });
+
     $('#tgl-trans, #nominal').attr('disabled', true);
     $('#btn-form-trans').hide();
     $('#btn-add-document').click(function() {
@@ -887,15 +902,7 @@
             }
         });
     }
-    // load data saat pertama di buka
-    $(document).ready(function() {
-        load_data_kapling();
 
-        $('#status').on('change', function() {
-            window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-                "?status=" + $(this).val()).load();
-        });
-    });
 
     function load_data_kapling() {
         if ($.fn.DataTable.isDataTable('#list-selatan')) {
@@ -1017,6 +1024,31 @@
 
     }
 
+    function filter_tgl() {
+        $(function() {
+            $('input[name="daterange"]').daterangepicker({
+                opens: 'left',
+                locale: {
+                    format: 'DD/MM/YYYY'
+                }
+            }, function(start, end, label) {
+                console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+                    'YYYY-MM-DD'));
+                // alert(start);
+                $('#tgl-start').val(start.format('DD/MM/YYYY'));
+                $('#tgl-end').val(end.format('DD/MM/YYYY'));
+                if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
+                    alert('ya');
+                    window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+                        "?status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+                } else {
+
+                }
+
+            });
+
+        });
+    }
     $(function() {
         $('input[name="tgl-trans"]').daterangepicker({
             singleDatePicker: true,

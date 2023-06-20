@@ -52,7 +52,7 @@
                 ?>
 
                 <li class="nav-item">
-                    <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->role; ?></p> -->
+                    <!-- <p>Nama: <?php echo $this->session->userdata('userdata')->dibuat; ?></p> -->
 
                     <a class="nav-link active" data-bs-toggle="collapse" aria-controls="dashboardsExamples"
                         role="button" aria-expanded="false">
