@@ -207,7 +207,7 @@
 <script>
 // grafik transaksi by perumahan by bulan
 
-var transaksi = <?php echo json_encode($transaksi); ?>;
+var transaksi = <?php echo json_encode($transaksi_det); ?>;
 var groupedData = {};
 transaksi.forEach(function(item) {
     var bulan = item.bulan;
