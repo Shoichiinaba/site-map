@@ -356,7 +356,6 @@ class Home extends CI_Controller
                 'code' => $result->code,
                 'description' => $result->description,
                 'type' => '<span class="pup" style="background-color:' . $result->color . '"></span> ' . $result->type,
-                // 'color' => '<span class="text-xs font-weight-bold">10%</span>' . '<span class="progress" style="background-color: ' . $result->color . '">',
                 'color' => '<div id="progres-' . $result->id_denahs . '" class="progress-wrapper">
                                 <div class="progress-info">
                                     <div class="progress-percentage">
