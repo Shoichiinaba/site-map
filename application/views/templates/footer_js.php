@@ -28,13 +28,13 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript">
 $(function() {
-    $('input[name="daterange"]').daterangepicker({
-        opens: 'left'
-    }, function(start, end, label) {
-        console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
-            'YYYY-MM-DD'));
-        alert(start);
-    });
+    // $('input[name="daterange"]').daterangepicker({
+    //     opens: 'left'
+    // }, function(start, end, label) {
+    //     console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+    //         'YYYY-MM-DD'));
+    //     alert(start);
+    // });
 });
 </script>
 
