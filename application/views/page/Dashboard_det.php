@@ -1,3 +1,21 @@
+<style>
+.bg-dur-sold-out {
+    border: dashed 2px red;
+    padding: 0px 6px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #f05151;
+}
+
+.border-transaksi {
+    border: 2px solid #0000002e;
+    padding: 0px 6px;
+    border-radius: 5px;
+    font-size: x-small;
+    font-weight: bold;
+}
+</style>
+
 <!-- conten -->
 <div class="container-fluid py-4">
     <div class="row">
@@ -11,8 +29,6 @@
                                 <i class="ni ni-paper-diploma text-lg opacity-10" aria-hidden="true"
                                     data-bs-toggle="tooltip" data-bs-placement="bottom" data-container="body"
                                     data-animation="true" title="
-
-
                                     "></i>
                             </div>
                         </div>
@@ -100,47 +116,98 @@
     </div>
     <div class="row my-4">
         <div class="col-lg-12 col-md-6 mb-md-0 mb-4">
-            <div class="card">
-                <div class="card-header pb-0">
-                    <div class="row">
-                        <!-- chart -->
-                        <div class="col-lg-6 col-12 ">
-                            <div class="card mb-2">
-                                <div class="card-body p-2">
-                                    <div class="chart">
-                                        <canvas id="barChart" class="chart-canvas" height="200px"></canvas>
-                                    </div>
+            <div class="card-header pb-0">
+                <div class="row">
+                    <!-- chart -->
+                    <div class="col-lg-6 col-12 ">
+                        <div class="card mb-2">
+                            <div class="card-body p-2">
+                                <div class="chart">
+                                    <canvas id="barChart" class="chart-canvas" height="200px"></canvas>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-6 col-12 ">
-                            <div class="card mb-2">
-                                <div class="card-body p-2">
-                                    <div class="chart">
-                                        <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
-                                    </div>
+                    </div>
+                    <div class="col-lg-6 col-12 ">
+                        <div class="card mb-2">
+                            <div class="card-body p-2">
+                                <div class="chart">
+                                    <canvas id="myChart" class="chart-canvas" height="200px"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="card-body px-0 pb-2">
-                    <div class="table-responsive">
-                        <table class="table align-items-center mb-0">
-                            <!-- tes tampil data -->
-                            <!-- <?php echo json_encode($transaksi); ?> -->
-                        </table>
+            </div>
+            <div class="col-12 col-lg-12">
+
+                <div class="card-header pb-0 p-3">
+                    <div class="d-flex justify-content-between">
+                        <h6 class="mb-2 mt-2">Information Transaction</h6>
                     </div>
                 </div>
+                <div class="col-sm-9 col-lg-2">
+                    <div class="input-group input-group-sm">
+                        <span class="input-group-text text-body">
+                            <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                        </span>
+                        <select class="form-control" id="status">
+                            <option value=""> &nbsp; Filter</option>
+                            <option value="Dipesan"> &nbsp; Dipesan</option>
+                            <option value="UTJ"> &nbsp; UTJ</option>
+                            <option value="DP"> &nbsp; DP</option>
+                            <option value="Sold Out"> &nbsp; Sold Out</option>
+                        </select>
+                    </div>
+                    <br>
+                </div>
+                <div class="table-responsive">
+                    <table id="list-data" class="table align-items-center mb-0">
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-sm font-weight-bolder opacity-8">
+                                    Kode Unit</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-8">
+                                    Status</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-8">
+                                    Transaction</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-8">
+                                    Progress doc</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-sm font-weight-bolder opacity-8">
+                                    Duration</th>
+                                <th
+                                    class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-10">
+                                    Duration<br
+                                        class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">
+                                    Dari UTJ ke Sold out </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
 
-<script>
-var transaksi = <?php echo json_encode($transaksi); ?>;
 
-// Mengelompokkan data transaksi berdasarkan bulan
+<!-- js script -->
+<script>
+// grafik transaksi by perumahan by bulan
+
+var transaksi = <?php echo json_encode($transaksi); ?>;
 var groupedData = {};
 transaksi.forEach(function(item) {
     var bulan = item.bulan;
@@ -200,10 +267,9 @@ new Chart(ctx, {
         }
     },
 });
-</script>
+// akhir grafik transaksi by perumahan by bulan
 
-<!-- grafik rumah ready -->
-<script>
+// grafik rumah ready
 var chartData = <?php echo json_encode($Rmh_ready); ?>;
 var colors = ['#FFFF00', '#0000FF', '#333333'];
 var labels = [];
@@ -242,4 +308,47 @@ var chart = new Chart(ctx, {
         }
     }
 });
+// akhir grafik rumah ready
+
+// data tabel
+window.crud = $('#list-data').DataTable({
+    "paging": true,
+    "ordering": true,
+    "autoWidth": false,
+    "responsive": true,
+    processing: true,
+    serverSide: true,
+    ajax: {
+        url: "<?php echo base_url('/Dashboard/data_transaksi') ?>/<?= $this->uri->segment(3)?>",
+        data: function(d) {
+            d.status = $('#status').val();
+        }
+    },
+    columns: [{
+            data: 'code',
+            name: 'code'
+        }, {
+            data: 'type',
+            name: 'type'
+        }, {
+            data: 'transaction',
+            name: 'transaction'
+        }, {
+            data: 'color',
+            name: 'color'
+        },
+        {
+            data: 'duration',
+            name: 'duration'
+        },
+        {
+            data: 'performance',
+            name: 'performance'
+        },
+    ],
+});
+$('#status').on('change', function() {
+    window.crud.ajax.reload();
+});
+// akhir data tabel
 </script>
