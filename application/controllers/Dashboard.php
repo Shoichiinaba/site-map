@@ -31,14 +31,14 @@ class Dashboard extends AUTH_Controller
         $data['perumahan']          = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan']      = $this->M_admin->m_area_siteplan();
         $data['bread']              = 'Dashboard';
-        $data['jum_ready'] 			= $this->Dashboard_Model->jumlah_ready();
-        $data['jum_dipesan'] 		= $this->Dashboard_Model->jumlah_dipesan();
-        $data['jum_sold'] 			= $this->Dashboard_Model->jumlah_sold();
-        $data['jum_null'] 			= $this->Dashboard_Model->all_DP();
-        $data['tolp_ready'] 		= $this->Dashboard_Model->tooltip_ready();
-        $data['tolp_UTJ'] 		    = $this->Dashboard_Model->tooltip_UTJ();
-        $data['tolp_DP'] 		    = $this->Dashboard_Model->tooltip_DP();
-        $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold();
+        $data['jum_ready'] 			= $this->Dashboard_Model->jumlah_ready($role, $id);
+        $data['jum_dipesan'] 		= $this->Dashboard_Model->jumlah_dipesan($role, $id);
+        $data['jum_sold'] 			= $this->Dashboard_Model->jumlah_sold($role, $id);
+        $data['jum_null'] 			= $this->Dashboard_Model->all_DP($role, $id);
+        $data['tolp_ready'] 		= $this->Dashboard_Model->tooltip_ready($role, $id);
+        $data['tolp_UTJ'] 		    = $this->Dashboard_Model->tooltip_UTJ($role, $id);
+        $data['tolp_DP'] 		    = $this->Dashboard_Model->tooltip_DP($role, $id);
+        $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold($role, $id);
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
         $data['ChartData']          = $this->Dashboard_Model->getChartData($role, $id);
@@ -62,8 +62,7 @@ class Dashboard extends AUTH_Controller
         $data['bread']              = 'Dashboard/ Detail';
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
-        $data['ChartData']          = $this->Dashboard_Model->getChartData();
-        $data['transaksi']          = $this->Dashboard_Model->getperumByBulan($perum);
+        $data['transaksi_det']      = $this->Dashboard_Model->getperumByBulan($perum);
         $data['Rmh_ready']          = $this->Dashboard_Model->readyByperum($perum);
         $this->load->view($this->template, $data);
 
@@ -147,9 +146,9 @@ class Dashboard extends AUTH_Controller
             $color = '';
             if ($result->progres_berkas >= 1 && $result->progres_berkas <= 15) {
                 $color = 'gradient-danger';
-            } elseif ($result->progres_berkas > 15 && $result->progres_berkas <= 30) {
+            } elseif ($result->progres_berkas > 15 && $result->progres_berkas <= 35) {
                 $color = 'gradient-warning';
-            }elseif ($result->progres_berkas > 30 && $result->progres_berkas <= 50) {
+            }elseif ($result->progres_berkas > 35 && $result->progres_berkas <= 50) {
                 $color = 'gradient-info';
             } elseif ($result->progres_berkas > 50 && $result->progres_berkas <= 100) {
                 $color = 'gradient-success';
