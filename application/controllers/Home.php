@@ -389,7 +389,7 @@ class Home extends CI_Controller
                     if ($result->type == 'Dipesan') {
                         if ($row->status_trans == 'UTJ') {
                             $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
-                            // date_default_timezone_set('Asia/Jakarta');
+                            date_default_timezone_set('Asia/Jakarta');
                             $awal  = date_create('' . $tgl . '');
                             $akhir = date_create(); // waktu sekarang, pukul 06:13
                             $diff  = date_diff($akhir, $awal);

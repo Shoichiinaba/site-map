@@ -36,7 +36,7 @@
                             <div class="numbers">
                                 <p class="text-sm mb-0 text-capitalize font-weight-bold">Rumah Ready</p>
                                 <h5 class="font-weight-bolder mb-0">
-                                    <!-- <?php echo $jum_ready;  ?> -->
+                                    <?php echo $jum_ready;  ?>
                                     <span class="text-info text-sm font-weight-bolder">Unit</span>
                                 </h5>
                             </div>
