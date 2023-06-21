@@ -15,6 +15,11 @@
     <link href="<?= base_url(); ?>assets_adm/css/nucleo-svg.css" rel="stylesheet" />
     <link id="pagestyle" href="<?= base_url(); ?>assets_adm/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
 </head>
+<?php
+if ($this->session->flashdata('error')) {
+    echo '<div class="alert alert-danger">' . $this->session->flashdata('error') . '</div>';
+}
+?>
 
 <body class="">
     <main class="main-content  mt-0">
@@ -58,6 +63,7 @@
                                             <strong>Warning!</strong>
                                             <?php echo validation_errors(); ?>
                                             <?php echo $this->session->flashdata('result_login'); ?>
+                                            <?php echo $this->session->flashdata('Habis'); ?>
                                         </div>
                                         <?php } ?>
 
@@ -176,6 +182,7 @@
     $(document).ready(function() {
         $(' #customCheck').click(function() { if ($(this).is(':checked')) { $('#password').attr('type', 'text' ); }
                 else { $('#password').attr('type', 'password' ); } }); }); </script>
+
                 <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
                 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
                 <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>

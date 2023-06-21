@@ -112,7 +112,7 @@ class Dashboard extends AUTH_Controller
         if ($status) {
             if ($status == 'UTJ' || $status == 'DP') {
                 $id_denahs = [''];
-                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = '$id_perum' AND status_trans = '$status' AND status_trans not in('UTJ,Sold') ";
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = '$id_perum' AND status_trans = '$status' ";
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
                     foreach ($query->result() as $row) {
