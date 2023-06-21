@@ -39,7 +39,6 @@ class Client extends CI_Controller
         } else {
             // Data sudah ada, tampilkan pesan menggunakan flashdata
             $this->session->set_flashdata('error_message', 'Anda sudah mengisi data sebelumnya.');
-            // redirect('client/site_plan/selatan'); // Redirect kembali ke halaman formulir
             $tittle = $this->uri->segment(3);
             $perum = preg_replace("![^a-z0-9]+!i", " ", $tittle);
             $data['_tittle'] = 'Site Plan ' . $perum;
@@ -72,7 +71,6 @@ class Client extends CI_Controller
         if ($this->FormDataModel->simpanData($id_customer, $nama, $email, $telepon)) {
             // Data berhasil disimpan
             $this->session->set_flashdata('success_message', 'Terima Kasih Data anda sudah berhasil disimpan.');
-            // $this->load->view('Client/visit/' . $perum);
         } else {
             // Data sudah ada
             $this->session->set_flashdata('error_message', 'Anda sSudah Pernah Mengisikan Data diri.');
@@ -82,7 +80,6 @@ class Client extends CI_Controller
     }
     function load_site_plan()
     {
-        // $id_perum_siteplan = $this->input->post('id-perum');
         $id_siteplan = $this->input->post('id-siteplan');
 
         $sql = "SELECT *FROM site_plan WHERE id_siteplan = '$id_siteplan'";
