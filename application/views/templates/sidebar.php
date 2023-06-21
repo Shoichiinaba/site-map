@@ -44,16 +44,19 @@
                     </a>
                 </li>
 
-
                 <li class="nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">Kelola Maps</h6>
                 </li>
                 <?php
                     foreach ($perumahan as $data) {
-                        $id_perum = $data->id_perum;
+                            $id_perum = $data->id_perum;
+                            $nama = $data->nama;
+                            $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
+                            $isActive = ($this->uri->segment(2) == 'visit' && $this->uri->segment(3) ==  $tittle);
                 ?>
                 <li class="nav-item">
-                    <a class="nav-link active" data-bs-toggle="collapse"
+                    <a class="nav-link <?php echo $isActive ? 'active' : ''; ?>" href="<?php echo site_url('Home'); ?> "
+                        data-bs-toggle="collapse" id="componentsExamples"
                         data-bs-target="#dashboardsExamples<?= $id_perum ?>" role="button" aria-expanded="false">
                         <div
                             class="icon icon-shape icon-sm shadow border-radius-md bg-white text-center d-flex align-items-center justify-content-center  me-2">
@@ -79,35 +82,36 @@
                         </div>
                         <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
                     </a>
-                    <div class="collapse" id="dashboardsExamples<?= $id_perum ?>">
+                    <div class="collapse <?php echo $isActive ? 'show' : ''; ?>"
+                        id="dashboardsExamples<?= $id_perum ?>">
                         <ul class="nav ms-4 ps-3">
                             <?php
-                                foreach ($area_siteplan as $area) :
-                                    if ($area->id_perum_siteplan == $id_perum) {
-                                        $nama = $data->nama;
-                                        $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
-                             ?>
+                            foreach ($area_siteplan as $area) {
+                                if ($area->id_perum_siteplan == $id_perum) {
+                                    $nama = $data->nama;
+                                    $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
+                                    $isActiveChild = ($this->uri->segment(3) == $tittle && $this->uri->segment(4) == $area->area);
+                            ?>
                             <li class="nav-item">
-                                <a class="nav-link"
+                                <a class="nav-link <?php echo $isActiveChild ? 'active' : ''; ?>"
                                     href="<?php echo site_url('Home'); ?>/visit/<?= $tittle; ?>/<?= $area->area; ?>">
                                     <span class="sidenav-normal"> <?= $area->area; ?> </span>
                                 </a>
                             </li>
                             <?php
-                                }
-                            endforeach;
+                              }
+                            }
                             ?>
                         </ul>
                     </div>
                 </li>
                 <?php
-                    }
-                    ?>
+                   }
+                ?>
                 <li class=" nav-item mt-3">
                     <h6 class="ps-4 ms-2 text-uppercase text-xs font-weight-bolder opacity-6">
                         Kelola Data</h6>
                 </li>
-
                 <li class="nav-item">
                     <a <?= $this->uri->segment(1) == 'Customer' || $this->uri->segment(1) == '' ? 'class="nav-link active"' : '' ?>
                         class="nav-link" href="<?php echo site_url('Customer'); ?> ">

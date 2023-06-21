@@ -1,13 +1,14 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 class SessionChecker
 {
+
     protected $CI;
 
     public function __construct()
     {
-        $this->CI =& get_instance();
+        $this->CI = &get_instance();
     }
 
     public function checkSession()
@@ -17,5 +18,4 @@ class SessionChecker
             redirect('Auth');
         }
     }
-
 }

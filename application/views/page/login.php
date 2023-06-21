@@ -49,10 +49,10 @@ if ($this->session->flashdata('error')) {
                             </div>
                             <div class="card">
                                 <div class="card-body login-card-body">
-                                    <form action="<?= site_url('Auth/login')?>" method="post">
+                                    <form action="<?= site_url('Auth/login') ?>" method="post">
                                         <!-- Alert -->
                                         <?php
-                                            if (validation_errors() || $this->session->flashdata('result_login')) {
+                                        if (validation_errors() || $this->session->flashdata('result_login')) {
                                         ?>
                                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                             <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -68,9 +68,9 @@ if ($this->session->flashdata('error')) {
                                         <?php } ?>
 
                                         <?php
-                                            $data=$this->session->flashdata('sukses');
-                                                if($data!=""){ ?>
-                                        <div class="alert alert-success"><strong>Sukses! </strong> <?=$data;?></div>
+                                        $data = $this->session->flashdata('sukses');
+                                        if ($data != "") { ?>
+                                        <div class="alert alert-success"><strong>Sukses! </strong> <?= $data; ?></div>
                                         <?php } ?>
                                         <!-- akhir alert -->
                                         <div class="input-group mb-3">
