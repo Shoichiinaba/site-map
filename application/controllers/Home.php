@@ -412,6 +412,7 @@ class Home extends CI_Controller
             $data_arr[] = $data;
         }
 
+
         return $this->output
             ->set_content_type('application/json')
             ->set_status_header(200)
