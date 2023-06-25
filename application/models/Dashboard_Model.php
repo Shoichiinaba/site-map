@@ -319,4 +319,31 @@ class Dashboard_Model extends CI_Model
 
     }
 
+	public function data_deadline($role, $id, $limit, $start)
+    {
+		if ($role == 'Admin') {
+
+			$this->db->select("*");
+			$this->db->from('transaksi');
+			$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
+			$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+			$this->db->where('transaksi.status_trans !=', 'Sold Out');
+			$this->db->limit($limit, $start);
+			$query = $this->db->get();
+			return $query->result();
+
+		} else if ($role == 'Marketing') {
+			$this->db->select("*");
+			$this->db->from('transaksi');
+			$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
+			$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
+			$this->db->join('marketing_perum', 'marketing_perum.id_perum_marketing = perumahan.id_perum');
+			$this->db->where('marketing_perum.id_admin_marketing', $id);
+			$this->db->where('transaksi.status_trans !=', 'Sold Out');
+			$this->db->limit($limit, $start);
+			$query = $this->db->get();
+			return $query->result();
+		}
+	}
+
 }

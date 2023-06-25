@@ -165,6 +165,11 @@ sup {
             </div>
             <!-- akhir panel control -->
         </div>
+        <!-- <?php
+            foreach ($data_arry as $data) {
+                echo $data->code;
+            }
+        ?> -->
     </div>
 </div>
 <!-- akhir Tampilan map -->
@@ -191,8 +196,10 @@ sup {
                     </div>
                     <div class="col-lg-3 col-md-3">
                         <div class="input-group input-group-sm">
-                            <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" id="filter-tgl" name="daterange" placeholder=" Pilih Range Tanggal">
+                            <span class="input-group-text text-body"><i class="fa fa-calendar"
+                                    aria-hidden="true"></i></span>
+                            <input type="text" class="form-control" id="filter-tgl" name="daterange"
+                                placeholder=" Pilih Range Tanggal">
                             <input type="text" id="tgl-start" value="" hidden>
                             <input type="text" id="tgl-end" value="" hidden>
                         </div>
@@ -461,570 +468,578 @@ sup {
 </div>
 
 <script>
-    var select_subsidi = '<option value="0">Pilih status pembayaran</option>' +
-        '<option value="cash">Cash</option>' +
-        '<option value="kpr-sub">KPR</option>';
+var select_subsidi = '<option value="0">Pilih status pembayaran</option>' +
+    '<option value="cash">Cash</option>' +
+    '<option value="kpr-sub">KPR</option>';
 
-    var select_komersil = '<option value="0">Pilih status pembayaran</option>' +
-        '<option value="cash">Cash</option>' +
-        '<option value="kpr-kom">KPR</option>';
+var select_komersil = '<option value="0">Pilih status pembayaran</option>' +
+    '<option value="cash">Cash</option>' +
+    '<option value="kpr-kom">KPR</option>';
 
-    var html_cash = '<option value="0">Pilih Document</option>' +
-        '<option value="ktp">KTP</option>' +
-        '<option value="kk">kk</option>' +
-        '<option value="npwp">NPWP</option>' +
-        '<option value="buku_nikah">Buku Nikah</option>';
+var html_cash = '<option value="0">Pilih Document</option>' +
+    '<option value="ktp">KTP</option>' +
+    '<option value="kk">kk</option>' +
+    '<option value="npwp">NPWP</option>' +
+    '<option value="buku_nikah">Buku Nikah</option>';
 
-    var html_kpr_subsidi = '<option value="0">Pilih Document</option>' +
-        '<option value="ktp">KTP</option>' +
-        '<option value="kk">kk</option>' +
-        '<option value="npwp">NPWP</option>' +
-        '<option value="buku_nikah">Buku Nikah</option>' +
-        '<option value="skk">Surat keterangan kerja</option>' +
-        '<option value="slip_g">Slip gaji 3 bulan terakhir</option>' +
-        '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
-        '<option value="pas_foto">Pas Foto</option>' +
-        '<option value="spt">SPT</option>' +
-        '<option value="blanko">Blanko</option>' +
-        '<option value="doc1">Surat Pernyataan permohonan KPR</option>' +
-        '<option value="doc2">Surat Pernyataan penghuni rumah umum bersubsidi</option>' +
-        '<option value="doc3">Surat kuasa pendebetan dana</option>' +
-        '<option value="doc4">Surat permohonan subsidi</option>' +
-        '<option value="doc5">Surat pengakuan kekurangan bayar KPR</option>' +
-        '<option value="doc6">Surat perintah pemindah bukuan dana SBUM</option>';
+var html_kpr_subsidi = '<option value="0">Pilih Document</option>' +
+    '<option value="ktp">KTP</option>' +
+    '<option value="kk">kk</option>' +
+    '<option value="npwp">NPWP</option>' +
+    '<option value="buku_nikah">Buku Nikah</option>' +
+    '<option value="skk">Surat keterangan kerja</option>' +
+    '<option value="slip_g">Slip gaji 3 bulan terakhir</option>' +
+    '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
+    '<option value="pas_foto">Pas Foto</option>' +
+    '<option value="spt">SPT</option>' +
+    '<option value="blanko">Blanko</option>' +
+    '<option value="doc1">Surat Pernyataan permohonan KPR</option>' +
+    '<option value="doc2">Surat Pernyataan penghuni rumah umum bersubsidi</option>' +
+    '<option value="doc3">Surat kuasa pendebetan dana</option>' +
+    '<option value="doc4">Surat permohonan subsidi</option>' +
+    '<option value="doc5">Surat pengakuan kekurangan bayar KPR</option>' +
+    '<option value="doc6">Surat perintah pemindah bukuan dana SBUM</option>';
 
-    var html_kpr_komersil = '<option value="0">Pilih Document</option>' +
-        '<option value="ktp">KTP</option>' +
-        '<option value="kk">kk</option>' +
-        '<option value="npwp">NPWP</option>' +
-        '<option value="buku_nikah">Buku Nikah</option>' +
-        '<option value="skk">Surat keterangan kerja</option>' +
-        '<option value="slip_g">Slip gaji 3 bulan terakhir</option>' +
-        '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
-        '<option value="pas_foto">Pas Foto</option>' +
-        '<option value="spt">SPT</option>' +
-        '<option value="blanko">Blanko</option>';
-    load_data_kapling();
-    filter_tgl();
-    $(document).ready(function() {
-        $('.btn-modal-document').click(function() {
-            cencel_upload_document();
-            var id_denahs = $('#id-denahs').val();
-            $("#select-pembayaran").removeAttr("readonly", true)
-            // if ($("#select-pembayaran").val() == 'cash') {
-            //     $('#select-document').html(html_cash);
-            // } else if ($("#select-pembayaran").val() == 'kpr') {
-            //     $('#select-document').html(html_kpr);
-            // }
+var html_kpr_komersil = '<option value="0">Pilih Document</option>' +
+    '<option value="ktp">KTP</option>' +
+    '<option value="kk">kk</option>' +
+    '<option value="npwp">NPWP</option>' +
+    '<option value="buku_nikah">Buku Nikah</option>' +
+    '<option value="skk">Surat keterangan kerja</option>' +
+    '<option value="slip_g">Slip gaji 3 bulan terakhir</option>' +
+    '<option value="rek_koran">Rekening koran 3 bulan terakhir</option>' +
+    '<option value="pas_foto">Pas Foto</option>' +
+    '<option value="spt">SPT</option>' +
+    '<option value="blanko">Blanko</option>';
+load_data_kapling();
+filter_tgl();
+$(document).ready(function() {
+    $('.btn-modal-document').click(function() {
+        cencel_upload_document();
+        var id_denahs = $('#id-denahs').val();
+        $("#select-pembayaran").removeAttr("readonly", true)
+        // if ($("#select-pembayaran").val() == 'cash') {
+        //     $('#select-document').html(html_cash);
+        // } else if ($("#select-pembayaran").val() == 'kpr') {
+        //     $('#select-document').html(html_kpr);
+        // }
 
-            if ($("#select-pembayaran").val() == 'cash') {
-                $('#select-document').html(html_cash);
-            } else if ($("#select-pembayaran").val() == 'kpr-sub') {
-                $('#select-document').html(html_kpr_subsidi);
-            } else if ($("#select-pembayaran").val() == 'kpr-kom') {
-                $('#select-document').html(html_kpr_komersil);
-            } else {
-                $('#select-document').html('');
-
-            }
-            load_data_document();
-        });
-
-        $('#select-pembayaran').change(function(e) {
-            // alert($(this).val())
-            var id_denahs = $('#id-denahs').val();
-            if ($(this).val() == 'cash') {
-                $('#select-document').html(html_cash);
-                $('#btn-document-' + id_denahs).val('cash');
-            } else if ($(this).val() == 'kpr-sub') {
-                $('#select-document').html(html_kpr_subsidi);
-                $('#btn-document-' + id_denahs).val('kpr-sub');
-            } else if ($(this).val() == 'kpr-kom') {
-                $('#select-document').html(html_kpr_komersil);
-                $('#btn-document-' + id_denahs).val('kpr-kom');
-            } else {
-                $('#btn-document-' + id_denahs).val('');
-                $('#select-document').html('');
-
-            }
-            let formData = new FormData();
-            formData.append('id-denahs', $('#id-denahs').val());
-            formData.append('status-pembayaran', $('#select-pembayaran').val());
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Home/update_status_pembayaran'); ?>",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    load_data_document();
-                    window.crud.ajax.reload(null, false);
-
-                },
-                error: function() {
-                    alert("Data Gagal Diupload");
-                }
-            });
-        });
-        // load data saat pertama di buka
-        $('#status').on('change', function() {
-            window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-                "?status=" + $(this).val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
-        });
-
-    });
-
-    $('#tgl-trans, #nominal').attr('disabled', true);
-    $('#btn-form-trans').hide();
-    $('#btn-add-document').click(function() {
-        add_document();
-    });
-    $('#status-trans').change(function() {
-        // val_textarea();
-        if ($(this).val() == '') {
-            $('#tgl-trans, #nominal').attr('disabled', true);
-            $('#btn-form-trans').hide(300);
-            $('#btn-simpan-trans').val('');
-            $('#save-change-denah').attr("data-bs-dismiss", "modal");
-
+        if ($("#select-pembayaran").val() == 'cash') {
+            $('#select-document').html(html_cash);
+        } else if ($("#select-pembayaran").val() == 'kpr-sub') {
+            $('#select-document').html(html_kpr_subsidi);
+        } else if ($("#select-pembayaran").val() == 'kpr-kom') {
+            $('#select-document').html(html_kpr_komersil);
         } else {
-            $('#tgl-trans, #nominal').removeAttr('disabled', true);
-            $('#btn-form-trans').show(300)
-            $('#save-change-denah').removeAttr("data-bs-dismiss", true);
-            $('#btn-simpan-trans').val('action')
-        }
-        // alert($(this).val())
+            $('#select-document').html('');
 
+        }
+        load_data_document();
     });
-    $('#btn-simpan-trans').click(function() {
+
+    $('#select-pembayaran').change(function(e) {
+        // alert($(this).val())
+        var id_denahs = $('#id-denahs').val();
+        if ($(this).val() == 'cash') {
+            $('#select-document').html(html_cash);
+            $('#btn-document-' + id_denahs).val('cash');
+        } else if ($(this).val() == 'kpr-sub') {
+            $('#select-document').html(html_kpr_subsidi);
+            $('#btn-document-' + id_denahs).val('kpr-sub');
+        } else if ($(this).val() == 'kpr-kom') {
+            $('#select-document').html(html_kpr_komersil);
+            $('#btn-document-' + id_denahs).val('kpr-kom');
+        } else {
+            $('#btn-document-' + id_denahs).val('');
+            $('#select-document').html('');
+
+        }
         let formData = new FormData();
-        formData.append('id-trans-denahs', $('#id-denahs-edit').val());
-        formData.append('nama-cus', $('#nama-cus').val());
-        formData.append('no-wa', $('#no-wa').val());
-        formData.append('status-trans', $('#status-trans').val());
-        formData.append('tgl-trans', $('#tgl-trans').val());
-        formData.append('nominal', $('#nominal').val());
+        formData.append('id-denahs', $('#id-denahs').val());
+        formData.append('status-pembayaran', $('#select-pembayaran').val());
         $.ajax({
             type: 'POST',
-            url: "<?php echo site_url('Home/upload_transaksi') ?>",
+            url: "<?php echo site_url('Home/update_status_pembayaran'); ?>",
             data: formData,
             cache: false,
             processData: false,
             contentType: false,
             success: function(data) {
-                load_data_transaksi();
-                $('#tgl-trans, #nominal').attr('disabled', true);
-                $('#btn-form-trans').hide(300);
-                $('#status-trans, #nominal').val('').change();
-                $('#save-change-denah').attr("data-bs-dismiss", "modal");
-                alert('Transaksi berhasil di upload..');
+                load_data_document();
+                window.crud.ajax.reload(null, false);
+
             },
             error: function() {
                 alert("Data Gagal Diupload");
             }
         });
     });
-    $('#btn-batal-trans').click(function() {
+    // load data saat pertama di buka
+    $('#status').on('change', function() {
+        window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+            "?status=" + $(this).val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $(
+                '#tgl-end').val()).load();
+    });
+
+});
+
+$('#tgl-trans, #nominal').attr('disabled', true);
+$('#btn-form-trans').hide();
+$('#btn-add-document').click(function() {
+    add_document();
+});
+$('#status-trans').change(function() {
+    // val_textarea();
+    if ($(this).val() == '') {
         $('#tgl-trans, #nominal').attr('disabled', true);
         $('#btn-form-trans').hide(300);
-        $('#status-trans').val('').change()
+        $('#btn-simpan-trans').val('');
+        $('#save-change-denah').attr("data-bs-dismiss", "modal");
+
+    } else {
+        $('#tgl-trans, #nominal').removeAttr('disabled', true);
+        $('#btn-form-trans').show(300)
+        $('#save-change-denah').removeAttr("data-bs-dismiss", true);
+        $('#btn-simpan-trans').val('action')
+    }
+    // alert($(this).val())
+
+});
+$('#btn-simpan-trans').click(function() {
+    let formData = new FormData();
+    formData.append('id-trans-denahs', $('#id-denahs-edit').val());
+    formData.append('nama-cus', $('#nama-cus').val());
+    formData.append('no-wa', $('#no-wa').val());
+    formData.append('status-trans', $('#status-trans').val());
+    formData.append('tgl-trans', $('#tgl-trans').val());
+    formData.append('nominal', $('#nominal').val());
+    $.ajax({
+        type: 'POST',
+        url: "<?php echo site_url('Home/upload_transaksi') ?>",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            load_data_transaksi();
+            $('#tgl-trans, #nominal').attr('disabled', true);
+            $('#btn-form-trans').hide(300);
+            $('#status-trans, #nominal').val('').change();
+            $('#save-change-denah').attr("data-bs-dismiss", "modal");
+            alert('Transaksi berhasil di upload..');
+        },
+        error: function() {
+            alert("Data Gagal Diupload");
+        }
     });
+});
+$('#btn-batal-trans').click(function() {
+    $('#tgl-trans, #nominal').attr('disabled', true);
+    $('#btn-form-trans').hide(300);
+    $('#status-trans').val('').change()
+});
 
-    // function val_textarea() {
-    //     var status_trans = $('#status-trans').val();
-    //     var tgl_trans = $('#tgl-trans').val();
-    //     var nama_cus = $('#nama-cus').val();
-    //     var no_wa = $('#no-wa').val();
-    //     $('#description').val(nama_cus + '\n' + no_wa + '\n' + status_trans + ' || ' + tgl_trans + '|| Rp. ')
-    // }
-    $('#btn-save-document').click(function() {
-        // cencel_upload_document();
-        $(this).addClass('active');
+// function val_textarea() {
+//     var status_trans = $('#status-trans').val();
+//     var tgl_trans = $('#tgl-trans').val();
+//     var nama_cus = $('#nama-cus').val();
+//     var no_wa = $('#no-wa').val();
+//     $('#description').val(nama_cus + '\n' + no_wa + '\n' + status_trans + ' || ' + tgl_trans + '|| Rp. ')
+// }
+$('#btn-save-document').click(function() {
+    // cencel_upload_document();
+    $(this).addClass('active');
 
-        if ($('#file-document').val() == '' || $('#select-document').val() == '0') {
-            if ($('#select-document').val() == '0') {
-                $('#select-document').addClass('required');
-                $(this).removeClass('active');
-            } else {
-                $('#select-document').removeClass('required');
-            }
-
-            if ($('#file-document').val() == '') {
-                $('#file-document').addClass('required');
-                $(this).removeClass('active');
-            } else {
-                $('#file-document').removeClass('required');
-            }
-
+    if ($('#file-document').val() == '' || $('#select-document').val() == '0') {
+        if ($('#select-document').val() == '0') {
+            $('#select-document').addClass('required');
+            $(this).removeClass('active');
         } else {
-            upload_document();
+            $('#select-document').removeClass('required');
         }
 
-    });
-    $('#btn-cencel-document').click(function() {
-        cencel_upload_document();
-        $(this).addClass('active');
-    });
-    $('#btn-close-preview').click(function() {
-        close_preview_pdf();
-    });
-    $('#btn-delete-doc').click(function() {
-        // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
-        var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
-
-        if (confirmalert == true) {
-
-            let formData = new FormData();
-            formData.append('id-upload', $('#id-upload').val());
-            formData.append('flied', $('#flied').val());
-            formData.append('file-doc', $('#file-doc').val());
-            formData.append('select-pembayaran', $('#select-pembayaran').val());
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Home/delete_document') ?>",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    alert('Documen berhasil di hapus..');
-                    load_data_document();
-                    $('#progres-' + $('#id-denahs').val()).html(data);
-                    close_preview_pdf();
-                },
-                error: function() {
-                    alert("Data Gagal Diupload");
-                }
-            });
+        if ($('#file-document').val() == '') {
+            $('#file-document').addClass('required');
+            $(this).removeClass('active');
+        } else {
+            $('#file-document').removeClass('required');
         }
-    });
 
-    function add_document() {
-        $('#form-document, #action-upload').removeAttr('hidden', true);
-        $('#add-document').attr('hidden', true);
-        $('#file-document').val('');
-
+    } else {
+        upload_document();
     }
 
-    function cencel_upload_document() {
-        $('#form-document, #action-upload').attr('hidden', true);
-        $('#add-document').removeAttr('hidden', true);
-        $('#file-document').val('');
-        $('#select-document').val('0');
+});
+$('#btn-cencel-document').click(function() {
+    cencel_upload_document();
+    $(this).addClass('active');
+});
+$('#btn-close-preview').click(function() {
+    close_preview_pdf();
+});
+$('#btn-delete-doc').click(function() {
+    // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
+    var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
 
-    }
+    if (confirmalert == true) {
 
-    function close_preview_pdf() {
-        $("#link-down-pdf").attr("href", "");
-        $("#link-down-pdf").attr("download", "");
-        $("#preview-pdf").attr("hidden", true);
-        $("#flied").val('');
-        $("#file-doc").val('');
-    }
-
-    function upload_document() {
-        var confirmalert = confirm("Apakah anda yakin untuk upload document ini ?");
-        if (confirmalert == true) {
-            const file_document = $('#file-document').prop('files')[0];
-
-            let formData = new FormData();
-            formData.append('id-doc-kapling', $('#id-denahs').val());
-            formData.append('select-pembayaran', $('#select-pembayaran').val());
-            formData.append('select-document', $('#select-document').val());
-            formData.append('file-document', file_document);
-            $.ajax({
-                type: 'POST',
-                url: "<?php echo site_url('Home/upload_document') ?>",
-                data: formData,
-                cache: false,
-                processData: false,
-                contentType: false,
-                success: function(data) {
-                    alert('Documen berhasil di upload...');
-                    load_data_document();
-                    $('#file-document').val('');
-                    $('#select-document').val('0');
-                    $('#progres-' + $('#id-denahs').val()).html(data);
-                    // alert(data)
-
-
-                },
-                error: function() {
-                    alert("Data Gagal Diupload");
-                }
-            });
-        }
-    };
-
-    function load_data_document() {
         let formData = new FormData();
-        formData.append('status-pembayaran', $('#select-pembayaran').val());
-        formData.append('id-doc-kapling', $('#id-denahs').val());
+        formData.append('id-upload', $('#id-upload').val());
+        formData.append('flied', $('#flied').val());
+        formData.append('file-doc', $('#file-doc').val());
+        formData.append('select-pembayaran', $('#select-pembayaran').val());
         $.ajax({
             type: 'POST',
-            url: "<?php echo site_url('Home/select_data_document'); ?>",
+            url: "<?php echo site_url('Home/delete_document') ?>",
             data: formData,
             cache: false,
             processData: false,
             contentType: false,
             success: function(data) {
-                $('#data-document').html(data);
-
+                alert('Documen berhasil di hapus..');
+                load_data_document();
+                $('#progres-' + $('#id-denahs').val()).html(data);
+                close_preview_pdf();
             },
             error: function() {
-                alert("Data Gagal Diupload 123");
+                alert("Data Gagal Diupload");
             }
         });
     }
+});
 
-    $('#type').change(function() {
-        if ($(this).val() == 'Dipesan') {
-            $('#nama-cus, #no-wa, #status-trans').removeAttr('disabled', true)
-            $('.btn-delete-transaksi').show();
-        } else if ($(this).val() == 'Sold Out') {
-            $('#nama-cus, #no-wa, #status-trans, #nominal').attr('disabled', true)
-            $('#tgl-trans').removeAttr('disabled', true);
-            $('.btn-delete-transaksi').hide();
-        } else {
-            $('#nama-cus, #no-wa, #status-trans, #tgl-trans, #nominal').attr('disabled', true)
+function add_document() {
+    $('#form-document, #action-upload').removeAttr('hidden', true);
+    $('#add-document').attr('hidden', true);
+    $('#file-document').val('');
+
+}
+
+function cencel_upload_document() {
+    $('#form-document, #action-upload').attr('hidden', true);
+    $('#add-document').removeAttr('hidden', true);
+    $('#file-document').val('');
+    $('#select-document').val('0');
+
+}
+
+function close_preview_pdf() {
+    $("#link-down-pdf").attr("href", "");
+    $("#link-down-pdf").attr("download", "");
+    $("#preview-pdf").attr("hidden", true);
+    $("#flied").val('');
+    $("#file-doc").val('');
+}
+
+function upload_document() {
+    var confirmalert = confirm("Apakah anda yakin untuk upload document ini ?");
+    if (confirmalert == true) {
+        const file_document = $('#file-document').prop('files')[0];
+
+        let formData = new FormData();
+        formData.append('id-doc-kapling', $('#id-denahs').val());
+        formData.append('select-pembayaran', $('#select-pembayaran').val());
+        formData.append('select-document', $('#select-document').val());
+        formData.append('file-document', file_document);
+        $.ajax({
+            type: 'POST',
+            url: "<?php echo site_url('Home/upload_document') ?>",
+            data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                alert('Documen berhasil di upload...');
+                load_data_document();
+                $('#file-document').val('');
+                $('#select-document').val('0');
+                $('#progres-' + $('#id-denahs').val()).html(data);
+                // alert(data)
+
+
+            },
+            error: function() {
+                alert("Data Gagal Diupload");
+            }
+        });
+    }
+};
+
+function load_data_document() {
+    let formData = new FormData();
+    formData.append('status-pembayaran', $('#select-pembayaran').val());
+    formData.append('id-doc-kapling', $('#id-denahs').val());
+    $.ajax({
+        type: 'POST',
+        url: "<?php echo site_url('Home/select_data_document'); ?>",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            $('#data-document').html(data);
+
+        },
+        error: function() {
+            alert("Data Gagal Diupload 123");
         }
-        // alert($(this).val());
     });
-    $('#type-unit').change(function() {
-        if ($(this).val() == '') {
-            $('#save-change-denah').removeAttr("data-bs-dismiss", true);
-            $('#type-unit').addClass('required');
-        } else {
-            $('#save-change-denah').attr("data-bs-dismiss", "modal");
-            $('#type-unit').removeClass('required');
-        }
-    });
-    $('#save-change-denah').click(function() {
-        if ($('#form-edit-denah #type-unit').val() == '') {
-            $('#type-unit').addClass('required');
+}
 
-        } else {
-            if ($('#type').val() == 'Rumah Ready') {
+$('#type').change(function() {
+    if ($(this).val() == 'Dipesan') {
+        $('#nama-cus, #no-wa, #status-trans').removeAttr('disabled', true)
+        $('.btn-delete-transaksi').show();
+    } else if ($(this).val() == 'Sold Out') {
+        $('#nama-cus, #no-wa, #status-trans, #nominal').attr('disabled', true)
+        $('#tgl-trans').removeAttr('disabled', true);
+        $('.btn-delete-transaksi').hide();
+    } else {
+        $('#nama-cus, #no-wa, #status-trans, #tgl-trans, #nominal').attr('disabled', true)
+    }
+    // alert($(this).val());
+});
+$('#type-unit').change(function() {
+    if ($(this).val() == '') {
+        $('#save-change-denah').removeAttr("data-bs-dismiss", true);
+        $('#type-unit').addClass('required');
+    } else {
+        $('#save-change-denah').attr("data-bs-dismiss", "modal");
+        $('#type-unit').removeClass('required');
+    }
+});
+$('#save-change-denah').click(function() {
+    if ($('#form-edit-denah #type-unit').val() == '') {
+        $('#type-unit').addClass('required');
 
-                if ($('#progres-berkas').val() == '0') {
-                    $(this).html('Loading...');
-                    $(this).attr('disabled', true);
-                    save_change_denah();
-                } else {
-                    alert('Silahkan kosongkan data unit terlebih dahulu !');
-                }
-            } else if ($('#type').val() == 'Dipesan') {
+    } else {
+        if ($('#type').val() == 'Rumah Ready') {
 
-                if ($('#btn-simpan-trans').val() == 'action') {
-                    alert('Silahkan simpan data transaksi terlebih dahulu !');
-                } else {
-                    $(this).html('Loading...');
-                    $(this).attr('disabled', true);
-                    save_change_denah();
-                }
-            } else {
-                // $('#type-unit').remmoveClass('required');
+            if ($('#progres-berkas').val() == '0') {
                 $(this).html('Loading...');
                 $(this).attr('disabled', true);
                 save_change_denah();
-
+            } else {
+                alert('Silahkan kosongkan data unit terlebih dahulu !');
             }
+        } else if ($('#type').val() == 'Dipesan') {
+
+            if ($('#btn-simpan-trans').val() == 'action') {
+                alert('Silahkan simpan data transaksi terlebih dahulu !');
+            } else {
+                $(this).html('Loading...');
+                $(this).attr('disabled', true);
+                save_change_denah();
+            }
+        } else {
+            // $('#type-unit').remmoveClass('required');
+            $(this).html('Loading...');
+            $(this).attr('disabled', true);
+            save_change_denah();
+
+        }
+    }
+});
+
+function save_change_denah() {
+    var id, code, type_unit, type, description;
+    id = $('#form-edit-denah #id-denahs-edit').val();
+    code = $('#form-edit-denah #code').val();
+    type_unit = $('#form-edit-denah #type-unit').val();
+    type = $('#form-edit-denah #type').val();
+    description = $('#form-edit-denah #description').val();
+    nama_cus = $('#form-edit-denah #nama-cus').val();
+    no_wa = $('#form-edit-denah #no-wa').val();
+    tgl_trans = $('#form-edit-denah #tgl-trans').val();
+    // if($('#form-edit-denah #type').val()=='Dipesan'){
+    // }
+    $.ajax({
+        url: "<?php echo base_url('Home/change_denah') ?>",
+        data: {
+            id: id,
+            code: code,
+            type_unit: type_unit,
+            type: type,
+            desc: description,
+            nama_cus: nama_cus,
+            no_wa: no_wa,
+            tgl_trans: tgl_trans,
+        },
+        type: 'post',
+        success: function(data) {
+            $('#save-change-denah').html('Save changes');
+            $('#save-change-denah').attr('disabled', false);
+            $(`#${data.results.code}`).css('fill', data.results.color);
+            window.crud.ajax.reload(null, false);
+            const modal = bootstrap.Modal.getInstance($('#exampleModaledit'));
+            modal.hide();
+
         }
     });
+}
 
-    function save_change_denah() {
-        var id, code, type_unit, type, description;
-        id = $('#form-edit-denah #id-denahs-edit').val();
-        code = $('#form-edit-denah #code').val();
-        type_unit = $('#form-edit-denah #type-unit').val();
-        type = $('#form-edit-denah #type').val();
-        description = $('#form-edit-denah #description').val();
-        nama_cus = $('#form-edit-denah #nama-cus').val();
-        no_wa = $('#form-edit-denah #no-wa').val();
-        tgl_trans = $('#form-edit-denah #tgl-trans').val();
-        // if($('#form-edit-denah #type').val()=='Dipesan'){
-        // }
-        $.ajax({
-            url: "<?php echo base_url('Home/change_denah') ?>",
-            data: {
-                id: id,
-                code: code,
-                type_unit: type_unit,
-                type: type,
-                desc: description,
-                nama_cus: nama_cus,
-                no_wa: no_wa,
-                tgl_trans: tgl_trans,
+
+function load_data_kapling() {
+    if ($.fn.DataTable.isDataTable('#list-selatan')) {
+
+        $('#list-selatan').DataTable().destroy();
+    }
+    window.crud = $('#list-selatan').DataTable({
+        "paging": true,
+        "ordering": true,
+        "autoWidth": false,
+        "responsive": true,
+        processing: true,
+        serverSide: true,
+        ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
+        columns: [{
+                data: 'code',
+                name: 'code'
             },
-            type: 'post',
-            success: function(data) {
-                $('#save-change-denah').html('Save changes');
-                $('#save-change-denah').attr('disabled', false);
-                $(`#${data.results.code}`).css('fill', data.results.color);
-                window.crud.ajax.reload(null, false);
-                const modal = bootstrap.Modal.getInstance($('#exampleModaledit'));
-                modal.hide();
-
-            }
-        });
-    }
-
-
-    function load_data_kapling() {
-        if ($.fn.DataTable.isDataTable('#list-selatan')) {
-
-            $('#list-selatan').DataTable().destroy();
-        }
-        window.crud = $('#list-selatan').DataTable({
-            "paging": true,
-            "ordering": true,
-            "autoWidth": false,
-            "responsive": true,
-            processing: true,
-            serverSide: true,
-            ajax: "<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val(),
-            columns: [{
-                    data: 'code',
-                    name: 'code'
-                },
-                {
-                    data: 'type',
-                    name: 'type'
-                },
-                {
-                    data: 'transaction',
-                    name: 'transaction'
-                },
-                {
-                    data: 'description',
-                    name: 'description'
-                },
-                {
-                    data: 'color',
-                    name: 'color'
-                },
-                {
-                    data: 'duration',
-                    name: 'duration'
-                },
-                {
-                    data: 'action',
-                    name: 'action'
-                },
-                {
-                    data: 'tgl_update',
-                    name: 'tgl_update'
-                },
-                {
-                    data: 'user_admin',
-                    name: 'user_admin'
-                }
-            ],
-        });
-
-    }
-
-    function openDataRow(id, type_unit, code, type, desc, progres_berkas) {
-        $('#form-edit-denah #id-denahs-edit').val(id).change();
-        $('#form-edit-denah #code').val(code).change();
-        $('#form-edit-denah #description').val(desc).change();
-        $('#form-edit-denah #type').val(type).change();
-        $('#form-edit-denah #type-unit').val(type_unit).change();
-        if (progres_berkas == '0') {
-
-            $('#form-edit-denah #type-unit').removeAttr("disabled", 'disabled');
-            $('.readonly-select-type-unit').html('')
-        } else {
-            $('#form-edit-denah #type-unit').prop('disabled', true);
-            $('.readonly-select-type-unit').html('<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>')
-        }
-        $('#progres-berkas').val(progres_berkas);
-        load_data_transaksi();
-    }
-
-    function load_data_transaksi() {
-        let formData = new FormData();
-        formData.append('id-trans-denahs', $('#id-denahs-edit').val());
-        $.ajax({
-            type: 'POST',
-            url: "<?php echo site_url('Home/load_data_transaksi'); ?>",
-            data: formData,
-            cache: false,
-            processData: false,
-            contentType: false,
-            success: function(data) {
-                $('#data-transaksi').html(data);
+            {
+                data: 'type',
+                name: 'type'
             },
-            error: function() {
-                alert("Data Gagal Diupload 123");
+            {
+                data: 'transaction',
+                name: 'transaction'
+            },
+            {
+                data: 'description',
+                name: 'description'
+            },
+            {
+                data: 'color',
+                name: 'color'
+            },
+            {
+                data: 'duration',
+                name: 'duration'
+            },
+            {
+                data: 'action',
+                name: 'action'
+            },
+            {
+                data: 'tgl_update',
+                name: 'tgl_update'
+            },
+            {
+                data: 'user_admin',
+                name: 'user_admin'
             }
-        });
-    };
+        ],
+    });
 
-    function getDataDoc(id_denahs, type_unit, status_pembayaran, progres_berkas) {
-        $('#doc-type-unit').val(type_unit);
-        $('#id-denahs').val(id_denahs).change();
-        if (type_unit == 'Subsidi') {
-            $("#select-pembayaran").html(select_subsidi)
-        } else if (type_unit == 'Komersil') {
-            $("#select-pembayaran").html(select_komersil)
+}
+
+function openDataRow(id, type_unit, code, type, desc, progres_berkas) {
+    $('#form-edit-denah #id-denahs-edit').val(id).change();
+    $('#form-edit-denah #code').val(code).change();
+    $('#form-edit-denah #description').val(desc).change();
+    $('#form-edit-denah #type').val(type).change();
+    $('#form-edit-denah #type-unit').val(type_unit).change();
+    if (progres_berkas == '0') {
+
+        $('#form-edit-denah #type-unit').removeAttr("disabled", 'disabled');
+        $('.readonly-select-type-unit').html('')
+    } else {
+        $('#form-edit-denah #type-unit').prop('disabled', true);
+        $('.readonly-select-type-unit').html(
+            '<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>'
+        )
+    }
+    $('#progres-berkas').val(progres_berkas);
+    load_data_transaksi();
+}
+
+function load_data_transaksi() {
+    let formData = new FormData();
+    formData.append('id-trans-denahs', $('#id-denahs-edit').val());
+    $.ajax({
+        type: 'POST',
+        url: "<?php echo site_url('Home/load_data_transaksi'); ?>",
+        data: formData,
+        cache: false,
+        processData: false,
+        contentType: false,
+        success: function(data) {
+            $('#data-transaksi').html(data);
+        },
+        error: function() {
+            alert("Data Gagal Diupload 123");
         }
+    });
+};
 
-        if (status_pembayaran == 'null') {
-
-            $('#select-pembayaran').val('0').change();
-        } else {
-
-            $('#select-pembayaran').val(status_pembayaran).change();
-        }
-
-        if (progres_berkas == '0') {
-
-            $('#select-pembayaran').removeAttr("disabled", 'disabled');
-            $('.readonly-select-pembayaran').html('');
-        } else {
-            $('#select-pembayaran').prop('disabled', true);
-            $('.readonly-select-pembayaran').html('<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>')
-        }
-        $('#progres-berkas').val(progres_berkas);
-
+function getDataDoc(id_denahs, type_unit, status_pembayaran, progres_berkas) {
+    $('#doc-type-unit').val(type_unit);
+    $('#id-denahs').val(id_denahs).change();
+    if (type_unit == 'Subsidi') {
+        $("#select-pembayaran").html(select_subsidi)
+    } else if (type_unit == 'Komersil') {
+        $("#select-pembayaran").html(select_komersil)
     }
 
-    function filter_tgl() {
-        $(function() {
-            $('input[name="daterange"]').daterangepicker({
-                opens: 'left',
-                locale: {
-                    format: 'DD/MM/YYYY'
-                }
-            }, function(start, end, label) {
-                console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
-                    'YYYY-MM-DD'));
-                // alert(start);
-                $('#tgl-start').val(start.format('DD/MM/YYYY'));
-                $('#tgl-end').val(end.format('DD/MM/YYYY'));
-                if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
-                    alert('ya');
-                    window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-                        "?status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
-                } else {
+    if (status_pembayaran == 'null') {
 
-                }
+        $('#select-pembayaran').val('0').change();
+    } else {
 
-            });
-
-        });
+        $('#select-pembayaran').val(status_pembayaran).change();
     }
+
+    if (progres_berkas == '0') {
+
+        $('#select-pembayaran').removeAttr("disabled", 'disabled');
+        $('.readonly-select-pembayaran').html('');
+    } else {
+        $('#select-pembayaran').prop('disabled', true);
+        $('.readonly-select-pembayaran').html(
+            '<span style="font-family: NucleoIcons;font-size: smaller;"> <sup>*</sup> Kosongkan data unit jika ingin merubahnya !</span>'
+        )
+    }
+    $('#progres-berkas').val(progres_berkas);
+
+}
+
+function filter_tgl() {
     $(function() {
-        $('input[name="tgl-trans"]').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            minYear: 1901,
+        $('input[name="daterange"]').daterangepicker({
+            opens: 'left',
             locale: {
                 format: 'DD/MM/YYYY'
             }
+        }, function(start, end, label) {
+            console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
+                'YYYY-MM-DD'));
+            // alert(start);
+            $('#tgl-start').val(start.format('DD/MM/YYYY'));
+            $('#tgl-end').val(end.format('DD/MM/YYYY'));
+            if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() ==
+                'Sold Out') {
+                alert('ya');
+                window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan')
+                    .val() +
+                    "?status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() +
+                    "&tgl_end=" + $('#tgl-end').val()).load();
+            } else {
+
+            }
 
         });
+
     });
+}
+$(function() {
+    $('input[name="tgl-trans"]').daterangepicker({
+        singleDatePicker: true,
+        showDropdowns: true,
+        minYear: 1901,
+        locale: {
+            format: 'DD/MM/YYYY'
+        }
+
+    });
+});
 </script>

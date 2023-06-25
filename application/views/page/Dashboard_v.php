@@ -1,3 +1,82 @@
+<style>
+/* pagination stile */
+@-webkit-keyframes placeHolderShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+@keyframes placeHolderShimmer {
+    0% {
+        background-position: -468px 0;
+    }
+
+    100% {
+        background-position: 468px 0;
+    }
+}
+
+.border-transaksi {
+    border: 2px solid #F84350;
+    padding: 0px 6px;
+    border-radius: 5px;
+    font-size: x-small;
+    font-weight: bold;
+    color: red;
+}
+
+.border-perum {
+    border: 2px solid #DBF2F2;
+    padding: 0px 6px;
+    border-radius: 5px;
+    font-size: xx-small;
+    font-weight: bold;
+    color: #0D6EFD;
+}
+
+/* atur icon */
+.down-icon {
+    font-size: 13px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+.text-center.mt-3 {
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-top: 0px;
+}
+
+/* akhir atur icon */
+
+
+.content-placeholder {
+    display: inline-block;
+    -webkit-animation-duration: 400ms;
+    animation-duration: 900ms;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-name: placeHolderShimmer;
+    animation-name: placeHolderShimmer;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    background: #f6f7f8;
+    background: -webkit-gradient(linear, left top, right top, color-stop(8%, #eeeeee), color-stop(18%, #dddddd), color-stop(33%, #eeeeee));
+    background: -webkit-linear-gradient(left, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    background: linear-gradient(to right, #eeeeee 8%, #dddddd 18%, #eeeeee 33%);
+    -webkit-background-size: 800px 104px;
+    background-size: 800px 104px;
+    height: inherit;
+    position: relative;
+}
+</style>
+
 <!-- conten -->
 <?php
     function getChartDataset($id_perum = null, $database){
@@ -216,6 +295,55 @@
                 <div class="card-header pb-0">
                     <div class="row">
                         <!-- chart -->
+                        <!-- pengembangan fitur baru dalam prosespengerjaan -->
+                        <div class="col-lg-6 col-12 ">
+                            <div class="card mb-2">
+                                <div class="card-body p-1">
+                                    <div class="col-lg-12 col-10 mb-0">
+                                        <p class="text-sm mb-0 mt-0">
+                                            <i class="fa fa-check text-info" aria-hidden="true"></i>
+                                            <span class="font-weight-bold ms-1">Transaksi</span> Hampir Melewati
+                                            <span class="font-weight-bold ms-0 text-danger">Deadline</span>
+                                        </p>
+                                    </div>
+                                    <div class="card-body px-0 pb-2 mt-0 mb-0 pt-0 pb-0">
+                                        <div class="table-responsive">
+                                            <table id="data-deadline" class="table align-items-center mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1">
+                                                            Kode Unit
+                                                        </th>
+                                                        <th
+                                                            class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-1 ">
+                                                            Transaction
+                                                        </th>
+                                                        <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder ps-1">
+                                                            Progres
+                                                        </th>
+                                                        <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder ps-1">
+                                                            Days
+                                                        </th>
+                                                        <th
+                                                            class="text-center text-uppercase text-secondary text-xxs font-weight-bolder ps-1">
+                                                            Hub
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                            </table>
+                                            <div id="load_message"></div>
+                                            <div class="text-center mt-0">
+                                                <a href="#" id="down"><i class="fa fa-hand-o-down down-icon"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- akhir pengembangan fitur baru dalam prosespengerjaan -->
                         <div class="col-lg-6 col-12 ">
                             <div class="card mb-2">
                                 <div class="card-body p-2">
@@ -225,7 +353,6 @@
                                 </div>
                             </div>
                         </div>
-
                         <?php
                                 foreach ($perumahan as $data) {
                                 $id_perum = $data->id_perum;
@@ -234,7 +361,6 @@
                             <div class="card mb-2">
                                 <div class="card-body p-2">
                                     <span class="nav-link-text ms-1"><?= $data->nama; ?></span>
-                                    <!-- tes develop -->
                                     <div class="chart">
                                         <canvas id="myChart<?= $data->id_perum; ?>" class="chart-canvas"
                                             height="200px"></canvas>
@@ -244,13 +370,15 @@
                                                     $nama = $data->nama;
                                                     $tittle = preg_replace("![^a-z0-9]+!i", "-", $nama);
                                                     ?>
+                                        <?php if ($ambil->role == 'Admin'): ?>
                                         <a href="<?php echo site_url('Dashboard/detail/' . $tittle); ?>"
                                             class="mask bg-gradient-dark opacity-0"></a>
+                                        <?php endif; ?>
                                         <?php
                                             } else {
                                             }
-                                        endforeach;
-                                        ?>
+                                            endforeach;
+                                            ?>
                                         <?php
                                             $labels = [];
                                             $datasets = [];
@@ -270,7 +398,6 @@
                                             });
                                             ?>
                                         <script>
-                                        // tes-1
                                         window.data_grafik = [];
 
                                         var ctx<?=$data->id_perum; ?> = document.getElementById(
@@ -304,13 +431,12 @@
                         <?php
                             }
                         ?>
+                        <!-- akhir chart -->
                     </div>
                 </div>
                 <div class="card-body px-0 pb-2">
                     <div class="table-responsive">
                         <table class="table align-items-center mb-0">
-                            <!-- tes tampil data -->
-                            <!-- <?php echo json_encode($transaksi); ?> -->
                         </table>
                     </div>
                 </div>
@@ -360,3 +486,63 @@ var chart = new Chart(ctx, {
     }
 });
 </script>
+
+<!-- data tabel -->
+<script>
+$(document).ready(function() {
+
+    var limit = 10;
+    var start = 0;
+    var action = 'inactive';
+
+    function lazy_loader() {
+        var output = '';
+        output += '<div class="post_data">';
+        output += '<p><span class="content-placeholder" style="width:100%; height: 30px;">&nbsp;</span></p>';
+        output += '<p><span class="content-placeholder" style="width:100%; height: 90px;">&nbsp;</span></p>';
+        output += '</div>';
+        $('#load_message').html(output);
+    }
+
+    function load_data(limit, start) {
+        $.ajax({
+            url: "<?php echo base_url(); ?>Dashboard/data_deadline",
+            method: "POST",
+            data: {
+                limit: limit,
+                start: start
+            },
+            cache: false,
+            success: function(data) {
+                if (data == '') {
+                    $('#load_message').html('<h6>&nbsp; &nbsp;Tidak ada data lagi..</h6>');
+                    $('#down').hide();
+                    action = 'inactive';
+                } else {
+                    $('#data-deadline').append(data);
+                    $('#load_message').html("");
+                    action = 'inactive';
+                }
+            }
+        });
+    }
+
+    function load_initial_data() {
+        lazy_loader();
+        load_data(limit, start);
+    }
+
+    load_initial_data();
+
+    $(document).on('click', '#down', function() {
+        if (action == 'inactive') {
+            action = 'active';
+            start += limit;
+            lazy_loader();
+            load_data(limit, start);
+        }
+    });
+
+});
+</script>
+<!-- akhir data tabel -->
