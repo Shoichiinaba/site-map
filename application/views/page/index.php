@@ -220,11 +220,7 @@ sup {
                             </select>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div class="col-lg-3 col-xxl-2 col-md-3">
-=======
-                    <div class="col-lg-3 col-md-3">
->>>>>>> d3a88b19c824653bd336e52708d6f64dafb5a799
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="filter-tgl" name="daterange" placeholder=" Pilih Range Tanggal">
@@ -232,7 +228,6 @@ sup {
                             <input type="text" id="tgl-end" value="" hidden>
                         </div>
                     </div>
-<<<<<<< HEAD
                     <div class="col-lg-2 col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body">
@@ -255,8 +250,6 @@ sup {
                             </button>
                         </a>
                     </div>
-=======
->>>>>>> d3a88b19c824653bd336e52708d6f64dafb5a799
                 </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>

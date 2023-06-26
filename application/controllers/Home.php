@@ -477,7 +477,6 @@ class Home extends CI_Controller
             ]));
     }
 
-<<<<<<< HEAD
     function get_data_pdf()
     {
         $type_unit = $this->input->get('fil_type_unit');
@@ -565,8 +564,6 @@ class Home extends CI_Controller
             echo $code.'-';
         }
     }
-=======
->>>>>>> d3a88b19c824653bd336e52708d6f64dafb5a799
     function update_status_pembayaran()
     {
         $id_denahs = $this->input->post('id-denahs');
