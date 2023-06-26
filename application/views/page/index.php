@@ -228,7 +228,7 @@
                             <input type="text" id="tgl-end" value="" hidden>
                         </div>
                     </div>
-                    <div class="col-lg-2 col-md-3">
+                    <!-- <div class="col-lg-2 col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body">
                                 <i class="ni ni-single-copy-04" aria-hidden="true"></i>
@@ -242,7 +242,7 @@
                                 <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
                             </select>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-lg-2 col-md-2">
                         <a id="cetak-pdf">
                             <button type="button" class="btn bg-gradient-success btn-sm"> <i class="fa fa-print" style="font-size:small;"></i>
@@ -546,7 +546,7 @@
             contentType: false,
             success: function(data) {
                 // load_data_document();\
-                alert(data)
+                // alert(data)
 
                 window.location.href = "<?= base_url('Laporan_pdf'); ?>/data/<?= $this->uri->segment(3); ?>/<?= $this->uri->segment(4); ?>/" + data + '/?type=' + type_unit + '&payout=' + payout;
                 // Laporan_pdf/data/6/A1-A10-A12-/
@@ -1172,12 +1172,12 @@
                 var strStart = tgl_start.replace(/\//g, '-');
                 var strEnd = tgl_end.replace(/\//g, '-');
                 // alert(strStart)
-                if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
+                // if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
 
-                    $('#cetak-pdf').attr('href', "<?= base_url('Laporan_pdf'); ?>/data/" + $('#id-siteplan').val() + '/' + $('#status').val() + '/' + strStart + '/' + strEnd)
-                } else {
+                //     $('#cetak-pdf').attr('href', "<?= base_url('Laporan_pdf'); ?>/data/" + $('#id-siteplan').val() + '/' + $('#status').val() + '/' + strStart + '/' + strEnd)
+                // } else {
 
-                }
+                // }
             });
 
         });
