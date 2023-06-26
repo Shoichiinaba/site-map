@@ -1,4 +1,7 @@
 <?php
+
+use Illuminate\Support\Arr;
+
 defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_admin extends CI_Model
@@ -67,6 +70,19 @@ class M_admin extends CI_Model
 		$this->db->Join('perumahan', ' perumahan.id_perum = site_plan.id_perum_siteplan');
 		$this->db->where('nama', $perum);
 		$this->db->where('area', $area);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	function m_type_unit($perum, $area)
+	{
+		$this->db->select('*');
+		$this->db->from('site_plan');
+		$this->db->Join('perumahan', ' perumahan.id_perum = site_plan.id_perum_siteplan');
+		$this->db->Join('denahs', ' denahs.map = site_plan.id_siteplan');
+		$this->db->where_in('type_unit', array('Komersil', 'Subsidi'));
+		$this->db->where('nama', $perum);
+		$this->db->where('area', $area);
+		$this->db->group_by('type_unit');
 		$query = $this->db->get();
 		return $query->result();
 	}

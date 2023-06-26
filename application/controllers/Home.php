@@ -24,6 +24,7 @@ class Home extends CI_Controller
         parent::__construct();
         $this->load->model('Denah_model');
         $this->load->model('M_admin');
+        $this->load->helper('url');
     }
 
     public function visit()
@@ -36,6 +37,7 @@ class Home extends CI_Controller
         $data['perumahan'] = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan'] = $this->M_admin->m_area_siteplan();
         $data['siteplan'] = $this->M_admin->m_siteplan($perum, $area);
+        $data['type_unit'] = $this->M_admin->m_type_unit($perum, $area);
         $data['bread']          = 'Map Plan ' . $area;
         $data['content']        = 'page/index';
         $this->load->view($this->template, $data);
@@ -286,9 +288,13 @@ class Home extends CI_Controller
         $rowperpage = ($this->input->get('length') != null) ? $this->input->get('length') : 10;
         $order = ($this->input->get('order') != null) ? $this->input->get('order') : false;
         $search = ($this->input->get('search') != null && $this->input->get('search')['value'] != null) ? $this->input->get('search') : false;
+        $type_unit = $this->input->get('fil_type_unit');
+        $payout = $this->input->get('fil_payout');
         $status = $this->input->get('status');
         $tgl_start = $this->input->get('tgl_start');
         $tgl_end = $this->input->get('tgl_end');
+        $pdf = $this->input->get('pdf');
+
 
         $model = new Denah_model;
 
@@ -311,7 +317,6 @@ class Home extends CI_Controller
         if ($status) {
             if ($status == 'UTJ' || $status == 'DP' || $status == 'Sold Out') {
                 if ($tgl_start == '') {
-
                     $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
                     $query = $this->db->query($sql);
                     if ($query->num_rows() > 0) {
@@ -331,11 +336,47 @@ class Home extends CI_Controller
                     }
                     $model = $model->whereIn('id_denahs', $id_denahs);
                 }
-
-                // $model = $model->where('id_denahs', $id_denahs);
-
             } else {
+
                 $model = $model->where('type', $status);
+            }
+        }
+        if ($type_unit) {
+            if ($type_unit == '') {
+
+                $model = $model->where('type', $status);
+            } else {
+
+                $model = $model->where('type_unit', $type_unit);
+            }
+        }
+        if ($payout) {
+            if ($type_unit == '') {
+
+                if ($payout == 'kpr') {
+                    $status_pembayaran = ['kpr-kom', 'kpr-sub'];
+                    $model = $model->whereIN('status_pembayaran', $status_pembayaran);
+                } else {
+                    $status_pembayaran = $payout;
+                    $model = $model->where('status_pembayaran', $status_pembayaran);
+                }
+            } else {
+                if ($type_unit == 'Komersil') {
+                    if ($payout == 'kpr') {
+                        $status_pembayaran = 'kpr-kom';
+                    } else {
+
+                        $status_pembayaran = $payout;
+                    }
+                } else if ($type_unit == 'Subsidi') {
+                    if ($payout == 'kpr') {
+                        $status_pembayaran = 'kpr-sub';
+                    } else {
+
+                        $status_pembayaran = $payout;
+                    }
+                }
+                $model = $model->where('status_pembayaran', $status_pembayaran);
             }
         }
 
@@ -374,6 +415,15 @@ class Home extends CI_Controller
                             </div>',
             ];
 
+            $data['type_unit'] = $result->type_unit;
+            if ($result->status_pembayaran == "kpr-sub" or $result->status_pembayaran == "kpr-kom") {
+                $data['status_pembayaran'] = 'KPR';
+            } else if ($result->status_pembayaran == "cash") {
+                $data['status_pembayaran'] = 'CASH';
+            } else {
+
+                $data['status_pembayaran'] = $result->status_pembayaran;
+            }
             if ($result->type == "Dipesan" or $result->type == "Sold Out") {
                 $data['action'] = '<button onclick="openDataRow(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\',\'' . $result->code . '\', \'' . $result->type . '\', \'' . $result->description . '\' , \'' . $result->progres_berkas . '\')" class="btn btn-sm bg-gradient-success" data-bs-toggle="modal" data-bs-target="#exampleModaledit"><i class="fa fa-edit" style="font-size:small;"></i> &nbsp;Edit</button>&nbsp;&nbsp;' .
                     '<button type="button" onclick="getDataDoc(\'' . $result->id_denahs . '\',\'' . $result->type_unit . '\' ,\'' . $result->status_pembayaran . '\', \'' . $result->progres_berkas . '\')" id="btn-document-' . $result->id_denahs . '" class="btn-modal-document btn btn-sm bg-gradient-primary" value="' . $result->status_pembayaran . '" data-bs-toggle="modal" data-bs-target="#exampleModalatt"><i class="fa fa-paperclip" style="font-size:small;"></i> &nbsp;Doc</button>';
@@ -389,12 +439,12 @@ class Home extends CI_Controller
             if ($query->num_rows() > 0) {
                 foreach ($query->result() as $row) {
                     if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
-                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
+                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || '.$row->tgl_trans .'</span><br>';
                     }
                     if ($result->type == 'Dipesan') {
                         if ($row->status_trans == 'UTJ') {
                             $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
-                            // date_default_timezone_set('Asia/Jakarta');
+                            date_default_timezone_set('Asia/Jakarta');
                             $awal  = date_create('' . $tgl . '');
                             $akhir = date_create(); // waktu sekarang, pukul 06:13
                             $diff  = date_diff($akhir, $awal);
@@ -423,10 +473,98 @@ class Home extends CI_Controller
             ->set_status_header(200)
             ->set_output(json_encode([
                 'draw'            => $draw,
-                'recordsTotal'    => $totalRows,
+                'recordsTotal'    => $filteredRows,
                 'recordsFiltered' => $filteredRows,
                 'data'            => $data_arr,
             ]));
+    }
+
+    function get_data_pdf()
+    {
+        $type_unit = $this->input->get('fil_type_unit');
+        $payout = $this->input->get('fil_payout');
+        $status = $this->input->get('status');
+        $tgl_start = $this->input->get('tgl_start');
+        $tgl_end = $this->input->get('tgl_end');
+        $id = $this->input->get('map');
+        // $id = '6';
+
+
+        $model = new Denah_model;
+        $model = $model->where('map',  $id);
+
+        $id_denahs = [];
+        if ($status) {
+            if ($status == 'UTJ' || $status == 'DP' || $status == 'Sold Out') {
+                if ($tgl_start == '') {
+                    $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status'";
+                    $query = $this->db->query($sql);
+                    if ($query->num_rows() > 0) {
+                        foreach ($query->result() as $row) {
+                            $id_denahs[] = $row->id_denahs;
+                        }
+                    }
+                    $model = $model->whereIn('id_denahs', $id_denahs);
+                } else {
+                    date_default_timezone_set("Asia/jakarta");
+                    $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.map = '$id' AND status_trans = '$status' AND STR_TO_DATE(tgl_trans, '%d/%m/%Y') BETWEEN STR_TO_DATE('$tgl_start', '%d/%m/%Y') AND STR_TO_DATE('$tgl_end', '%d/%m/%Y')";
+                    $query = $this->db->query($sql);
+                    if ($query->num_rows() > 0) {
+                        foreach ($query->result() as $row) {
+                            $id_denahs[] = $row->id_denahs;
+                        }
+                    }
+                    $model = $model->whereIn('id_denahs', $id_denahs);
+                }
+            } else {
+
+                $model = $model->where('type', $status);
+            }
+        }
+        if ($type_unit) {
+            if ($type_unit == '') {
+
+                $model = $model->where('type', $status);
+            } else {
+
+                $model = $model->where('type_unit', $type_unit);
+            }
+        }
+        if ($payout) {
+            if ($type_unit == '') {
+
+                if ($payout == 'kpr') {
+                    $status_pembayaran = ['kpr-kom', 'kpr-sub'];
+                    $model = $model->whereIN('status_pembayaran', $status_pembayaran);
+                } else {
+                    $status_pembayaran = $payout;
+                    $model = $model->where('status_pembayaran', $status_pembayaran);
+                }
+            } else {
+                if ($type_unit == 'Komersil') {
+                    if ($payout == 'kpr') {
+                        $status_pembayaran = 'kpr-kom';
+                    } else {
+
+                        $status_pembayaran = $payout;
+                    }
+                } else if ($type_unit == 'Subsidi') {
+                    if ($payout == 'kpr') {
+                        $status_pembayaran = 'kpr-sub';
+                    } else {
+
+                        $status_pembayaran = $payout;
+                    }
+                }
+                $model = $model->where('status_pembayaran', $status_pembayaran);
+            }
+        }
+        $resuls = $model->select('denahs.*')->get();
+        // $code = [];
+        foreach ($resuls as $result) {
+            $code = $result->code;
+            echo $code.'-';
+        }
     }
     function update_status_pembayaran()
     {

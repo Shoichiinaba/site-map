@@ -174,13 +174,44 @@
         <div class="card-body px-0 pt-0 pb-2">
             <div class="table-responsive p-0">
                 <div class="row mb-2">
-                    <div class="col-lg-2 col-md-3">
+                    <div class="col-lg-3 col-xxl-2  col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body">
-                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
+                                <i class="ni ni-building" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="fil-type-unit">
+                                <option value=""> &nbsp; Filter Type Unit</option>
+                                <?php
+                                foreach ($type_unit as $data) :
+
+                                ?>
+                                    <option value="<?= $data->type_unit; ?>"> &nbsp; <?= $data->type_unit; ?></option>
+
+                                <?php
+                                endforeach;
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xxl-2  col-md-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-money-coins" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="fil-payout">
+                                <option value=""> &nbsp; Filter Payout</option>
+                                <option value="cash"> &nbsp; Cash</option>
+                                <option value="kpr"> &nbsp; KPR</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-xxl-2  col-md-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-check-bold" aria-hidden="true"></i>
                             </span>
                             <select class="form-control" id="status">
-                                <option value=""> &nbsp; Filter</option>
+                                <option value=""> &nbsp; Filter Status</option>
                                 <option value="Dipesan"> &nbsp; Dipesan</option>
                                 <option value="UTJ"> &nbsp; UTJ</option>
                                 <option value="DP"> &nbsp; DP</option>
@@ -189,8 +220,7 @@
                             </select>
                         </div>
                     </div>
-
-                    <div class="col-lg-3 col-md-3">
+                    <div class="col-lg-3 col-xxl-2 col-md-3">
                         <div class="input-group input-group-sm">
                             <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                             <input type="text" class="form-control" id="filter-tgl" name="daterange" placeholder=" Pilih Range Tanggal">
@@ -198,17 +228,36 @@
                             <input type="text" id="tgl-end" value="" hidden>
                         </div>
                     </div>
-                    <!-- <div class="col-lg-2 col-md-2">
-                        <button type="button" class="btn bg-gradient-success btn-sm" data-bs-toggle="modal" data-bs-target="#exampleModalcetak"> <i class="fa fa-print" style="font-size:small;"></i>
-                            &nbsp; Cetak
-                        </button>
-                    </div> -->
+                    <div class="col-lg-2 col-md-3">
+                        <div class="input-group input-group-sm">
+                            <span class="input-group-text text-body">
+                                <i class="ni ni-single-copy-04" aria-hidden="true"></i>
+                            </span>
+                            <select class="form-control" id="progres-doc">
+                                <option value=""> &nbsp; Filter Document</option>
+                                <option value="Dipesan"> &nbsp; Dipesan</option>
+                                <option value="UTJ"> &nbsp; UTJ</option>
+                                <option value="DP"> &nbsp; DP</option>
+                                <option value="Sold Out"> &nbsp; Sold Out</option>
+                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-2">
+                        <a id="cetak-pdf">
+                            <button type="button" class="btn bg-gradient-success btn-sm"> <i class="fa fa-print" style="font-size:small;"></i>
+                                &nbsp; Cetak
+                            </button>
+                        </a>
+                    </div>
                 </div>
                 <table id="list-selatan" class="table align-items-center mb-0">
                     <thead>
                         <tr>
                             <th>Kode unit</th>
+                            <th>Type Unit</th>
                             <th>Status</th>
+                            <th>Payout</th>
                             <th>Transaction</th>
                             <th>Description</th>
                             <th>Progress doc</th>
@@ -227,6 +276,7 @@
         </div>
     </div>
 </div>
+<input type="text" id="code-arr" value="">
 <input type="text" id="progres-berkas" value="" hidden>
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -452,48 +502,61 @@
     </div>
 </div>
 
-<!-- Modal Cetak-->
-<div class="modal fade" id="exampleModalcetak" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Cetak Data</h5>
-                <button type="button" class="btn-close text-dark" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-9 col-lg-3">
-                        <div class="input-group input-group-sm">
-                            <span class="input-group-text text-body">
-                                <i class="ni ni-delivery-fast" aria-hidden="true"></i>
-                            </span>
-                            <select class="form-control" id="status">
-                                <option value=""> &nbsp; Filter</option>
-                                <option value="Dipesan"> &nbsp; Dipesan</option>
-                                <option value="Sold Out"> &nbsp; Sold Out</option>
-                                <option value="Rumah Ready"> &nbsp; Rumah Ready</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 col-lg-4">
-                        <!-- <div class="input-group input-group-sm">
-                            <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
-                            <input type="text" class="form-control" name="daterange" placeholder=" Pilih Range Tanggal">
-                        </div> -->
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-sm bg-gradient-primary"><i class="fas fa-file-pdf text-lg me-1"></i>
-                    Cetak</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <script>
+    $('#cetak-pdf').click(function() {
+        var val_type_unit = $('#fil-type-unit').val();
+        var val_payout = $('#fil-payout').val();
+        var val_status = $('#status').val();
+        var data_arr = $('#code-arr').val();
+        if (val_type_unit == '') {
+            var type_unit = 'Komersil, Subsidi';
+        } else {
+            // var data_fil = 
+            var type_unit = val_type_unit;
+
+        }
+        if (val_payout == '') {
+            var payout = 'CASH, KPR';
+        } else {
+            if (payout == 'cash') {
+                var payout = 'CASH';
+
+            } else {
+                var payout = 'KPR';
+
+            }
+
+        }
+        if (val_status == '') {
+            var status = '';
+        } else {
+            var status = '-' + val_status;
+
+        }
+        // $data_arr = [type_unit, payout, status]
+        // alert(data_arr)
+        // $('#code-arr').val(type_unit + payout + status)
+        $.ajax({
+            // type: 'POST',
+            url: "<?php echo base_url('/Home/get_data_pdf'); ?>/" + $('#id-siteplan').val() +
+                "?map=" + $('#id-siteplan').val() + "&fil_type_unit=" + $('#fil-type-unit').val() + "&fil_payout=" + $('#fil-payout').val() + "&status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val(),
+            // data: formData,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success: function(data) {
+                // load_data_document();\
+                // alert(data)
+
+                window.location.href = "<?= base_url('Laporan_pdf'); ?>/data/<?= $this->uri->segment(3); ?>/<?= $this->uri->segment(4); ?>/" + data + '/?type=' + type_unit + '&payout=' + payout;
+                // Laporan_pdf/data/6/A1-A10-A12-/
+
+            },
+            error: function() {
+                alert("Data Gagal Diupload");
+            }
+        });
+    });
     var select_subsidi = '<option value="0">Pilih status pembayaran</option>' +
         '<option value="cash">Cash</option>' +
         '<option value="kpr-sub">KPR</option>';
@@ -601,10 +664,38 @@
             });
         });
         // load data saat pertama di buka
-        $('#status').on('change', function() {
+        $('#status, #fil-type-unit, #fil-payout').on('change', function() {
+
+            if ($('#fil-type-unit').val() == 'Komersil') {
+                if ($('#fil-payout').val() == 'kpr') {
+                    var payout = 'kpr-kom';
+                } else {
+
+                    var payout = $('#fil-payout').val();
+                }
+            } else if ($('#fil-type-unit').val() == 'Subsidi') {
+                if ($('#fil-payout').val() == 'kpr') {
+                    var payout = 'kpr-sub';
+                } else {
+                    var payout = $('#fil-payout').val();
+                }
+
+            }
             window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-                "?status=" + $(this).val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+                "?fil_type_unit=" + $('#fil-type-unit').val() + "&fil_payout=" + $('#fil-payout').val() + "&status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val() + "&pdf=false").load();
+            var tgl_start = $('#tgl-start').val();
+            var tgl_end = $('#tgl-end').val();
+            var strStart = tgl_start.replace(/\//g, '-');
+            var strEnd = tgl_end.replace(/\//g, '-');
+            // alert(strStart)
+            // if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
+
+            //     $('#cetak-pdf').attr('href', "<?= base_url('Laporan_pdf'); ?>/data/" + $('#id-siteplan').val() + '/' + $('#status').val() + '/' + strStart + '/' + strEnd)
+            // }
+
+
         });
+
 
     });
 
@@ -922,8 +1013,16 @@
                     name: 'code'
                 },
                 {
+                    data: 'type_unit',
+                    name: 'type_unit'
+                },
+                {
                     data: 'type',
                     name: 'type'
+                },
+                {
+                    data: 'status_pembayaran',
+                    name: 'status_pembayaran'
                 },
                 {
                     data: 'transaction',
@@ -1037,14 +1136,48 @@
                 // alert(start);
                 $('#tgl-start').val(start.format('DD/MM/YYYY'));
                 $('#tgl-end').val(end.format('DD/MM/YYYY'));
+                // var tgl_start = $('#tgl-start').val();
+                // var tgl_end = $('#tgl-end').val();
+                // var strStart = tgl_start.replace(/\//g, '-');
+                // var strEnd = tgl_end.replace(/\//g, '-');
+
+                // if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
+                //     window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+                //         "?fil_type_unit=" + $('#fil-type-unit').val() + "&status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+
+                //     $('#cetak-pdf').attr('href', "<?= base_url('Laporan_pdf'); ?>/data/" + $('#id-siteplan').val() + '/' + $('#status').val() + '/' + strStart + '/' + strEnd)
+                // } else {
+
+                // }
+
+                if ($('#fil-type-unit').val() == 'Komersil') {
+                    if ($('#fil-payout').val() == 'kpr') {
+                        var payout = 'kpr-kom';
+                    } else {
+
+                        var payout = $('#fil-payout').val();
+                    }
+                } else if ($('#fil-type-unit').val() == 'Subsidi') {
+                    if ($('#fil-payout').val() == 'kpr') {
+                        var payout = 'kpr-sub';
+                    } else {
+                        var payout = $('#fil-payout').val();
+                    }
+
+                }
+                window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
+                    "?fil_type_unit=" + $('#fil-type-unit').val() + "&fil_payout=" + $('#fil-payout').val() + "&status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+                var tgl_start = $('#tgl-start').val();
+                var tgl_end = $('#tgl-end').val();
+                var strStart = tgl_start.replace(/\//g, '-');
+                var strEnd = tgl_end.replace(/\//g, '-');
+                // alert(strStart)
                 if ($('#status').val() == 'UTJ' || $('#status').val() == 'DP' || $('#status').val() == 'Sold Out') {
-                    alert('ya');
-                    window.crud.ajax.url("<?php echo base_url('/Home/search'); ?>/" + $('#id-siteplan').val() +
-                        "?status=" + $('#status').val() + "&tgl_start=" + $('#tgl-start').val() + "&tgl_end=" + $('#tgl-end').val()).load();
+
+                    $('#cetak-pdf').attr('href', "<?= base_url('Laporan_pdf'); ?>/data/" + $('#id-siteplan').val() + '/' + $('#status').val() + '/' + strStart + '/' + strEnd)
                 } else {
 
                 }
-
             });
 
         });
