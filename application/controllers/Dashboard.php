@@ -31,18 +31,19 @@ class Dashboard extends AUTH_Controller
         $data['perumahan']          = $this->M_admin->m_perumahan($id, $role);
         $data['area_siteplan']      = $this->M_admin->m_area_siteplan();
         $data['bread']              = 'Dashboard';
-        $data['jum_ready'] 			= $this->Dashboard_Model->jumlah_ready();
-        $data['jum_dipesan'] 		= $this->Dashboard_Model->jumlah_dipesan();
-        $data['jum_sold'] 			= $this->Dashboard_Model->jumlah_sold();
-        $data['jum_null'] 			= $this->Dashboard_Model->all_DP();
-        $data['tolp_ready'] 		= $this->Dashboard_Model->tooltip_ready();
-        $data['tolp_UTJ'] 		    = $this->Dashboard_Model->tooltip_UTJ();
-        $data['tolp_DP'] 		    = $this->Dashboard_Model->tooltip_DP();
-        $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold();
+        $data['jum_ready'] 			= $this->Dashboard_Model->jumlah_ready($role, $id);
+        $data['jum_dipesan'] 		= $this->Dashboard_Model->jumlah_dipesan($role, $id);
+        $data['jum_sold'] 			= $this->Dashboard_Model->jumlah_sold($role, $id);
+        $data['jum_null'] 			= $this->Dashboard_Model->all_DP($role, $id);
+        $data['tolp_ready'] 		= $this->Dashboard_Model->tooltip_ready($role, $id);
+        $data['tolp_UTJ'] 		    = $this->Dashboard_Model->tooltip_UTJ($role, $id);
+        $data['tolp_DP'] 		    = $this->Dashboard_Model->tooltip_DP($role, $id);
+        $data['tolp_Sold'] 		    = $this->Dashboard_Model->tooltip_sold($role, $id);
         $data['content']            = 'page/Dashboard_v';
         $data['ambil'] 		        = $this->userdata;
-        $data['ChartData']          = $this->Dashboard_Model->getChartData($id, $role);
+        $data['ChartData']          = $this->Dashboard_Model->getChartData($role, $id);
         $data['transaksi']          = $this->Dashboard_Model->getTransaksiByBulan();
+        // $data['data_deadline']      = $this->Dashboard_Model->data_deadline($role, $id);
 
         $this->load->view($this->template, $data);
     }
@@ -58,11 +59,11 @@ class Dashboard extends AUTH_Controller
         $data['jum_UTJ'] 			= $this->Dashboard_Model->jumlah_UTJ($perum);
         $data['jum_DP'] 		    = $this->Dashboard_Model->jumlah_DP($perum);
         $data['jum_sold'] 			= $this->Dashboard_Model->jum_sold($perum);
+        $data['jum_ready'] 			= $this->Dashboard_Model->jum_ready($perum);
         $data['bread']              = 'Dashboard/ Detail';
         $data['content']            = 'page/Dashboard_det';
         $data['ambil'] 		        = $this->userdata;
-        $data['ChartData']          = $this->Dashboard_Model->getChartData();
-        $data['transaksi']          = $this->Dashboard_Model->getperumByBulan($perum);
+        $data['transaksi_det']      = $this->Dashboard_Model->getperumByBulan($perum);
         $data['Rmh_ready']          = $this->Dashboard_Model->readyByperum($perum);
         $this->load->view($this->template, $data);
 
@@ -111,8 +112,8 @@ class Dashboard extends AUTH_Controller
 
         if ($status) {
             if ($status == 'UTJ' || $status == 'DP') {
-                $id_denahs = ['UTJ'];
-                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = 'transaksi.id_trans_denahs' AND status_trans = '$status'";
+                $id_denahs = [''];
+                $sql = "SELECT *FROM transaksi, denahs WHERE transaksi.id_trans_denahs = denahs.id_denahs AND denahs.id_perum = '$id_perum' AND status_trans = '$status' ";
                 $query = $this->db->query($sql);
                 if ($query->num_rows() > 0) {
                     foreach ($query->result() as $row) {
@@ -143,6 +144,17 @@ class Dashboard extends AUTH_Controller
         $data_arr = [];
         foreach ($results as $result) {
             $id_denahs = $result->id_denahs;
+            $color = '';
+            if ($result->progres_berkas >= 1 && $result->progres_berkas <= 15) {
+                $color = 'gradient-danger';
+            } elseif ($result->progres_berkas > 15 && $result->progres_berkas <= 35) {
+                $color = 'gradient-warning';
+            }elseif ($result->progres_berkas > 35 && $result->progres_berkas <= 50) {
+                $color = 'gradient-info';
+            } elseif ($result->progres_berkas > 50 && $result->progres_berkas <= 100) {
+                $color = 'gradient-success';
+            }
+
             $data = [
                 'code' => $result->code,
                 'type' => '<span class="pup" style="background-color:' . $result->color . '"></span> ' . $result->type,
@@ -153,8 +165,7 @@ class Dashboard extends AUTH_Controller
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="' . $result->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $result->progres_berkas . '%;"></div>
-                                </div>
+                                <div class="progress-bar bg-'. $color . '" role="progressbar" aria-valuenow="' . $result->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $result->progres_berkas . '%;"></div>
                             </div>',
             ];
 
@@ -218,6 +229,109 @@ class Dashboard extends AUTH_Controller
                 'data' => $data_arr,
             ]));
     }
+
+    function data_deadline()
+{
+    $output = '';
+    $this->load->model('dashboard_Model');
+    $id = $this->session->userdata('userdata')->id;
+    $role = $this->session->userdata('userdata')->role;
+    $limit = $this->input->post('limit');
+    $start = $this->input->post('start');
+    $data = $this->dashboard_Model->data_deadline($role, $id, $limit, $start);
+
+    $count = 0;
+    $utjDeadlines = [];
+
+    if (!empty($data)) {
+        foreach ($data as $row) {
+            if ($row->type == 'Dipesan' && $row->status_trans == 'UTJ') {
+                $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
+                date_default_timezone_set('Asia/Jakarta');
+                $awal  = date_create('' . $tgl . '');
+                $akhir = date_create();
+                $diff  = date_diff($akhir, $awal);
+                if ($diff->days >= 23) { // Perubahan kondisi di sini
+                    $utjDeadlines[] = [
+                        'row' => $row,
+                        'days' => $diff->days
+                    ];
+                }
+            }
+        }
+
+        usort($utjDeadlines, function ($a, $b) {
+            return $b['days'] - $a['days'];
+        });
+
+        $output .= '<tbody>';
+
+        foreach ($utjDeadlines as $deadline) {
+            $row = $deadline['row'];
+            $color = '';
+            $data_trans = [];
+
+            if ($row->progres_berkas >= 1 && $row->progres_berkas <= 15) {
+                $color = 'gradient-danger';
+            } elseif ($row->progres_berkas > 15 && $row->progres_berkas <= 35) {
+                $color = 'gradient-warning';
+            } elseif ($row->progres_berkas > 35 && $row->progres_berkas <= 50) {
+                $color = 'gradient-info';
+            } elseif ($row->progres_berkas > 50 && $row->progres_berkas <= 100) {
+                $color = 'gradient-success';
+            }
+
+            $progressBar =
+                '<div>
+                    <div>
+                        <span class="text-xxs font-weight-bold">' . $row->progres_berkas . ' %</span>
+                    </div>
+                    <div class="progress w-90 h-100">
+                        <div class="progress-bar bg-' . $color . '" role="progressbar" aria-valuenow="' . $row->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $row->progres_berkas . '%;"></div>
+                    </div>
+                </div>';
+
+            $colorClass = $deadline['days'] >= 23 ? 'bg-gradient-danger' : '';
+
+            $output .= '<tr>';
+            $output .= '<td><span class="border-transaksi">' . $row->code . '</span> <br> <span class="border-perum text-xxs font-weight-bold">' . $row->nama . '</span></td>';
+            $output .= '<td>';
+            if ($row->status_trans == 'UTJ' || $row->status_trans == 'DP') {
+                $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
+            }
+            if (!empty($data_trans)) {
+                foreach ($data_trans as $data) {
+                    $output .= $data;
+                }
+            }
+            $output .= '</td>';
+            $output .= '<td>' . $progressBar . '</td>';
+            $output .= '<td><span class="badge ' . $colorClass . ' text-xxs font-weight-bold">' . $deadline['days'] . ' Hari</span></td>';
+            $whatsappNumber = preg_replace('/[^0-9]/', '', $row->no_wa);
+            $formatNumber = '62' . $row->no_wa;
+            $output .= '<td><a class="chat-wa" href="https://api.whatsapp.com/send?phone=' . $formatNumber . '"><i class="fa fa-whatsapp"></i></a></td>';
+            $output .= '</tr>';
+
+            $count++;
+            if ($count >= $limit) {
+                break;
+            }
+        }
+
+        $output .= '</tbody>';
+    }
+
+    // if ($count === 0) {
+    //     $output .= '<tbody>';
+    //     $output .= '<tr>';
+    //     $output .= '<td colspan="5s">Tidak ada data yang mendekati deadline...</td>';
+    //     $output .= '</tr>';
+    //     $output .= '</tbody>';
+    // }
+
+    echo $output;
+}
+
 
 
 }

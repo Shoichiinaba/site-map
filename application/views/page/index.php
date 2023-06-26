@@ -1,124 +1,124 @@
 <style>
-.bg-dur-green {
-    background: #5dcf32;
-    padding: 1px 4px;
-    border-radius: 5px;
-    color: white;
-}
+    .bg-dur-green {
+        background: #5dcf32;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
 
-.bg-dur-orange {
-    background: #e0ab0e;
-    padding: 1px 4px;
-    border-radius: 5px;
-    color: white;
-}
+    .bg-dur-orange {
+        background: #e0ab0e;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
 
-.bg-dur-red {
-    background: #e00e13;
-    padding: 1px 4px;
-    border-radius: 5px;
-    color: white;
-}
+    .bg-dur-red {
+        background: #e00e13;
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: white;
+    }
 
-.bg-dur-sold-out {
-    border: dashed 2px red;
-    padding: 0px 6px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #f05151;
-}
+    .bg-dur-sold-out {
+        border: dashed 2px red;
+        padding: 0px 6px;
+        border-radius: 5px;
+        font-weight: bold;
+        color: #f05151;
+    }
 
-.bg-tr {
-    background: aliceblue;
-}
+    .bg-tr {
+        background: aliceblue;
+    }
 
-.tr {
-    font-size: x-small;
-}
+    .tr {
+        font-size: x-small;
+    }
 
-.border-transaksi {
-    border: 2px solid #0000002e;
-    padding: 0px 6px;
-    border-radius: 5px;
-    font-size: x-small;
-    font-weight: bold;
-}
+    .border-transaksi {
+        border: 2px solid #0000002e;
+        padding: 0px 6px;
+        border-radius: 5px;
+        font-size: x-small;
+        font-weight: bold;
+    }
 
-.btn-small {
-    margin: 2px;
-    font-size: smaller;
-}
+    .btn-small {
+        margin: 2px;
+        font-size: smaller;
+    }
 
-.sorting_1 {
-    text-transform: uppercase;
-}
+    .sorting_1 {
+        text-transform: uppercase;
+    }
 
-.required {
-    border: 2px solid #ff000030 !important;
-}
+    .required {
+        border: 2px solid #ff000030 !important;
+    }
 
-#Iframe-Master-CC-and-Rs {
-    max-width: 812px;
-    max-height: 100%;
-    overflow: hidden;
-}
+    #Iframe-Master-CC-and-Rs {
+        max-width: 812px;
+        max-height: 100%;
+        overflow: hidden;
+    }
 
-/* inner wrapper: make responsive */
-.responsive-wrapper {
-    position: relative;
-    height: 0;
-}
+    /* inner wrapper: make responsive */
+    .responsive-wrapper {
+        position: relative;
+        height: 0;
+    }
 
-.responsive-wrapper iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border: none;
-}
+    .responsive-wrapper iframe {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        border: none;
+    }
 
-/* padding-bottom = h/w as % -- sets aspect ratio */
-/* YouTube video aspect ratio */
-.responsive-wrapper-wxh-572x612 {
-    padding-bottom: 107%;
-}
+    /* padding-bottom = h/w as % -- sets aspect ratio */
+    /* YouTube video aspect ratio */
+    .responsive-wrapper-wxh-572x612 {
+        padding-bottom: 107%;
+    }
 
-/* general styles */
-/* ============== */
-.set-border {
-    border: 5px inset #ddd;
-}
+    /* general styles */
+    /* ============== */
+    .set-border {
+        border: 5px inset #ddd;
+    }
 
-.set-box-shadow {
-    -webkit-box-shadow: 4px 4px 14px #4f4f4f;
-    -moz-box-shadow: 4px 4px 14px #4f4f4f;
-    box-shadow: 4px 4px 14px #4f4f4f;
-}
+    .set-box-shadow {
+        -webkit-box-shadow: 4px 4px 14px #4f4f4f;
+        -moz-box-shadow: 4px 4px 14px #4f4f4f;
+        box-shadow: 4px 4px 14px #4f4f4f;
+    }
 
-.set-padding {
-    padding: 10px;
-}
+    .set-padding {
+        padding: 10px;
+    }
 
-.set-margin {
-    margin: 30px;
-}
+    .set-margin {
+        margin: 30px;
+    }
 
-.center-block-horiz {
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
+    .center-block-horiz {
+        margin-left: auto !important;
+        margin-right: auto !important;
+    }
 
-sup {
-    top: -0.5em;
-    color: red;
-}
+    sup {
+        top: -0.5em;
+        color: red;
+    }
 
-[readonly] {
-    background: #a9a9a936;
-}
+    [readonly] {
+        background: #a9a9a936;
+    }
 </style>
 <div class="container">
     <div id="svg-container">
@@ -130,8 +130,8 @@ sup {
                     <?php
                     foreach ($siteplan as $data) :
                     ?>
-                    <?php echo $data->file_siteplan; ?>
-                    <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
+                        <?php echo $data->file_siteplan; ?>
+                        <input id="id-siteplan" type="text" value="<?= $data->id_siteplan; ?>" hidden>
                     <?php
                     endforeach;
                     ?>
@@ -331,8 +331,7 @@ sup {
                                     <a class="chat-wa">
                                         <span class="input-group-text"><i class="fa fa-whatsapp"></i></span>
                                     </a>
-                                    <input class="form-control form-control-sm" placeholder="" type="number" id="no-wa"
-                                        name="no-wa">
+                                    <input class="form-control form-control-sm" placeholder="" type="number" id="no-wa" name="no-wa">
                                 </div>
                             </div>
                         </div>
@@ -349,10 +348,8 @@ sup {
                         <div class="col-lg-4">
                             <label for="tgl-trans" class="form-label">Tanggal</label>
                             <div class="input-group input-group-sm">
-                                <span class="input-group-text text-body"><i class="fa fa-calendar"
-                                        aria-hidden="true"></i></span>
-                                <input type="text" class="form-control" id="tgl-trans" name="tgl-trans"
-                                    placeholder=" Pilih Range Tanggal">
+                                <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                                <input type="text" class="form-control" id="tgl-trans" name="tgl-trans" placeholder=" Pilih Range Tanggal">
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -360,8 +357,7 @@ sup {
                             <div class="form-group mb-1">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
-                                    <input class="form-control form-control-sm" placeholder="" type="number"
-                                        id="nominal" name="nominal">
+                                    <input class="form-control form-control-sm" placeholder="" type="number" id="nominal" name="nominal">
                                 </div>
                             </div>
                         </div>
@@ -371,8 +367,7 @@ sup {
                             <button type="button" id="btn-batal-trans" class="btn btn-small ">Batal</button>
                         </div>
                         <div class="col-6">
-                            <button type="button" id="btn-simpan-trans" class="btn btn-success btn-sm"
-                                style="float: right;">Simpan transaksi</button>
+                            <button type="button" id="btn-simpan-trans" class="btn btn-success btn-sm" style="float: right;">Simpan transaksi</button>
                         </div>
                     </div>
                     <div class="row mt-2">
@@ -406,8 +401,7 @@ sup {
 </div>
 
 <!-- Modal Attech-->
-<div class="modal fade" id="exampleModalatt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="exampleModalatt" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -436,11 +430,9 @@ sup {
                     </div>
                     <div class="col-6 mb-3">
                         <div class="input-group ">
-                            <input type="file" id="file-document" class="form-control form-control-sm"
-                                placeholder="Recipient's username" value="">
+                            <input type="file" id="file-document" class="form-control form-control-sm" placeholder="Recipient's username" value="">
                         </div>
-                        <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> PDF Only, Max
-                            2mb</span>
+                        <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> PDF Only, Max 2mb</span>
                     </div>
                 </div>
                 <div id="add-document" class="row">
@@ -451,12 +443,10 @@ sup {
                 </div>
                 <div id="action-upload" class="row" hidden>
                     <div class="col-6">
-                        <a href="javascript:;" id="btn-cencel-document" class="btn btn-danger btn-lg btn-sm"
-                            role="button" aria-pressed="true">Cencel</a>
+                        <a href="javascript:;" id="btn-cencel-document" class="btn btn-danger btn-lg btn-sm" role="button" aria-pressed="true">Cencel</a>
                     </div>
                     <div class="col-6 ">
-                        <a href="javascript:;" id="btn-save-document" class="btn btn-success btn-lg btn-sm"
-                            role="button" aria-pressed="true" style="float: right;">Save document</a>
+                        <a href="javascript:;" id="btn-save-document" class="btn btn-success btn-lg btn-sm" role="button" aria-pressed="true" style="float: right;">Save document</a>
                     </div>
                 </div>
                 <hr class="mt-0" style="border-top: solid #00000040 !important;">
@@ -484,18 +474,14 @@ sup {
                 <div id="preview-pdf" class="row" hidden>
                     <div class="col-12">
                         <hr style="border-top: solid #00000040 !important;">
-                        <button type="button" id="btn-close-preview" class="btn-sm btn btn-default"
-                            style="float: right;">Close</button>
-                        <button type="button" id="btn-delete-doc" class="btn-sm btn btn-danger mr-3"
-                            style="float: right;margin-right: 25px;">DELETE</button>
+                        <button type="button" id="btn-close-preview" class="btn-sm btn btn-default" style="float: right;">Close</button>
+                        <button type="button" id="btn-delete-doc" class="btn-sm btn btn-danger mr-3" style="float: right;margin-right: 25px;">DELETE</button>
                         <a id="link-down-pdf" href="" download="">
-                            <button type="button" class="btn-sm btn btn-info mr-3"
-                                style="float: right;margin-right: 25px;">Download</button>
+                            <button type="button" class="btn-sm btn btn-info mr-3" style="float: right;margin-right: 25px;">Download</button>
                         </a>
                     </div>
                     <div id="Iframe-Master-CC-and-Rs" class="set-padding set-border set-box-shadow center-block-horiz">
-                        <div class="responsive-wrapper responsive-wrapper-wxh-572x612"
-                            style="-webkit-overflow-scrolling: touch; overflow: auto;">
+                        <div class="responsive-wrapper responsive-wrapper-wxh-572x612" style="-webkit-overflow-scrolling: touch; overflow: auto;">
 
                             <iframe id="view-pdf" src="">
                                 <!-- <iframe id="view-pdf" src="https://docs.google.com/viewer?url=https://kanpa.co.id/Berkas.pdf&embedded=true"> -->
@@ -560,7 +546,7 @@ sup {
             contentType: false,
             success: function(data) {
                 // load_data_document();\
-                // alert(data)
+                alert(data)
 
                 window.location.href = "<?= base_url('Laporan_pdf'); ?>/data/<?= $this->uri->segment(3); ?>/<?= $this->uri->segment(4); ?>/" + data + '/?type=' + type_unit + '&payout=' + payout;
                 // Laporan_pdf/data/6/A1-A10-A12-/

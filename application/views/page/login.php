@@ -15,6 +15,11 @@
     <link href="<?= base_url(); ?>assets_adm/css/nucleo-svg.css" rel="stylesheet" />
     <link id="pagestyle" href="<?= base_url(); ?>assets_adm/css/soft-ui-dashboard.css?v=1.0.7" rel="stylesheet" />
 </head>
+<?php
+if ($this->session->flashdata('error')) {
+    echo '<div class="alert alert-danger">' . $this->session->flashdata('error') . '</div>';
+}
+?>
 
 <body class="">
     <main class="main-content  mt-0">
@@ -44,10 +49,10 @@
                             </div>
                             <div class="card">
                                 <div class="card-body login-card-body">
-                                    <form action="<?= site_url('Auth/login')?>" method="post">
+                                    <form action="<?= site_url('Auth/login') ?>" method="post">
                                         <!-- Alert -->
                                         <?php
-                                            if (validation_errors() || $this->session->flashdata('result_login')) {
+                                        if (validation_errors() || $this->session->flashdata('result_login')) {
                                         ?>
                                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                                             <button type="button" class="btn-close" data-bs-dismiss="alert"
@@ -58,13 +63,14 @@
                                             <strong>Warning!</strong>
                                             <?php echo validation_errors(); ?>
                                             <?php echo $this->session->flashdata('result_login'); ?>
+                                            <?php echo $this->session->flashdata('Habis'); ?>
                                         </div>
                                         <?php } ?>
 
                                         <?php
-                                            $data=$this->session->flashdata('sukses');
-                                                if($data!=""){ ?>
-                                        <div class="alert alert-success"><strong>Sukses! </strong> <?=$data;?></div>
+                                        $data = $this->session->flashdata('sukses');
+                                        if ($data != "") { ?>
+                                        <div class="alert alert-success"><strong>Sukses! </strong> <?= $data; ?></div>
                                         <?php } ?>
                                         <!-- akhir alert -->
                                         <div class="input-group mb-3">
@@ -176,6 +182,7 @@
     $(document).ready(function() {
         $(' #customCheck').click(function() { if ($(this).is(':checked')) { $('#password').attr('type', 'text' ); }
                 else { $('#password').attr('type', 'password' ); } }); }); </script>
+
                 <script src="<?= base_url('assets_adm/'); ?>js/core/popper.min.js"></script>
                 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
                 <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>
