@@ -469,8 +469,9 @@
                     <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> Mohon lampirkan Blanko
                         jika unit kapling subsidi!</span>
                 </center> -->
-                <input type="text" id="flied" value="" hidden>
-                <input type="text" id="file-doc" value="" hidden>
+                <input type="text" id="flied" value="">
+                <input type="text" id="file-doc" value="">
+                <input type="text" id="id-upload" value="">
                 <div id="preview-pdf" class="row" hidden>
                     <div class="col-12">
                         <hr style="border-top: solid #00000040 !important;">
@@ -794,7 +795,7 @@
         close_preview_pdf();
     });
     $('#btn-delete-doc').click(function() {
-        // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
+        alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
         var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
 
         if (confirmalert == true) {
