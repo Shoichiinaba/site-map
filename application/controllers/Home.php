@@ -435,7 +435,7 @@ class Home extends CI_Controller
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
                 foreach ($query->result() as $row) {
-                    if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
+                    if ($row->status_trans == 'UTJ') {
                         $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || ' . $row->tgl_trans . '</span><br>';
                     }
                     if ($result->type == 'Dipesan') {
@@ -481,6 +481,13 @@ class Home extends CI_Controller
                             $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
                         }
                     }
+                }
+            }
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_denahs AND status_trans = 'DP' ORDER BY id_trans DESC LIMIT 1";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || ' . $row->tahap . ' || ' . $row->tgl_trans . '</span><br>';
                 }
             }
             $data['transaction'] = $data_trans;
@@ -1440,7 +1447,7 @@ class Home extends CI_Controller
     {
         $id_trans_denahs = $this->input->post('id-trans-denahs');
 
-        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_trans_denahs";
+        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_trans_denahs ORDER BY status_trans DESC";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
@@ -1473,13 +1480,37 @@ class Home extends CI_Controller
                 }
                 echo $row->status_trans . $row->nama_cus;
                 echo '<tr class="tr">
-                        <td class="text-center">' . $row->status_trans . '</td>
-                        <td class="text-center">' . $row->tgl_trans . '</td>
-                        <td class="text-center">' . $row->nominal . '</td>
-                        <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
-                        <td class="text-center">' . $row->tgl_update . '</td>
-                        <td class="text-center">' . $row->user_admin . '</td>
-                    </tr>';
+                            <td class="text-center">' . $row->status_trans . '</td>
+                            <td class="text-center">' . $row->tgl_trans . '</td>
+                            <td class="text-center">' . $row->tahap . '</td>
+                            <td class="text-center">' . $row->nominal . '</td>
+                            <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
+                            <td class="text-center">' . $row->tgl_update . '</td>
+                            <td class="text-center">' . $row->user_admin . '</td>
+                        </tr>';
+            }
+            echo '<tr class="tr">';
+            echo '<td style="background: blanchedalmond;">Nominal DP</td>';
+            echo '<td colspan="6" style="background: beige;" > : Rp. ' . $row->nominal_dp . '</td>';
+            echo '<td class="td-nominal-dp" hidden>' . $row->nominal_dp . '</td>';
+            echo '</tr>';
+            $sql = "SELECT SUM(nominal) AS total_nominal, nominal_dp FROM transaksi WHERE id_trans_denahs = $id_trans_denahs AND status_trans='DP'";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $count) {
+                    if ($row->nominal_dp == $count->total_nominal) {
+
+                        echo '<tr class="tr">';
+                        echo '<td style="background: blanchedalmond;">DP dibayar</td>';
+                        echo '<td colspan="6" style="background: beige;"> : Rp. ' . $count->total_nominal . '  -> LUNAS</td>';
+                        echo '</tr>';
+                    } else {
+                        echo '<tr class="tr">';
+                        echo '<td style="background: blanchedalmond;">DP dibayar</td>';
+                        echo '<td colspan="6" style="background: beige;"> : Rp. ' . $count->total_nominal . '</td>';
+                        echo '</tr>';
+                    }
+                }
             }
             echo '<script>
                         if ($("#type").val()=="Sold Out") {
@@ -1488,10 +1519,10 @@ class Home extends CI_Controller
                             $(".btn-delete-transaksi").show();
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
-                                $("#no-wa").val("62' . $nomorhp . '");
-                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62' . $nomorhp . '&text=");
+                                $("#no-wa").val("' . $nomorhp . '");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=' . $nomorhp . '&text=");
                                 $(".btn-delete-transaksi").click(function() {
-                                    alert($(this).data("id-trans"));
+                                    // alert($(this).data("id-trans"));
                                     var el = this;
 
                                     // Delete id
@@ -1511,6 +1542,8 @@ class Home extends CI_Controller
                                                 $(el).closest("tr").fadeOut(300, function() {
                                                     $(this).remove();
                                                 });
+                                                load_data_transaksi();
+
                                             }
                                         });
                                     }
@@ -1534,28 +1567,68 @@ class Home extends CI_Controller
         $status_trans = $this->input->post('status-trans');
         $tgl_trans = $this->input->post('tgl-trans');
         $nominal = $this->input->post('nominal');
+        $nominal_dp = $this->input->post('nominal-dp');
         $user_admin = $this->session->userdata('userdata')->nama;
         $tgl_update = date("d/m/Y | H:i:s");
-
+        $tahap = 0;
         $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id_trans_denahs' AND status_trans = '$status_trans'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_trans = $row->id_trans;
-                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update);
+                $db_nama_cus = $row->nama_cus;
+                $db_no_hp = $row->no_wa;
+                $db_nominal_dp = $row->nominal_dp;
+                $tahap++;
+            }
+            $count_tahapan = 'Tahap ' . $tahap += 1;
+            if ($status_trans == 'UTJ') {
+                $this->M_admin->m_update_transaksi($id_trans, $tgl_trans, $nominal, $user_admin, $tgl_update);
+            } else {
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $db_nama_cus,
+                    'no_wa' => $db_no_hp,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'nominal_dp' => $db_nominal_dp,
+                    'tahap' => $count_tahapan,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
             }
         } else {
-            $data = [
-                'id_trans_denahs' => $id_trans_denahs,
-                'status_trans' => $status_trans,
-                'nama_cus' => $nama_cus,
-                'no_wa' => $no_wa,
-                'tgl_trans' => $tgl_trans,
-                'nominal' => $nominal,
-                'user_admin' => $user_admin,
-                'tgl_update' => $tgl_update
-            ];
-            $this->M_admin->m_upload_transaksi($data);
+            if ($status_trans == 'UTJ') {
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $nama_cus,
+                    'no_wa' => $no_wa,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'tahap' => 'Lunas',
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
+            } else {
+                $count_tahapan = 'Tahap 1';
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $nama_cus,
+                    'no_wa' => $no_wa,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'nominal_dp' => $nominal_dp,
+                    'tahap' => $count_tahapan,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
+            }
         }
     }
 
