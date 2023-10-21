@@ -174,7 +174,6 @@
                                     <?php
                                         }
                                     ?>
-
                                 "></i>
                             </div>
                         </div>
@@ -335,9 +334,9 @@
                                                 </thead>
                                             </table>
                                             <div id="load_message"></div>
-                                            <div class="text-center mt-0">
+                                            <!-- <div class="text-center mt-0">
                                                 <a href="#" id="down"><i class="fa fa-hand-o-down down-icon"></i></a>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -491,7 +490,7 @@ var chart = new Chart(ctx, {
 <script>
 $(document).ready(function() {
 
-    var limit = 10;
+    var limit = 5;
     var start = 0;
     var action = 'inactive';
 

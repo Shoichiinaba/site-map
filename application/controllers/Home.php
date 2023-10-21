@@ -301,6 +301,7 @@ class Home extends CI_Controller
         $filteredRows = $totalRows;
         $id = $this->uri->segment(3);
         $model = $model->where('map',  $id);
+        $model = $model->orderBy('id_denahs');
 
         if ($search) {
             $search = $search['value'];
@@ -390,7 +391,6 @@ class Home extends CI_Controller
                 }
             }
         }
-
         $resuls = $model->select('denahs.*')->get();
 
         $data_arr = [];
@@ -464,7 +464,6 @@ class Home extends CI_Controller
             $data['duration'] = $count;
             $data_arr[] = $data;
         }
-
 
         return $this->output
             ->set_content_type('application/json')

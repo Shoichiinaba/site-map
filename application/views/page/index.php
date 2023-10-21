@@ -276,7 +276,7 @@
         </div>
     </div>
 </div>
-<input type="text" id="code-arr" value="">
+<input type="text" id="code-arr" value="" hidden>
 <input type="text" id="progres-berkas" value="" hidden>
 <!-- Modal Edit-->
 <div class="modal fade" id="exampleModaledit" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -511,7 +511,7 @@
         if (val_type_unit == '') {
             var type_unit = 'Komersil, Subsidi';
         } else {
-            // var data_fil = 
+            // var data_fil =
             var type_unit = val_type_unit;
 
         }

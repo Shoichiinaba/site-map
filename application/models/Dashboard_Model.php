@@ -319,7 +319,7 @@ class Dashboard_Model extends CI_Model
 
     }
 
-	public function data_deadline($role, $id, $limit, $start)
+	public function data_deadline($role, $id)
     {
 		if ($role == 'Admin') {
 
@@ -328,7 +328,9 @@ class Dashboard_Model extends CI_Model
 			$this->db->join('denahs', 'denahs.id_denahs = transaksi.id_trans_denahs');
 			$this->db->join('perumahan', 'perumahan.id_perum = denahs.id_perum');
 			$this->db->where('transaksi.status_trans !=', 'Sold Out');
-			$this->db->limit($limit, $start);
+			$this->db->order_by('perumahan.id_perum', 'ASC');
+			$this->db->order_by('transaksi.id_trans', 'DESC');
+			// $this->db->limit($limit, $start);
 			$query = $this->db->get();
 			return $query->result();
 
@@ -340,7 +342,8 @@ class Dashboard_Model extends CI_Model
 			$this->db->join('marketing_perum', 'marketing_perum.id_perum_marketing = perumahan.id_perum');
 			$this->db->where('marketing_perum.id_admin_marketing', $id);
 			$this->db->where('transaksi.status_trans !=', 'Sold Out');
-			$this->db->limit($limit, $start);
+			$this->db->order_by('perumahan.id_perum', 'ASC');
+			// $this->db->limit($limit, $start);
 			$query = $this->db->get();
 			return $query->result();
 		}

@@ -231,107 +231,87 @@ class Dashboard extends AUTH_Controller
     }
 
     function data_deadline()
-{
-    $output = '';
-    $this->load->model('dashboard_Model');
-    $id = $this->session->userdata('userdata')->id;
-    $role = $this->session->userdata('userdata')->role;
-    $limit = $this->input->post('limit');
-    $start = $this->input->post('start');
-    $data = $this->dashboard_Model->data_deadline($role, $id, $limit, $start);
-
-    $count = 0;
-    $utjDeadlines = [];
-
-    if (!empty($data)) {
-        foreach ($data as $row) {
-            if ($row->type == 'Dipesan' && $row->status_trans == 'UTJ') {
-                $tgl = preg_replace("![^a-z0-9]+!i", "-", $row->tgl_trans);
-                date_default_timezone_set('Asia/Jakarta');
-                $awal  = date_create('' . $tgl . '');
-                $akhir = date_create();
-                $diff  = date_diff($akhir, $awal);
-                if ($diff->days >= 23) { // Perubahan kondisi di sini
-                    $utjDeadlines[] = [
-                        'row' => $row,
-                        'days' => $diff->days
-                    ];
-                }
-            }
-        }
-
-        usort($utjDeadlines, function ($a, $b) {
-            return $b['days'] - $a['days'];
-        });
+    {
+        $output = '';
+        $this->load->model('dashboard_Model');
+        $id = $this->session->userdata('userdata')->id;
+        $role = $this->session->userdata('userdata')->role;
+        // $limit = $this->input->post('limit');
+        // $start = $this->input->post('start');
+        $data = $this->dashboard_Model->data_deadline($role, $id);
 
         $output .= '<tbody>';
 
-        foreach ($utjDeadlines as $deadline) {
-            $row = $deadline['row'];
-            $color = '';
-            $data_trans = [];
+        foreach ($data as $row) {
 
-            if ($row->progres_berkas >= 1 && $row->progres_berkas <= 15) {
-                $color = 'gradient-danger';
-            } elseif ($row->progres_berkas > 15 && $row->progres_berkas <= 35) {
-                $color = 'gradient-warning';
-            } elseif ($row->progres_berkas > 35 && $row->progres_berkas <= 50) {
-                $color = 'gradient-info';
-            } elseif ($row->progres_berkas > 50 && $row->progres_berkas <= 100) {
-                $color = 'gradient-success';
-            }
+            if ($row->type == 'Dipesan' && $row->status_trans == 'UTJ') {
+                $parts = explode(" | ", $row->tgl_update);
+                $tanggal = $parts[0];
+                $now = new DateTime(); // Waktu dan tanggal saat ini
 
-            $progressBar =
-                '<div>
-                    <div>
-                        <span class="text-xxs font-weight-bold">' . $row->progres_berkas . ' %</span>
-                    </div>
-                    <div class="progress w-90 h-100">
-                        <div class="progress-bar bg-' . $color . '" role="progressbar" aria-valuenow="' . $row->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $row->progres_berkas . '%;"></div>
-                    </div>
-                </div>';
-
-            $colorClass = $deadline['days'] >= 23 ? 'bg-gradient-danger' : '';
-
-            $output .= '<tr>';
-            $output .= '<td><span class="border-transaksi">' . $row->code . '</span> <br> <span class="border-perum text-xxs font-weight-bold">' . $row->nama . '</span></td>';
-            $output .= '<td>';
-            if ($row->status_trans == 'UTJ' || $row->status_trans == 'DP') {
-                $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
-            }
-            if (!empty($data_trans)) {
-                foreach ($data_trans as $data) {
-                    $output .= $data;
+                if ($tanggal !== false) {
+                    $tanggal_obj = DateTime::createFromFormat('d/m/Y', $tanggal);
+                    if ($tanggal_obj !== false) {
+                        $diff = $now->diff($tanggal_obj); // Hitung selisih antara tanggal saat ini dan tanggal_obj
+                        $days = $diff->days; // Mengambil selisih dalam hari
+                        $row->days = $days; // Tambahkan properti 'days' ke objek $row
+                    } else {
+                        $row->days = 0;
+                    }
+                } else {
+                    $row->days = 0;
                 }
-            }
-            $output .= '</td>';
-            $output .= '<td>' . $progressBar . '</td>';
-            $output .= '<td><span class="badge ' . $colorClass . ' text-xxs font-weight-bold">' . $deadline['days'] . ' Hari</span></td>';
-            $whatsappNumber = preg_replace('/[^0-9]/', '', $row->no_wa);
-            $formatNumber = '62' . $row->no_wa;
-            $output .= '<td><a class="chat-wa" href="https://api.whatsapp.com/send?phone=' . $formatNumber . '"><i class="fa fa-whatsapp"></i></a></td>';
-            $output .= '</tr>';
 
-            $count++;
-            if ($count >= $limit) {
-                break;
+                $color = '';
+                $data_trans = [];
+
+                if ($row->progres_berkas >= 1 && $row->progres_berkas <= 15) {
+                    $color = 'gradient-danger';
+                } elseif ($row->progres_berkas > 15 && $row->progres_berkas <= 35) {
+                    $color = 'gradient-warning';
+                } elseif ($row->progres_berkas > 35 && $row->progres_berkas <= 50) {
+                    $color = 'gradient-info';
+                } elseif ($row->progres_berkas > 50 && $row->progres_berkas <= 100) {
+                    $color = 'gradient-success';
+                }
+
+                $progressBar =
+                    '<div>
+                        <div>
+                            <span class="text-xxs font-weight-bold">' . $row->progres_berkas . ' %</span>
+                        </div>
+                        <div class="progress w-90 h-100">
+                            <div class="progress-bar bg-' . $color . '" role="progressbar" aria-valuenow="' . $row->progres_berkas . '" aria-valuemin="0" aria-valuemax="100" style="width: ' . $row->progres_berkas . '%;"></div>
+                        </div>
+                    </div>';
+
+                // $colorClass = $row->days >= 0 ? 'bg-gradient-danger' : '';
+
+                $output .= '<tr>';
+                $output .= '<td><span class="border-transaksi">' . $row->code . '</span> <br> <span class="border-perum text-xxs font-weight-bold">' . $row->nama . '</span></td>';
+                $output .= '<td>';
+                if ($row->status_trans == 'UTJ' || $row->status_trans == 'DP') {
+                    $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
+                }
+                if (!empty($data_trans)) {
+                    foreach ($data_trans as $data) {
+                        $output .= $data;
+                    }
+                }
+                $output .= '</td>';
+                $output .= '<td>' . $progressBar . '</td>';
+                $output .= '<td><span class="badge bg-gradient-danger text-xxs font-weight-bold">' . $days . ' Hari</span></td>';
+                $whatsappNumber = preg_replace('/[^0-9]/', '', $row->no_wa);
+                $formatNumber = '62' . $row->no_wa;
+                $output .= '<td><a class="chat-wa" href="https://api.whatsapp.com/send?phone=' . $formatNumber . '"><i class="fa fa-whatsapp"></i></a></td>';
+                $output .= '</tr>';
             }
         }
 
         $output .= '</tbody>';
+
+        echo $output;
     }
-
-    // if ($count === 0) {
-    //     $output .= '<tbody>';
-    //     $output .= '<tr>';
-    //     $output .= '<td colspan="5s">Tidak ada data yang mendekati deadline...</td>';
-    //     $output .= '</tr>';
-    //     $output .= '</tbody>';
-    // }
-
-    echo $output;
-}
-
 
 
 }
