@@ -328,7 +328,7 @@
                             <label for="no-wa" class="form-label">Whatsap</label>
                             <div class="form-group mb-1">
                                 <div class="input-group">
-                                    <a class="chat-wa">
+                                    <a class="chat-wa" target="_blank">
                                         <span class="input-group-text"><i class="fa fa-whatsapp"></i></span>
                                     </a>
                                     <input class="form-control form-control-sm" placeholder="" type="number" id="no-wa" name="no-wa">
@@ -337,7 +337,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="status-trans" class="form-label">Transaksi</label>
                             <select class="form-control form-control-sm" id="status-trans" name="status-trans">
                                 <option value="">Pilih transaksi</option>
@@ -345,15 +345,24 @@
                                 <option value="DP">DP</option>
                             </select>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-3">
                             <label for="tgl-trans" class="form-label">Tanggal</label>
                             <div class="input-group input-group-sm">
                                 <span class="input-group-text text-body"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                                 <input type="text" class="form-control" id="tgl-trans" name="tgl-trans" placeholder=" Pilih Range Tanggal">
                             </div>
                         </div>
-                        <div class="col-lg-4">
-                            <label for="nominal" class="form-label">Nominal</label>
+                        <div id="in-nominal-dp" class="col-lg-3" hidden>
+                            <label for="nominal-dp" class="form-label">Nominal DP</label>
+                            <div class="form-group mb-1">
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
+                                    <input class="form-control form-control-sm" placeholder="" type="number" id="nominal-dp" name="nominal-dp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <label for="nominal" class="form-label">Nominal Dibayar</label>
                             <div class="form-group mb-1">
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="ni ni-money-coins"></i></span>
@@ -362,6 +371,7 @@
                             </div>
                         </div>
                     </div>
+                    
                     <div id="btn-form-trans" class="row">
                         <div class="col-6">
                             <button type="button" id="btn-batal-trans" class="btn btn-small ">Batal</button>
@@ -376,6 +386,7 @@
                                 <tr class="tr bg-tr">
                                     <th>TRANSAKSI</th>
                                     <th>TANGGAL</th>
+                                    <th>TAHAP</th>
                                     <th>NOMINAL</th>
                                     <th>ACTION</th>
                                     <th>TGL UPDATE</th>
@@ -459,18 +470,12 @@
                         </tr>
                     </thead>
                     <tbody id="data-document">
-                        <!-- <tr>
-                            <td><li><span><sup>*</sup>KTP</span></li></td>
-                        </tr> -->
                     </tbody>
                 </table>
                 <div id="" class="row"></div>
-                <!-- <center>
-                    <span style="font-family: 'NucleoIcons';font-size: smaller;"> <sup>*</sup> Mohon lampirkan Blanko
-                        jika unit kapling subsidi!</span>
-                </center> -->
-                <input type="text" id="flied" value="" hidden>
-                <input type="text" id="file-doc" value="" hidden>
+                <input type="text" id="flied" value="">
+                <input type="text" id="file-doc" value="">
+                <input type="text" id="id-upload" value="">
                 <div id="preview-pdf" class="row" hidden>
                     <div class="col-12">
                         <hr style="border-top: solid #00000040 !important;">
@@ -482,21 +487,14 @@
                     </div>
                     <div id="Iframe-Master-CC-and-Rs" class="set-padding set-border set-box-shadow center-block-horiz">
                         <div class="responsive-wrapper responsive-wrapper-wxh-572x612" style="-webkit-overflow-scrolling: touch; overflow: auto;">
-
                             <iframe id="view-pdf" src="">
-                                <!-- <iframe id="view-pdf" src="https://docs.google.com/viewer?url=https://kanpa.co.id/Berkas.pdf&embedded=true"> -->
                             </iframe>
-
                         </div>
                     </div>
-                    <!-- <a href="http://localhost/site_map/upload/doc/0bd7e22accbba7ee18d43d64c56a111a.pdf" download="0bd7e22accbba7ee18d43d64c56a111a.pdf"> download</a> -->
-                    <!-- <a id="link-down-pdf" href="" download=""> download</a> -->
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <!-- <button type="button" class="btn btn-primary">Save
-                    changes</button> -->
             </div>
         </div>
     </div>
@@ -706,11 +704,26 @@
     });
     $('#status-trans').change(function() {
         // val_textarea();
+        if ($(this).val() == 'DP') {
+            $('#in-nominal-dp').removeAttr('hidden', true).show();
+            $('#nominal-dp').val($('.td-nominal-dp').text());
+            if ($('#nominal-dp').val() == '' || $('#nominal-dp').val() == '0') {
+                $('#nominal-dp').removeAttr('readonly', true)
+            } else {
+                $('#nominal-dp').attr('readonly', true)
+
+            }
+        } else {
+
+            $('#nominal').val('');
+            $('#in-nominal-dp').hide();
+        }
         if ($(this).val() == '') {
             $('#tgl-trans, #nominal').attr('disabled', true);
             $('#btn-form-trans').hide(300);
             $('#btn-simpan-trans').val('');
             $('#save-change-denah').attr("data-bs-dismiss", "modal");
+            // $('#nominal-dp, #nominal').val('');
 
         } else {
             $('#tgl-trans, #nominal').removeAttr('disabled', true);
@@ -729,6 +742,7 @@
         formData.append('status-trans', $('#status-trans').val());
         formData.append('tgl-trans', $('#tgl-trans').val());
         formData.append('nominal', $('#nominal').val());
+        formData.append('nominal-dp', $('#nominal-dp').val());
         $.ajax({
             type: 'POST',
             url: "<?php echo site_url('Home/upload_transaksi') ?>",
@@ -754,7 +768,7 @@
         $('#btn-form-trans').hide(300);
         $('#status-trans').val('').change()
     });
-
+    
     // function val_textarea() {
     //     var status_trans = $('#status-trans').val();
     //     var tgl_trans = $('#tgl-trans').val();
@@ -794,7 +808,7 @@
         close_preview_pdf();
     });
     $('#btn-delete-doc').click(function() {
-        // alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
+        alert($('#id-upload').val() + $('#flied').val() + $('#file-doc').val());
         var confirmalert = confirm("Apakah anda yakin untuk menghapus document ini ?");
 
         if (confirmalert == true) {
