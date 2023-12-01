@@ -33,7 +33,11 @@ class M_admin extends CI_Model
 
 	function get_data_admin()
 	{
-		return $this->db->get('admin')->result();
+		$this->db->select('*');
+		$this->db->from('admin');
+		$this->db->where('role', 'Marketing');
+		$query = $this->db->get();
+		return $query->result();
 	}
 
 	function m_perumahan($id, $role)

@@ -229,7 +229,6 @@ function getChartDataset($id_perum = null, $database)
                                     <?php
                                     }
                                     ?>
-
                                 "></i>
                             </div>
                         </div>
@@ -533,6 +532,7 @@ function getChartDataset($id_perum = null, $database)
 
 <!-- data tabel -->
 <script>
+
     $(document).ready(function() {
 
         var limit = 10;

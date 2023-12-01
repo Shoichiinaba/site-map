@@ -21,7 +21,6 @@ class Laporan_pdf extends CI_Controller
         $seg_perum = $this->uri->segment(3);
         $area = $this->uri->segment(4);
         $code_unit = $this->uri->segment(5);
-        // $str_end = $this->uri->segment(6);
         $perum = preg_replace("![^a-z0-9]+!i", " ", $seg_perum);
         $sql = "SELECT *FROM perumahan, site_plan WHERE perumahan.id_perum = site_plan.id_perum_siteplan AND perumahan.nama = '$perum' AND site_plan.area = '$area'";
         $query = $this->db->query($sql);
@@ -31,13 +30,10 @@ class Laporan_pdf extends CI_Controller
             }
         }
         $str_data = preg_replace("![^a-z0-9]+!i", ",", $code_unit);
-        // $tgl_start = preg_replace("![^a-z0-9]+!i", "/", $str_start);
-        // $tgl_end = preg_replace("![^a-z0-9]+!i", "/", $str_end);
         $id_denahs = ["'" . $str_data . "'"];
         $data['data_denahs'] = $this->M_pdf->m_data_laporan($id_map, $str_data);
         $data['group_type'] = $this->M_pdf->m_group_type($id_map, $str_data);
         $data['group_payout'] = $this->M_pdf->m_group_payout($id_map, $str_data);
-        // $data['data_transaksi'] = $this->M_pdf->m_data_transaksi();
         $data['data_test'] = explode(",", $str_data);
         // title dari pdf
         $data['_tittle'] = 'Laporan Penjualan Toko Kita';

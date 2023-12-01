@@ -241,7 +241,7 @@ class Dashboard extends AUTH_Controller
 
         $count = 0;
         $utjDeadlines = [];
-
+      
         if (!empty($data)) {
             foreach ($data as $row) {
                 if ($row->type == 'Dipesan' && $row->status_trans == 'UTJ') {
@@ -260,6 +260,7 @@ class Dashboard extends AUTH_Controller
                     }
                 }
             }
+          
 
             usort($utjDeadlines, function ($a, $b) {
                 return $b['days'] - $a['days'];
@@ -300,12 +301,14 @@ class Dashboard extends AUTH_Controller
                 if ($row->status_trans == 'UTJ' || $row->status_trans == 'DP') {
                     $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . '</span>';
                 }
+              
                 if (!empty($data_trans)) {
                     foreach ($data_trans as $data) {
                         $output .= $data;
                     }
                 }
                 $output .= '</td>';
+
                 $output .= '<td class="text-center">' . $progressBar . '</td>';
                 $output .= '<td class="text-center"><span class="badge ' . $colorClass . ' text-xxs font-weight-bold">' . $deadline['days'] . ' Hari</span></td>';
                 $whatsappNumber = preg_replace('/[^0-9]/', '', $row->no_wa);
@@ -333,3 +336,4 @@ class Dashboard extends AUTH_Controller
         echo $output;
     }
 }
+

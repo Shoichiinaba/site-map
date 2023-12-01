@@ -8,64 +8,63 @@
     <title>
         Formulir
     </title>
-    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous"> -->
     <style>
-        #table {
-            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-            border-collapse: collapse;
-            width: 100%;
-        }
+    #table {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-        #table td,
-        #table th {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
+    #table td,
+    #table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
 
-        #table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
+    #table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
 
-        #table tr:hover {
-            background-color: #ddd;
-        }
+    #table tr:hover {
+        background-color: #ddd;
+    }
 
-        #table th {
-            padding-top: 10px;
-            padding-bottom: 10px;
-            text-align: left;
-            background: #03a9f4;
-            color: white;
-        }
+    #table th {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        text-align: left;
+        background: #03a9f4;
+        color: white;
+    }
 
-        .bg-dur-green {
-            /* background: #5dcf32; */
-            padding: 1px 4px;
-            border-radius: 5px;
-            color: #5dcf32;
-        }
+    .bg-dur-green {
+        /* background: #5dcf32; */
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: #5dcf32;
+    }
 
-        .bg-dur-orange {
-            /* background: #e0ab0e; */
-            padding: 1px 4px;
-            border-radius: 5px;
-            color: #e0ab0e;
-        }
+    .bg-dur-orange {
+        /* background: #e0ab0e; */
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: #e0ab0e;
+    }
 
-        .bg-dur-red {
-            /* background: #e00e13; */
-            padding: 1px 4px;
-            border-radius: 5px;
-            color: #e00e13;
-        }
+    .bg-dur-red {
+        /* background: #e00e13; */
+        padding: 1px 4px;
+        border-radius: 5px;
+        color: #e00e13;
+    }
 
-        .bg-dur-sold-out {
-            border: dashed 2px red;
-            padding: 0px 6px;
-            border-radius: 5px;
-            font-weight: bold;
-            color: #f05151;
-        }
+    .bg-dur-sold-out {
+        border: dashed 2px red;
+        padding: 0px 6px;
+        border-radius: 5px;
+        font-weight: bold;
+        color: #f05151;
+    }
     </style>
 
 </head>
@@ -78,15 +77,6 @@
     <?php
     $str_data = [];
     $filter = [];
-    // $filter_arr = $this->uri->segment(6);
-    // echo $this->uri->segment(6);
-    // $str_data = preg_replace("![^a-z0-9]+!i", ",", $filter_arr);
-
-    // $data_1 = array($str_data);
-    // foreach ($data_1 as $filter) {
-    //     echo $filter;
-    // }
-    // echo $filter[0];
     $type = $this->input->get('type');
     $payout = $this->input->get('payout');
 
@@ -107,7 +97,7 @@
             <td>: UTJ, DP</td>
         </tr>
     </table>
-    <!-- <h5>Type Unit :</h5> -->
+
     <table id="table">
         <thead>
             <tr>
@@ -120,7 +110,6 @@
                 <th>DP</th>
                 <th>Duration</th>
                 <th>Document</th>
-                <!-- <th>Tanggal Transaksi</th> -->
             </tr>
         </thead>
         <tbody>
@@ -166,48 +155,48 @@
                     }
                 }
             ?>
-                <tr>
-                    <td scope="row"><?= $no++; ?></td>
-                    <td><?= $data->code; ?></td>
-                    <td><?= $data->type_unit; ?></td>
-                    <td><?= $data->type; ?></td>
-                    <td>
-                        <?php if ($data->status_pembayaran == 'cash') {
+            <tr>
+                <td scope="row"><?= $no++; ?></td>
+                <td><?= $data->code; ?></td>
+                <td><?= $data->type_unit; ?></td>
+                <td><?= $data->type; ?></td>
+                <td>
+                    <?php if ($data->status_pembayaran == 'cash') {
                             echo 'CASH';
                         } else {
                             echo 'KPR';
                         } ?>
-                    </td>
-                    <td>
-                        <?php
+                </td>
+                <td>
+                    <?php
                         foreach ($data_tgl_utj as $tgl) {
                         ?>
-                            <?= $tgl; ?>
-                        <?php
+                    <?= $tgl; ?>
+                    <?php
                         }
                         ?>
-                    </td>
-                    <td>
-                        <?php
+                </td>
+                <td>
+                    <?php
                         foreach ($data_nominal_dp as $nominal) {
                         ?>
-                            <?= $nominal; ?>
-                        <?php
+                    <?= $nominal; ?>
+                    <?php
                         }
                         ?>
-                    </td>
-                    <td>
-                        <?php
+                </td>
+                <td>
+                    <?php
                         foreach ($data_count as $count) {
                         ?>
-                            <?= $count; ?>
-                        <?php
+                    <?= $count; ?>
+                    <?php
                         }
                         ?>
-                    </td>
+                </td>
 
-                    <td><?= $data->progres_berkas; ?> %</td>
-                </tr>
+                <td><?= $data->progres_berkas; ?> %</td>
+            </tr>
 
             <?php
             }
@@ -216,6 +205,6 @@
         </tbody>
     </table>
     <script>
-        alert('ya')
+    alert('ya')
     </script>
 </body>

@@ -28,6 +28,22 @@
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
     <script src="<?php echo base_url('assets/js/datatables.min.js') ?>"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
+    <!-- select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+    $(document).ready(function() {
+        $('#edit-data').on('shown.bs.modal', function() {
+            $('.js-example-basic-single').select2();
+        });
+
+    });
+    </script>
+
+    <!-- sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- akhir sweetalert -->
 
     <style>
     .async-hide {

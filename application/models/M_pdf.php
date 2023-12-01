@@ -3,7 +3,7 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class M_pdf extends CI_Model
 {
-    // function m_data_laporan($id_map, $status, $tgl_start, $tgl_end)
+
     function m_data_laporan($id_map, $str_data)
     {
         $this->db->select('*');

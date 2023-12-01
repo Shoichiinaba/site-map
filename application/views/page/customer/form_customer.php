@@ -9,6 +9,7 @@
                             <th>nama</th>
                             <th>Email</th>
                             <th>telepon</th>
+                            <th>Perumahan</th>
                             <th>Jumlah Input</th>
                         </tr>
                     </thead>
@@ -48,38 +49,33 @@ $('#save-change-denah').click(function() {
         }
     });
 });
-window.crud = $('#list-customer').DataTable({
+
+var table;
+
+table = $('#list-customer').DataTable({
     "paging": true,
-    "ordering": true,
     "autoWidth": true,
+    "search": true,
     "responsive": true,
-    processing: true,
-    serverSide: true,
-    ajax: "<?php echo base_url('Customer/get_customers') ?>",
-    columns: [{
-            data: 'No',
-            name: 'id_customer'
-        },
-        {
-            data: 'nama',
-            name: 'nama'
-        },
-        {
-            data: 'email',
-            name: 'email'
-        },
-        {
-            data: 'telepon',
-            name: 'telepon'
-        },
-        {
-            data: 'jml_input',
-            name: 'jml_input'
-        }
-    ],
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+        "url": "<?=site_url('Customer/get_customer_web')?>",
+        "type": "POST",
+    },
+
     "columnDefs": [{
-        "targets": 0,
-        "className": "text-center",
-    }, ],
-});
+            "targets": [1, 2, 3, 4],
+            "className": 'text-left'
+        },
+        {
+            "targets": [0],
+            "className": 'text-center'
+        },
+        {
+            "targets": [1, 3, 4],
+            "orderable": false
+        },
+    ]
+})
 </script>

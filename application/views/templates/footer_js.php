@@ -3,6 +3,7 @@
 <script src="<?= base_url('assets_adm/'); ?>js/core/bootstrap.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/plugins/perfect-scrollbar.min.js"></script>
 <script src="<?= base_url('assets_adm/'); ?>js/plugins/smooth-scrollbar.min.js"></script>
+<script src="<?= base_url('assets_adm/'); ?>vendor/select2/select2.min.js"></script>
 
 
 <script>
@@ -27,15 +28,6 @@ if (win && document.querySelector('#sidenav-scrollbar')) {
 <script src="https://cdn.jsdelivr.net/npm/moment/moment.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
 <script type="text/javascript">
-$(function() {
-    // $('input[name="daterange"]').daterangepicker({
-    //     opens: 'left'
-    // }, function(start, end, label) {
-    //     console.log("A date range was chosen: " + start.format('YYYY-MM-DD') + ' to ' + end.format(
-    //         'YYYY-MM-DD'));
-    //     alert(start);
-    // });
-});
 </script>
 
 </body>

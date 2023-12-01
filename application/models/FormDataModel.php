@@ -21,7 +21,7 @@ class FormDataModel extends CI_Model
         return $query->result();
     }
 
-    public function simpanData($id_customer, $nama, $email, $telepon)
+    public function simpanData($id_customer, $nama, $email, $telepon, $id_perum)
     {
         // Periksa apakah data sudah ada dalam database
         $this->db->where('email', $email);
@@ -31,6 +31,7 @@ class FormDataModel extends CI_Model
             // Data belum ada, simpan data ke tabel database
             $data = array(
                 'id_customer' => $id_customer,
+                'id_perum' => $id_perum,
                 'nama' => $nama,
                 'telepon' => $telepon,
                 'email' => $email,
