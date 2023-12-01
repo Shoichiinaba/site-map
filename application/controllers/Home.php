@@ -435,8 +435,8 @@ class Home extends CI_Controller
             $query = $this->db->query($sql);
             if ($query->num_rows() > 0) {
                 foreach ($query->result() as $row) {
-                    if ($row->status_trans == 'UTJ' or $row->status_trans == 'DP') {
-                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || '.$row->tgl_trans .'</span><br>';
+                    if ($row->status_trans == 'UTJ') {
+                        $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || ' . $row->tgl_trans . '</span><br>';
                     }
                     if ($result->type == 'Dipesan') {
                         if ($row->status_trans == 'UTJ') {
@@ -445,12 +445,35 @@ class Home extends CI_Controller
                             $awal  = date_create('' . $tgl . '');
                             $akhir = date_create(); // waktu sekarang, pukul 06:13
                             $diff  = date_diff($akhir, $awal);
-                            if ($diff->days >= '0' && $diff->days <= '14') {
-                                $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
-                            } else if ($diff->days >= '15' && $diff->days <= '22') {
-                                $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
-                            } else if ($diff->days >= '23') {
-                                $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                            if ($result->progres_berkas < '50') {
+                                if ($diff->days >= '0' && $diff->days <= '3') {
+                                    $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                                } else if ($diff->days >= '4' && $diff->days <= '9') {
+                                    $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                                } else if ($diff->days >= '10') {
+                                    $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                                }
+                            } else if ($result->progres_berkas >= '50' && $result->progres_berkas < '100') {
+                                if ($result->type_unit == 'Komersil') {
+                                    if ($diff->days <= '11' || $diff->days >= '11' && $diff->days <= '14') {
+                                        $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                                    } else if ($diff->days >= '15' && $diff->days <= '19') {
+                                        $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                                    } else if ($diff->days >= '20') {
+                                        $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                                    }
+                                } else if ($result->type_unit == 'Subsidi') {
+                                    if ($diff->days <= '11' || $diff->days >= '11' && $diff->days <= '17') {
+                                        $count[] = '<span class="bg-dur-green">' . $diff->days . ' Hari</span>';
+                                    } else if ($diff->days >= '18' && $diff->days <= '24') {
+                                        $count[] = '<span class="bg-dur-orange">' . $diff->days . ' Hari</span>';
+                                    } else if ($diff->days >= '25') {
+                                        $count[] = '<span class="bg-dur-red">' . $diff->days . ' Hari</span>';
+                                    }
+                                    // $count[] = '<span class="bg-dur-sold-out">etst</span>';
+                                }
+                            } else if ($result->progres_berkas == '100') {
+                                $count[] = '<span class="bg-dur-sold-out">DONE</span>';
                             }
                         }
                     } else if ($result->type == 'Sold Out') {
@@ -458,6 +481,13 @@ class Home extends CI_Controller
                             $count[] = '<span class="bg-dur-sold-out">' . $row->status_trans . '</span>';
                         }
                     }
+                }
+            }
+            $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_denahs AND status_trans = 'DP' ORDER BY id_trans DESC LIMIT 1";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $row) {
+                    $data_trans[] = '<span class="border-transaksi">' . $row->status_trans . ' || ' . $row->tahap . ' || ' . $row->tgl_trans . '</span><br>';
                 }
             }
             $data['transaction'] = $data_trans;
@@ -560,7 +590,7 @@ class Home extends CI_Controller
         // $code = [];
         foreach ($resuls as $result) {
             $code = $result->code;
-            echo $code.'-';
+            echo $code . '-';
         }
     }
     function update_status_pembayaran()
@@ -607,7 +637,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span class="ktp" data-text="aaa"><sup>*</sup>KTP <i class="ni ni-check-bold"></i></span></a> </li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></span></a> </li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -621,7 +651,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -635,7 +665,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -649,7 +679,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -664,7 +694,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -678,7 +708,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -692,7 +722,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -706,7 +736,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -719,7 +749,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -733,7 +763,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -747,20 +777,20 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
                     }
                     if ($pas_foto == '') {
                         echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>Pas Foto</span></li>';
+                        echo '<td><li><span><sup>*</sup>PAS FOTO</span></li>';
                         echo '<td class="text-center"></td>';
                         echo '<td class="text-center"></td>';
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>PAS FOTO <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -773,7 +803,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -786,7 +816,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '</tr>';
@@ -801,7 +831,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $ktp . '" data-flied="ktp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KTP <i class="ni ni-check-bold"></i></a></span> </li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -816,7 +846,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $kk . '" data-flied="kk" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>KK <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -831,7 +861,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $npwp . '" data-flied="npwp" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>NPWP <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -846,7 +876,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $buku_nikah . '" data-flied="buku_nikah" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>BUKU NIKAH <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -860,7 +890,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $skk . '" data-flied="skk" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT KETERANGAN KERJA <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -875,7 +905,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $slip_g . '" data-flied="slip_g" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SLIP GAJI 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -890,7 +920,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $rek_koran . '" data-flied="rek_koran" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>REKENING KORAN 3 BULAN TERAKHIR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -898,13 +928,13 @@ class Home extends CI_Controller
                     }
                     if ($pas_foto == '') {
                         echo '<tr class="tr">';
-                        echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                        echo '<td><li><span><sup>*</sup>PAS FOTO</span></li></td>';
                         echo '<td></td>';
                         echo '<td></td>';
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>Pas Foto <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $pas_foto . '" data-flied="pas_foto" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>PAS FOTO <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -918,7 +948,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $spt . '" data-flied="spt" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SPT <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -932,7 +962,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $blanko . '" data-flied="blanko" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>BLANKO <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -948,7 +978,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc1 . '" data-flied="doc1" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc1 . '" data-flied="doc1" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT PERNYATAAN PERMOHONAN KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -963,7 +993,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc2 . '" data-flied="doc2" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc2 . '" data-flied="doc2" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT PERNYATAAN PENGHUNI RUMAH UMUM BERSUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -978,7 +1008,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc3 . '" data-flied="doc3" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc3 . '" data-flied="doc3" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT KUASA PENDEBETAN DANA <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -993,7 +1023,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc4 . '" data-flied="doc4" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc4 . '" data-flied="doc4" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT PERMOHONAN SUBSIDI <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -1008,7 +1038,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc5 . '" data-flied="doc5" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc5 . '" data-flied="doc5" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT PENGAKUAN KEKURANGAN BAYAR KPR <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -1023,7 +1053,7 @@ class Home extends CI_Controller
                         echo '</tr>';
                     } else {
                         echo '<tr class="tr">';
-                        echo '<td><li class="pdf" data-pdf="' . $doc6 . '" data-flied="doc6" data-id-upload="' . $id_upload . '"><a href="#"><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM <i class="ni ni-check-bold"></i></a></span></li></td>';
+                        echo '<td><li class="pdf" data-pdf="' . $doc6 . '" data-flied="doc6" data-id-upload="' . $id_upload . '"><a href="#preview-pdf"><span><sup>*</sup>SURAT PERINTAH PEMINDAH BUKUAN DANA SBUM <i class="ni ni-check-bold"></i></a></span></li></td>';
                         echo '<td class="text-center">' . $tgl_update . '</td>';
                         echo '<td class="text-center">' . $user_admin . '</td>';
                         echo '<td></td>';
@@ -1093,12 +1123,7 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                echo '<td><li><span><sup>*</sup>PAS FOTO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
                 echo '</tr>';
@@ -1179,12 +1204,7 @@ class Home extends CI_Controller
                 echo '<td></td>';
                 echo '</tr>';
                 echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>Rekening koran 3 bulan terakhir</span></li></td>';
-                echo '<td></td>';
-                echo '<td></td>';
-                echo '</tr>';
-                echo '<tr class="tr">';
-                echo '<td><li><span><sup>*</sup>Pas Foto</span></li></td>';
+                echo '<td><li><span><sup>*</sup>PAS FOTO</span></li></td>';
                 echo '<td></td>';
                 echo '<td></td>';
                 echo '</tr>';
@@ -1211,6 +1231,7 @@ class Home extends CI_Controller
                         $("#link-down-pdf").attr("href", "' . base_url('upload') . '/doc/" + $(this).data("pdf"));
                         $("#link-down-pdf").attr("download", $(this).data("pdf"));
                         $("#preview-pdf").removeAttr("hidden", true);
+                        $("#id-upload").val($(this).data("id-upload"));
                         $("#flied").val($(this).data("flied"));
                         $("#file-doc").val($(this).data("pdf"));
                     });
@@ -1353,7 +1374,6 @@ class Home extends CI_Controller
         $select_pembayaran = $this->input->post('select-pembayaran');
         $user_admin = $this->session->userdata('userdata')->nama;
         $tgl_update = date("d/m/Y | H:i:s");
-
         unlink('./upload/doc/' . $file_doc);
         if ($select_pembayaran == 'cash') {
             $nilai = [
@@ -1426,7 +1446,7 @@ class Home extends CI_Controller
     {
         $id_trans_denahs = $this->input->post('id-trans-denahs');
 
-        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_trans_denahs";
+        $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = $id_trans_denahs ORDER BY status_trans DESC";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
@@ -1459,13 +1479,37 @@ class Home extends CI_Controller
                 }
                 echo $row->status_trans . $row->nama_cus;
                 echo '<tr class="tr">
-                        <td class="text-center">' . $row->status_trans . '</td>
-                        <td class="text-center">' . $row->tgl_trans . '</td>
-                        <td class="text-center">' . $row->nominal . '</td>
-                        <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
-                        <td class="text-center">' . $row->tgl_update . '</td>
-                        <td class="text-center">' . $row->user_admin . '</td>
-                    </tr>';
+                            <td class="text-center">' . $row->status_trans . '</td>
+                            <td class="text-center">' . $row->tgl_trans . '</td>
+                            <td class="text-center">' . $row->tahap . '</td>
+                            <td class="text-center">' . $row->nominal . '</td>
+                            <td class="text-center"><button type="button" class="btn btn-danger btn-small btn-delete-transaksi" data-id-trans="' . $row->id_trans . '">Hapus</button></td>
+                            <td class="text-center">' . $row->tgl_update . '</td>
+                            <td class="text-center">' . $row->user_admin . '</td>
+                        </tr>';
+            }
+            echo '<tr class="tr">';
+            echo '<td style="background: blanchedalmond;">Nominal DP</td>';
+            echo '<td colspan="6" style="background: beige;" > : Rp. ' . $row->nominal_dp . '</td>';
+            echo '<td class="td-nominal-dp" hidden>' . $row->nominal_dp . '</td>';
+            echo '</tr>';
+            $sql = "SELECT SUM(nominal) AS total_nominal, nominal_dp FROM transaksi WHERE id_trans_denahs = $id_trans_denahs AND status_trans='DP'";
+            $query = $this->db->query($sql);
+            if ($query->num_rows() > 0) {
+                foreach ($query->result() as $count) {
+                    if ($row->nominal_dp == $count->total_nominal) {
+
+                        echo '<tr class="tr">';
+                        echo '<td style="background: blanchedalmond;">DP dibayar</td>';
+                        echo '<td colspan="6" style="background: beige;"> : Rp. ' . $count->total_nominal . '  -> LUNAS</td>';
+                        echo '</tr>';
+                    } else {
+                        echo '<tr class="tr">';
+                        echo '<td style="background: blanchedalmond;">DP dibayar</td>';
+                        echo '<td colspan="6" style="background: beige;"> : Rp. ' . $count->total_nominal . '</td>';
+                        echo '</tr>';
+                    }
+                }
             }
             echo '<script>
                         if ($("#type").val()=="Sold Out") {
@@ -1474,10 +1518,10 @@ class Home extends CI_Controller
                             $(".btn-delete-transaksi").show();
                         }
                           $("#nama-cus").val("' . $nama_cus . '");
-                                $("#no-wa").val("62' . $nomorhp . '");
-                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=62' . $nomorhp . '&text=");
+                                $("#no-wa").val("' . $nomorhp . '");
+                                $(".chat-wa").attr("href", "https://api.whatsapp.com/send?phone=' . $nomorhp . '&text=");
                                 $(".btn-delete-transaksi").click(function() {
-                                    alert($(this).data("id-trans"));
+                                    // alert($(this).data("id-trans"));
                                     var el = this;
 
                                     // Delete id
@@ -1497,6 +1541,8 @@ class Home extends CI_Controller
                                                 $(el).closest("tr").fadeOut(300, function() {
                                                     $(this).remove();
                                                 });
+                                                load_data_transaksi();
+
                                             }
                                         });
                                     }
@@ -1520,28 +1566,68 @@ class Home extends CI_Controller
         $status_trans = $this->input->post('status-trans');
         $tgl_trans = $this->input->post('tgl-trans');
         $nominal = $this->input->post('nominal');
+        $nominal_dp = $this->input->post('nominal-dp');
         $user_admin = $this->session->userdata('userdata')->nama;
         $tgl_update = date("d/m/Y | H:i:s");
-
+        $tahap = 0;
         $sql = "SELECT *FROM transaksi WHERE id_trans_denahs = '$id_trans_denahs' AND status_trans = '$status_trans'";
         $query = $this->db->query($sql);
         if ($query->num_rows() > 0) {
             foreach ($query->result() as $row) {
                 $id_trans = $row->id_trans;
-                $this->M_admin->m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update);
+                $db_nama_cus = $row->nama_cus;
+                $db_no_hp = $row->no_wa;
+                $db_nominal_dp = $row->nominal_dp;
+                $tahap++;
+            }
+            $count_tahapan = 'Tahap ' . $tahap += 1;
+            if ($status_trans == 'UTJ') {
+                $this->M_admin->m_update_transaksi($id_trans, $tgl_trans, $nominal, $user_admin, $tgl_update);
+            } else {
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $db_nama_cus,
+                    'no_wa' => $db_no_hp,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'nominal_dp' => $db_nominal_dp,
+                    'tahap' => $count_tahapan,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
             }
         } else {
-            $data = [
-                'id_trans_denahs' => $id_trans_denahs,
-                'status_trans' => $status_trans,
-                'nama_cus' => $nama_cus,
-                'no_wa' => $no_wa,
-                'tgl_trans' => $tgl_trans,
-                'nominal' => $nominal,
-                'user_admin' => $user_admin,
-                'tgl_update' => $tgl_update
-            ];
-            $this->M_admin->m_upload_transaksi($data);
+            if ($status_trans == 'UTJ') {
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $nama_cus,
+                    'no_wa' => $no_wa,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'tahap' => 'Lunas',
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
+            } else {
+                $count_tahapan = 'Tahap 1';
+                $data = [
+                    'id_trans_denahs' => $id_trans_denahs,
+                    'nama_cus' => $nama_cus,
+                    'no_wa' => $no_wa,
+                    'status_trans' => $status_trans,
+                    'tgl_trans' => $tgl_trans,
+                    'nominal' => $nominal,
+                    'nominal_dp' => $nominal_dp,
+                    'tahap' => $count_tahapan,
+                    'user_admin' => $user_admin,
+                    'tgl_update' => $tgl_update
+                ];
+                $this->M_admin->m_upload_transaksi($data);
+            }
         }
     }
 

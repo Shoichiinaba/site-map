@@ -157,7 +157,7 @@ class M_admin extends CI_Model
 		$result = $this->db->insert('transaksi', $data);
 		return $result;
 	}
-	function m_update_transaksi($id_trans, $nama_cus, $no_wa, $tgl_trans, $nominal, $user_admin, $tgl_update)
+	function m_update_transaksi($id_trans, $tgl_trans, $nominal, $user_admin, $tgl_update)
 	{
 
 		$update = $this->db->set('tgl_trans', $tgl_trans)
