@@ -57,18 +57,20 @@ class Client extends CI_Controller
         $email = $this->input->post('email');
         $telepon = $this->input->post('telepon');
         $perum =  $this->input->post('perum');
+        $id_perum =  $this->input->post('id_perum');
 
         // Simpan data ke dalam sesion
         $data = array(
             'id_customer' => $id_customer,
             'nama' => $nama,
             'email' => $email,
-            'telepon' => $telepon
+            'telepon' => $telepon,
+            'id_perum' => $id_perum
         );
         $this->session->set_userdata('form_data', $data);
 
         // Simpan data ke database
-        if ($this->FormDataModel->simpanData($id_customer, $nama, $email, $telepon)) {
+        if ($this->FormDataModel->simpanData($id_customer, $nama, $email, $telepon, $id_perum)) {
             // Data berhasil disimpan
             $this->session->set_flashdata('success_message', 'Terima Kasih Data anda sudah berhasil disimpan.');
         } else {
