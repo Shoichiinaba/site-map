@@ -9,6 +9,7 @@
                             <th>nama</th>
                             <th>Email</th>
                             <th>telepon</th>
+                            <th>Perumahan</th>
                             <th>Jumlah Input</th>
                         </tr>
                     </thead>
